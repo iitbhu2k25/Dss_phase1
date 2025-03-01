@@ -1,0 +1,184 @@
+{% load static %}
+
+
+
+
+<header class="header">
+  <div class="container">
+    <div class="row align-items-center position-relative">
+      <!-- Left Logos -->
+      <div class="col-3 d-flex justify-content-start align-items-center" style="gap: 20px;">
+        <a href="https://www.india.gov.in/" class="me-2">
+          <img src="{% static 'Images/ashok.png' %}" class="stamb img-fluid" alt="Logo 1" title="अशोक स्तंभ" />
+        </a>
+        <a href="https://iitbhu.ac.in/">
+          <img src="{% static 'Images/iit_logo.png' %}" class="stamb img-fluid" alt="Logo 3" title="iitbhu" style="transform: scale(2.5); transition: transform 0.3s ease; margin-left: 40px;" />
+        </a>
+      </div>
+
+      <!-- Middle Section -->
+      <div class="col-6 text-center middle-section">
+        <h2 class="simple-heading pt-1">Decision Support System</h2>
+        <div style="max-width: 100%;">
+          <p class="simple-paragraph moving-text">
+            Small Rivers Management Tool (SRMT) for Holistic Water Resources
+            Management in India
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Logos -->
+      <div class="col-3 d-flex justify-content-end align-items-center" style="gap: 20px;">
+        <a href="https://www.slcrvaranasi.com/">
+          <img src="{% static 'Images/logo_f.png' %}" class="stamb img-fluid" alt="Right Logo"
+            title="Smart Laboratory on Clean River" style="max-width: 150px; height: 100px;" />
+        </a>
+        <a href="https://nmcg.nic.in/">
+          <img src="{% static 'Images/logo_right1.gif' %}" class="stamb img-fluid" alt="Logo 3" title="Namami Gange" />
+        </a>
+       
+      
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+  }
+
+  .header {
+    background-image: url("{% static 'Images/bg.gif' %}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+  }
+
+  .stamb {
+    max-width: 90px;
+    height: auto;
+    transition: transform 0.3s ease;
+  }
+
+  .stamb:hover {
+    transform: scale(1.05);
+  }
+
+  .simple-heading {
+    font-weight: bold;
+    color: black;
+    font-size: 32px;
+    margin-bottom: 0;
+  }
+
+  .simple-paragraph {
+    font-size: 14px;
+    color: black;
+    margin-top: 5px;
+  }
+
+  .middle-section {
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+    padding: 5px 10px;
+  }
+
+  /* Smooth Scrolling Text */
+  @keyframes moveText {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  .moving-text {
+    display: inline-block;
+    animation: moveText 16s linear infinite; /* Reduced the duration to 5s for faster movement */
+    white-space: nowrap;
+    max-width: 100%;
+  }
+
+  /* Adjustments for Desktop */
+  @media (min-width: 1024px) {
+    .col-3 {
+      flex: 0 0 30%;
+      display: flex;
+      align-items: center;
+    }
+
+    .col-6 {
+      flex: 0 0 40%;
+    }
+
+    .simple-heading {
+      font-size: 36px;
+    }
+
+    .simple-paragraph {
+      font-size: 16px;
+    }
+  }
+
+  /* Adjustments for Tablets */
+  @media (max-width: 1024px) {
+    .stamb {
+      max-width: 70px;
+    }
+
+    .simple-heading {
+      font-size: 28px;
+    }
+
+    .simple-paragraph {
+      font-size: 12px;
+    }
+
+    .col-3 {
+      flex: 0 0 45%;
+      justify-content: center;
+    }
+
+    .col-6 {
+      flex: 0 0 55%;
+    }
+  }
+
+  /* Adjustments for Mobile */
+  @media (max-width: 768px) {
+    .stamb {
+      max-width: 50px;
+    }
+
+    .simple-heading {
+      font-size: 20px;
+    }
+
+    .simple-paragraph {
+      font-size: 10px;
+    }
+
+    .col-3 {
+      flex: 0 0 100%;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .col-6 {
+      flex: 0 0 100%;
+      text-align: center;
+    }
+
+    .moving-text {
+      animation-duration: 15s; /* Slower scrolling for better readability */
+    }
+  }
+</style>

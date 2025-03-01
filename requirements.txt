@@ -1,0 +1,46 @@
+# Django & Django-related
+Django
+djangorestframework
+django-extensions
+django-leaflet
+django-debug-toolbar
+django-cors-headers
+django-environ
+
+# Database
+psycopg2-binary
+sqlalchemy
+
+geopandas
+geojson
+shapely
+gsconfig-py3
+
+# Data Science & ML
+pandas
+scikit-learn
+
+# Development & Debug Tools
+python-dotenv
+python-decouple
+requests
+gunicorn
+ipdb
+pygments
+whitenoise
+
+# Testing
+pytest
+pytest-django
+pytest-cov
+factory-boy
+faker
+
+# Code Quality
+black
+flake8
+mypy
+
+# Monitoring & Error Tracking
+sentry-sdk
+

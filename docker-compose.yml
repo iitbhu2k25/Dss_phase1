@@ -1,0 +1,62 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: django_app
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - static_volume:/app/static
+      - media_volume:/app/media
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"
+    depends_on:
+      - db
+    networks:
+      - geo_network
+    restart: unless-stopped
+
+  db:
+    image: postgis/postgis:16-3.5
+    container_name: postgis_db
+    env_file:
+      - .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5431:5432"
+    expose:
+      - "5431"
+    networks:
+      - geo_network
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    env_file:
+      - .env
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - geo_network
+    restart: unless-stopped
+    depends_on:
+      - db
+
+networks:
+  geo_network:
+    driver: bridge
+
+volumes:
+  pg_data:
+  pgadmin_data:
+  static_volume:
+  media_volume:

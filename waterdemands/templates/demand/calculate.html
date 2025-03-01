@@ -1,0 +1,367 @@
+{% extends "demand/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container-1 ">
+    <h3 class="text-center mb-4" style="color: #ff00cc;">Water Demand Estimation</h1>
+    <div class="form-container">
+    <form>
+        <!-- Demand Type -->
+        <div class="mb-3">
+            <label for="demand_type" class="form-label">Select Demand Type:</label>
+            <select id="demand_type" name="demand_type" class="form-select">
+                <option value="">Select</option>
+                <option value="domestic">Domestic</option>
+                <option value="floating">Floating</option>
+                <option value="institutional">Institutional</option>
+                <option value="firefighting">Fire Fighting</option>
+                <option value="total">Total Demand</option>
+            </select>
+        </div>
+
+        <!-- Location Fields -->
+        <!-- Location Fields -->
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label for="state_dropdown" class="form-label">State:</label>
+                <select id="state_dropdown" name="state_dropdown" class="form-select">
+                    <option value="">Select State</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="district_dropdown" class="form-label">District:</label>
+                <select id="district_dropdown" name="district_dropdown" class="form-select">
+                    <option value="">Select District</option>
+                </select>
+            </div>
+            <div class="col-md-3 subdistrict-container">
+                <label for="subdistrict_dropdown" class="form-label">Subdistrict:</label>
+                <select id="subdistrict_dropdown" name="subdistrict_dropdown" class="form-select">
+                    <option value="">Select Subdistrict</option>
+                </select>
+            </div>
+            <div class="form-group col-10 col-md-5 mb-3 pt-2">
+                <label for="village_dropdown">Town/Village:</label>
+                <div id="village-container" class="border p-2" style="max-height: 200px; overflow-y: auto;">
+                    <!-- Villages/Towns checkboxes will be dynamically populated here -->
+                </div>
+            </div>
+            
+            <div class="form-group col-10 col-md-5 mb-3 pt-2">
+                <label>Selected Town/Village:</label>
+                <div id="selected-villages" class="border p-2">
+                    <!-- Selected villages/towns will be displayed here -->
+                </div>
+            </div>
+            
+            
+        </div>
+
+        <div id="totaldemand" class="hidden">
+            <div class="row mb-3">
+                <div class="form-check">
+                    <input type="checkbox" id="checkbox_domestic" class="form-check-input" value="domestic">
+                    <label for="checkbox_domestic" class="form-check-label">Domestic</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" id="checkbox_floating" class="form-check-input" value="floating">
+                    <label for="checkbox_floating" class="form-check-label">Floating</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" id="checkbox_institutional" class="form-check-input" value="institutional">
+                    <label for="checkbox_institutional" class="form-check-label">Institutional</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" id="checkbox_firefighting" class="form-check-input" value="firefighting">
+                    <label for="checkbox_firefighting" class="form-check-label">Firefighting</label>
+                </div>
+            </div>
+        </div>
+ 
+        
+
+        <!-- Year -->
+        <div class="mb-3 hidden" id="year_container">
+            <h6><b>Domestic Fields</b></h6>
+            <label for="year_dropdown" class="form-label">Select Year:</label>
+            <select id="year_dropdown" name="year_dropdown" class="form-select">
+                <option value="">Select Year</option>
+            </select>
+        </div>
+
+        <!-- Population -->
+        <div class="mb-3 hidden" id="population_container">
+            <label for="population_field" class="form-label">Population (Total Population In Case Of Multiple Region):</label>
+            <input id="population_field" name="population_field" type="text" class="form-control" placeholder="Enter Population">
+        </div>
+        
+        <!--floating-->
+
+        <div class="mb-3 hidden" id="enu_container">
+            <h6><b>Floating fields</b></h6>
+            <label for="enu_dropdown" class="form-label">Enumeration Type:</label>
+            <select id="enu_dropdown" name="enu_dropdown" class="form-select">
+                <option value="Total">Select option</option>
+                <option value="Total">Total</option>
+                <option value="Urban">Urban</option>
+                <option value="Rural">Rural</option>
+            </select>
+        </div>
+        
+        <div class="mb-3 hidden" id="floating_container">
+            <label for="floating_field" class="form-label">Floating population:</label>
+            <input id="floating_field" name="floating_field" type="text" class="form-control" placeholder="Enter floating population">
+        </div>
+
+        <!-- Facility Type Dropdown -->
+        <div class="mb-3 hidden" id="facility_container">
+            <label for="facility_dropdown" class="form-label">Facility Type:</label>
+            <select id="facility_dropdown" name="facility_dropdown" class="form-select">
+                <option value="provided">Bathing facilities provided</option>
+                <option value="notprovided">Bathing facilities not provided</option>
+                <option value="onlypublic">Floating population using only public facilities</option>
+            </select>
+        </div>
+
+        
+
+
+        
+
+
+        <!-- Institutional-->
+        <div id="institutional_container" class="hidden">
+            <h6><b>Institutional fields</b></h6>
+            
+            <!-- Hospitals Section -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="hospitals_100_units" class="form-label">Hospitals with ≥ 100 Beds (Units):</label>
+                    <input type="number" id="hospitals_100_units" class="form-control" placeholder="Enter number">
+                </div>
+                <div class="col-md-6">
+                    <label for="beds_100" class="form-label">Beds in Hospitals with ≥ 100 Beds:</label>
+                    <input type="number" id="beds_100" class="form-control" placeholder="Enter number">
+                </div>
+                <div class="col-md-6">
+                    <label for="hospitals_less_100" class="form-label">Hospitals with < 100 Beds (Units):</label>
+                    <input type="number" id="hospitals_less_100" class="form-control" placeholder="Enter number">
+                </div>
+                <div class="col-md-6">
+                    <label for="beds_less_100" class="form-label">Beds in Hospitals with < 100 Beds:</label>
+                    <input type="number" id="beds_less_100" class="form-control" placeholder="Enter number">
+                </div>
+            </div>
+        
+            <!-- Hotels Section -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="hotels" class="form-label">Hotels (Units):</label>
+                    <input type="number" id="hotels" class="form-control" placeholder="Enter number">
+                </div>
+                <div class="col-md-6">
+                    <label for="beds_hotels" class="form-label">Beds in Hotels:</label>
+                    <input type="number" id="beds_hotels" class="form-control" placeholder="Enter number">
+                </div>
+            </div>
+        
+            <!-- Hostels Section -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="hostels" class="form-label">Hostels (Units):</label>
+                    <input type="number" id="hostels" class="form-control" placeholder="Enter number">
+                </div>
+                <div class="col-md-6">
+                    <label for="residents_hostels" class="form-label">Residents in Hostels:</label>
+                    <input type="number" id="residents_hostels" class="form-control" placeholder="Enter number">
+                </div>
+            </div>
+        
+            <!-- Nurses Home Section -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="nurses_home" class="form-label">Nurses Home (Units):</label>
+                    <input type="number" id="nurses_home" class="form-control" placeholder="Enter number">
+                </div>
+                <div class="col-md-6">
+                    <label for="residents_nurses_home" class="form-label">Residents in Nurses Home:</label>
+                    <input type="number" id="residents_nurses_home" class="form-control" placeholder="Enter number">
+                </div>
+            </div>
+        
+            <!-- Boarding Schools Section -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="boarding_schools" class="form-label">Boarding Schools/Colleges (Units):</label>
+                    <input type="number" id="boarding_schools" class="form-control" placeholder="Enter number">
+                </div>
+                <div class="col-md-6">
+                    <label for="students_boarding_schools" class="form-label">Number of Students:</label>
+                    <input type="number" id="students_boarding_schools" class="form-control" placeholder="Enter number">
+                </div>
+            </div>
+        
+            <!-- Restaurants Section -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="restaurants" class="form-label">Restaurants (Units):</label>
+                    <input type="number" id="restaurants" class="form-control" placeholder="Enter number">
+                </div>
+                <div class="col-md-6">
+                    <label for="seats_restaurants" class="form-label">Seats in Restaurants:</label>
+                    <input type="number" id="seats_restaurants" class="form-control" placeholder="Enter number">
+                </div>
+            </div>
+        
+            <!-- Airports Section -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="airports_seaports" class="form-label">Airports/Seaports (Units):</label>
+                    <input type="number" id="airports_seaports" class="form-control" placeholder="Enter number">
+                </div>
+                <div class="col-md-6">
+                    <label for="population_load_airports" class="form-label">Population Load:</label>
+                    <input type="number" id="population_load_airports" class="form-control" placeholder="Enter number">
+                </div>
+            </div>
+        
+            <!-- Stations Section -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="junction_stations" class="form-label">Junction/Intermediate Stations (Units):</label>
+                    <input type="number" id="junction_stations" class="form-control" placeholder="Enter number">
+                </div>
+                <div class="col-md-6">
+                    <label for="population_load_junction" class="form-label">Population Load:</label>
+                    <input type="number" id="population_load_junction" class="form-control" placeholder="Enter number">
+                </div>
+                <div class="col-md-6">
+                    <label for="terminal_stations" class="form-label">Terminal Stations (Units):</label>
+                    <input type="number" id="terminal_stations" class="form-control" placeholder="Enter number">
+                </div>
+                <div class="col-md-6">
+                    <label for="population_load_terminal" class="form-label">Population Load:</label>
+                    <input type="number" id="population_load_terminal" class="form-control" placeholder="Enter number">
+                </div>
+            </div>
+        
+            <!-- Intermediate Stations Section -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="intermediate_bathing" class="form-label">With Bathing Facility:</label>
+                    <input type="number" id="intermediate_bathing" class="form-control" placeholder="Enter number">
+                </div>
+                <div class="col-md-6">
+                    <label for="population_load_bathing" class="form-label">Population Load (With Bathing Facility):</label>
+                    <input type="number" id="population_load_bathing" class="form-control" placeholder="Enter number">
+                </div>
+                <div class="col-md-6">
+                    <label for="intermediate_no_bathing" class="form-label">Without Bathing Facility:</label>
+                    <input type="number" id="intermediate_no_bathing" class="form-control" placeholder="Enter number">
+                </div>
+                <div class="col-md-6">
+                    <label for="population_load_no_bathing" class="form-label">Population Load (Without Bathing Facility):</label>
+                    <input type="number" id="population_load_no_bathing" class="form-control" placeholder="Enter number">
+                </div>
+            </div>
+        
+            <!-- Day Schools Section -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="day_schools" class="form-label">Day Schools/Colleges (Units):</label>
+                    <input type="number" id="day_schools" class="form-control" placeholder="Enter number">
+                </div>
+                <div class="col-md-6">
+                    <label for="students_day_schools" class="form-label">Number of Students:</label>
+                    <input type="number" id="students_day_schools" class="form-control" placeholder="Enter number">
+                </div>
+            </div>
+        
+            <!-- Offices Section -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="offices" class="form-label">Offices (Units):</label>
+                    <input type="number" id="offices" class="form-control" placeholder="Enter number">
+                </div>
+                <div class="col-md-6">
+                    <label for="employees_offices" class="form-label">Employees:</label>
+                    <input type="number" id="employees_offices" class="form-control" placeholder="Enter number">
+                </div>
+            </div>
+        
+            <!-- Factories Section -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="factories_bathroom" class="form-label">With Bathroom Facility:</label>
+                    <input type="number" id="factories_bathroom" class="form-control" placeholder="Enter number">
+                </div>
+                <div class="col-md-6">
+                    <label for="employees_factories_bathroom" class="form-label">Employees (With Bathroom Facility):</label>
+                    <input type="number" id="employees_factories_bathroom" class="form-control" placeholder="Enter number">
+                </div>
+                <div class="col-md-6">
+                    <label for="factories_no_bathroom" class="form-label">Without Bathroom Facility:</label>
+                    <input type="number" id="factories_no_bathroom" class="form-control" placeholder="Enter number">
+                </div>
+                <div class="col-md-6">
+                    <label for="employees_factories_no_bathroom" class="form-label">Employees (Without Bathroom Facility):</label>
+                    <input type="number" id="employees_factories_no_bathroom" class="form-control" placeholder="Enter number">
+                </div>
+            </div>
+        
+            <!-- Cinemas Section -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="cinemas" class="form-label">Cinemas/Concert Halls/Theatres (Units):</label>
+                    <input type="number" id="cinemas" class="form-control" placeholder="Enter number">
+                </div>
+                <div class="col-md-6">
+                    <label for="population_load_cinemas" class="form-label">Population Load:</label>
+                    <input type="number" id="population_load_cinemas" class="form-control" placeholder="Enter number">
+                </div>
+            </div>
+        </div>
+
+        <div id="firefighting_container" class="hidden">
+            <h6><b>Firefighting fields</b></h6>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="intermediate_stage" class="form-label">Intermediate stage (Enter 15 for intermediate stage & 30 for ultimate stage)</label>
+                    <input type="number" id="intermediate_stage" class="form-control" placeholder="Enter number">
+                </div>
+                <div class="col-md-6">
+                    <label for="population_load_intermediate" class="form-label">Population at Intermediate stage:</label>
+                    <input type="number" id="population_load_intermediate" class="form-control" placeholder="Enter number">
+                </div>
+                <div class="col-md-6">
+                    <label for="operational_zone" class="form-label">Name of Operational Zone</label>
+                    <input type="text" id="operational_zone" class="form-control" placeholder="Enter name">
+                </div>
+                <div class="col-md-6">
+                    <label for="population_load_operational" class="form-label">Population at Operational Zone:</label>
+                    <input type="number" id="population_load_operational" class="form-control" placeholder="Enter number">
+                </div>
+
+            </div>
+
+        </div>
+        
+        
+        
+
+        <!-- Calculate Button -->
+        <div class="text-center">
+            <button id="calculate_button" type="button" class="btn btn-primary">Calculate</button>
+        </div>
+
+    
+
+        <!-- Result -->
+        <div id="result_container" class="mt-3 text-center result"></div>
+    </form>
+</div>
+</div>
+</div>
+
+<script src="{% static 'js/water_demand.js' %}"></script>
+{% endblock %}

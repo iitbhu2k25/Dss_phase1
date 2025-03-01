@@ -1,0 +1,2427 @@
+{% extends "./base.html" %} 
+{% block content %}
+</div>
+<div class="container-fluid py-4">
+  <div class="row g-5">
+    <div class="col-md-8">
+      <!-- Location Selection Section -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header text-white" id="card-header-property1">
+          <h3 class="mb-0">
+            <i class="fas fa-map-marker-alt me-2"></i>Location Selection
+          </h3>
+        </div>
+        <div class="card-body">
+          <!-- First Row: State -> District -> Sub-district -> Village -->
+          <div class="row g-3 mb-3">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="state-dropdown" class="form-label fw-bold">State:</label>
+                <select id="state-dropdown" class="form-select form-select-sm border-primary">
+                  <option value="">--Choose a State--</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="district-dropdown" class="form-label fw-bold">District:</label>
+                <div class="dropdown w-100">
+                  <button
+                    class="btn btn-outline-primary btn-sm dropdown-toggle w-100 custom-dropdown-btn"
+                    type="button"
+                    id="districtDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    disabled
+                  >
+                    --Choose Districts--
+                  </button>
+                  <div
+                    class="dropdown-menu w-100 p-2 shadow-sm custom-dropdown-menu"
+                    id="districtDropdownMenu"
+                    style="max-height: 300px; overflow-y: auto; position: absolute; z-index: 9999;"
+                  >
+                    <div class="px-2 pb-2">
+                      <input type="text" class="form-control form-control-sm search-input" placeholder="Search districts..." id="districtSearchInput">
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <div id="districtCheckboxesContainer"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="sub_district-dropdown" class="form-label fw-bold">Sub-District:</label>
+                <div class="dropdown w-100">
+                  <button
+                    class="btn btn-outline-primary btn-sm dropdown-toggle w-100 custom-dropdown-btn"
+                    type="button"
+                    id="subDistrictDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    disabled
+                  >
+                    --Choose Sub-Districts--
+                  </button>
+                  <div
+                    class="dropdown-menu w-100 p-2 shadow-sm custom-dropdown-menu"
+                    id="subDistrictDropdownMenu"
+                    style="max-height: 300px; overflow-y: auto; position: absolute; z-index: 9999;"
+                  >
+                    <div class="px-2 pb-2">
+                      <input type="text" class="form-control form-control-sm search-input" placeholder="Search sub-districts..." id="subDistrictSearchInput">
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <div id="subDistrictCheckboxesContainer"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="village" id="villageLabel" class="form-label fw-bold">Village:</label>
+                <div class="dropdown w-100">
+                  <button
+                    class="btn btn-outline-primary btn-sm dropdown-toggle w-100 custom-dropdown-btn"
+                    type="button"
+                    id="villageDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    disabled
+                  >
+                    --Choose Villages--
+                  </button>
+                  <div
+                    class="dropdown-menu w-100 p-2 shadow-sm custom-dropdown-menu"
+                    id="villageDropdownMenu"
+                    style="max-height: 300px; overflow-y: auto; position: absolute; z-index: 9999;"
+                  >
+                    <div class="px-2 pb-2">
+                      <input type="text" class="form-control form-control-sm search-input" placeholder="Search villages..." id="villageSearchInput">
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <div id="villageCheckboxesContainer"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <hr class="my-3">
+          
+          <!-- Second Row: Tier -> State -> District -> Sub-district -> Town -->
+          <div class="row g-3">
+            <div class="col-md-2">
+              <div class="form-group">
+                <label for="tier-dropdown" class="form-label fw-bold">Tier:</label>
+                <select id="tier-dropdown" class="form-select form-select-sm border-primary">
+                  <option value="">--Choose a Tier--</option>
+                  <option value="tier1">Tier 1</option>
+                  <option value="tier2">Tier 2</option>
+                  <option value="tier3">Tier 3</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <label for="state-dropdown-tier" class="form-label fw-bold">State:</label>
+                <select id="state-dropdown-tier" class="form-select form-select-sm border-primary">
+                  <option value="">--Choose a State--</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <label for="district-dropdown-tier" class="form-label fw-bold">District:</label>
+                <div class="dropdown w-100">
+                  <button
+                    class="btn btn-outline-primary btn-sm dropdown-toggle w-100 custom-dropdown-btn"
+                    type="button"
+                    id="districtDropdownTier"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    disabled
+                  >
+                    --Choose Districts--
+                  </button>
+                  <div
+                    class="dropdown-menu w-100 p-2 shadow-sm custom-dropdown-menu"
+                    id="districtDropdownTierMenu"
+                    style="max-height: 300px; overflow-y: auto; position: absolute; z-index: 9999;"
+                  >
+                    <div class="px-2 pb-2">
+                      <input type="text" class="form-control form-control-sm search-input" placeholder="Search districts..." id="districtTierSearchInput">
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <div id="districtCheckboxesContainerTier"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="sub_district-dropdown-tier" class="form-label fw-bold">Sub-District:</label>
+                <div class="dropdown w-100">
+                  <button
+                    class="btn btn-outline-primary btn-sm dropdown-toggle w-100 custom-dropdown-btn"
+                    type="button"
+                    id="subDistrictDropdownTier"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    disabled
+                  >
+                    --Choose Sub-Districts--
+                  </button>
+                  <div
+                    class="dropdown-menu w-100 p-2 shadow-sm custom-dropdown-menu"
+                    id="subDistrictDropdownTierMenu"
+                    style="max-height: 300px; overflow-y: auto; position: absolute; z-index: 9999;"
+                  >
+                    <div class="px-2 pb-2">
+                      <input type="text" class="form-control form-control-sm search-input" placeholder="Search sub-districts..." id="subDistrictTierSearchInput">
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <div id="subDistrictCheckboxesContainerTier"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="town" id="townLabel" class="form-label fw-bold">Town:</label>
+                <div class="dropdown w-100">
+                  <button
+                    class="btn btn-outline-primary btn-sm dropdown-toggle w-100 custom-dropdown-btn"
+                    type="button"
+                    id="townDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    disabled
+                  >
+                    --Choose Towns--
+                  </button>
+                  <div
+                    class="dropdown-menu w-100 p-2 shadow-sm custom-dropdown-menu"
+                    id="townDropdownMenu"
+                    style="max-height: 300px; overflow-y: auto; position: absolute; z-index: 9999;"
+                  >
+                    <div class="px-2 pb-2">
+                      <input type="text" class="form-control form-control-sm search-input" placeholder="Search towns..." id="townSearchInput">
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <div id="townCheckboxesContainer"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Categories Section -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header text-white" id="card-header-property2">
+          <h3 class="mb-0"><i class="fas fa-list-ul me-2"></i>Categories</h3>
+        </div>
+        <div class="card-body" id="categories-card">
+          <div class="row g-3">
+            <div class="col-md-6 border-end">
+              <div class="d-grid gap-2">
+                <div class="form-check custom-checkbox">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="check1"
+                    name="option1"
+                  />
+                  <label class="form-check-label" for="check1">
+                    <i class="fas fa-water text-primary me-2"></i>Sewage Gap
+                  </label>
+                </div>
+                <div class="form-check custom-checkbox">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="check2"
+                    name="option2"
+                  />
+                  <label class="form-check-label" for="check2">
+                    <i class="fas fa-temperature-high text-danger me-2"></i>Mean
+                    Temperature
+                  </label>
+                </div>
+                <div class="form-check custom-checkbox">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="check3"
+                    name="option3"
+                  />
+                  <label class="form-check-label" for="check3">
+                    <i class="fas fa-cloud-rain text-info me-2"></i>Mean
+                    Rainfall
+                  </label>
+                </div>
+                <div class="form-check custom-checkbox">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="check4"
+                    name="option4"
+                  />
+                  <label class="form-check-label" for="check4">
+                    <i class="fas fa-users text-success me-2"></i>Number of
+                    Tourists
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="d-grid gap-2">
+                <div class="form-check custom-checkbox">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="check5"
+                    name="option5"
+                  />
+                  <label class="form-check-label" for="check5">
+                    <i class="fas fa-landmark text-warning me-2"></i>Number of
+                    ASI Sites
+                  </label>
+                </div>
+                <div class="form-check custom-checkbox">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="check6"
+                    name="option6"
+                  />
+                  <label class="form-check-label" for="check6">
+                    <i class="fas fa-chart-line text-primary me-2"></i>GDDP at
+                    Current Price
+                  </label>
+                </div>
+                <div class="form-check custom-checkbox">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="check7"
+                    name="option7"
+                  />
+                  <label class="form-check-label" for="check7">
+                    <i class="fas fa-tint text-info me-2"></i>Water Quality
+                    Index
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="button"
+        id="submit-button1"
+        class="btn btn-primary btn-lg w-30 mb-2 shadow-sm"
+        onclick="submitForm(event)"
+      >
+        Submit
+      </button>
+
+      <!-- Table Section -->
+      <div class="card shadow-sm mt-4">
+        <div class="card-header text-dark" id="results-box-head">
+          <h3 class="mb-0"><i class="fas fa-table me-2"></i>Results</h3>
+        </div>
+        <div class="card-body" id="results-box">
+          <div
+            class="table-responsive"
+            style="max-height: 200px; overflow-y: auto"
+          >
+            <table class="table table-striped">
+              <thead class="table-blue">
+                <tr id="headerRow"></tr>
+              </thead>
+              <tbody id="tableBody">
+                <!-- Your table rows go here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <button
+        type="button"
+        class="btn btn-primary btn-sm m-1 mt-4 text-xl-center"
+        id="showBoundariesButton"
+        style="
+          width: 140px;
+          height: 60px;
+          font-size: 18px;
+          border-radius: 30px;
+          background-color: #76ba1b;
+          border: none;
+        "
+        onclick="ranking(event)"
+      >
+        Ranking
+      </button>
+    </div>
+
+    <!-- IMPROVED MAP SECTION -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-header text-white" id="map-view-header">
+          <h3 class="mb-0"><i class="fas fa-map me-2"></i>Map View</h3>
+        </div>
+        <div class="card-body p-0 map-container" 
+             style="border: 1px solid #ffffff; border-top: none; border-radius: 0 0 15px 15px; overflow: hidden; position: relative;">
+          
+          <!-- Map Controls - Only Fullscreen -->
+          <div class="map-controls">
+            <button id="fullscreenBtn" class="btn btn-light control-btn shadow-sm" title="Fullscreen">
+              <i class="fas fa-expand"></i>
+            </button>
+          </div>
+          
+          <!-- Modern Google-style Map Type Control -->
+          <div class="map-type-control">
+            <div class="map-type-buttons">
+              <button id="mapTypeStreet" class="map-type-btn active" title="Street View">
+                <i class="fas fa-road"></i>
+                <span>Map</span>
+              </button>
+              <button id="mapTypeSatellite" class="map-type-btn" title="Satellite View">
+                <i class="fas fa-satellite"></i>
+                <span>Satellite</span>
+              </button>
+              <button id="mapTypeTerrain" class="map-type-btn" title="Terrain View">
+                <i class="fas fa-mountain"></i>
+                <span>Terrain</span>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Map Legend -->
+          <div class="map-legend">
+            <h6>Legend</h6>
+            <div class="legend-item">
+              <span class="legend-color" style="background-color: rgba(118, 186, 27, 0.2); border: 2px solid #76ba1b;"></span>
+              <span>Selected Area</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color" style="background-color: rgba(0, 123, 255, 0.2); border: 2px solid #007bff;"></span>
+              <span>Points of Interest</span>
+            </div>
+          </div>
+          
+          <!-- Map Container -->
+          <div id="map" class="leaflet-map"></div>
+        </div>
+      </div>
+    </div>
+    <canvas id="myBarChart" width="auto" , height="100px"></canvas>
+  </div>
+</div>
+
+<!-- Loading Overlay -->
+<div id="loading-container">
+  <div class="spinner-wrapper">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-2">Loading data...</p>
+  </div>
+</div>
+
+<style>
+  #myBarChart {
+    display: none;
+    /* Hide canvas initially */
+  }
+
+  /* Custom Styles */
+  .form-check-input:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+  }
+
+  .form-check-label {
+    cursor: pointer;
+    transform: translateY(-7px);
+    font-family: Montserrat;
+    padding: 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+  }
+
+  .form-check-input:checked + .form-check-label {
+    background-color: #e9ecef;
+  }
+
+  /* Improved dropdown styling */
+  .custom-dropdown-menu {
+    padding: 12px !important;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+  }
+
+  .custom-dropdown-btn {
+    border-radius: 6px;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 8px 12px;
+  }
+  
+  .custom-dropdown-btn:hover {
+    background-color: #f8f9fa;
+  }
+
+  .search-input {
+    margin-bottom: 8px;
+    border-radius: 6px;
+    padding: 8px;
+    border-color: #dee2e6;
+  }
+  
+  .search-input:focus {
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    border-color: #80bdff;
+  }
+
+  /* Checkbox item styling */
+  .dropdown-menu .form-check {
+    padding: 6px 12px;
+    margin-bottom: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .dropdown-menu .form-check:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .dropdown-menu .form-check-input {
+    margin-top: 0.3em;
+  }
+  
+  .dropdown-menu .form-check-label {
+    margin-left: 5px;
+    transform: none;
+    padding: 0;
+  }
+
+  /* Selected items counter */
+  .selected-counter {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-left: 5px;
+  }
+
+  .mb-0 {
+    font-size: 22px;
+    font-family: Lexend Deca;
+    background-color: none;
+    color: #55565b;
+    padding: 7px 0px 7px 0px;
+  }
+
+  #card-header-property1 {
+    border-radius: 15px 15px 0px 0px;
+    background-color: none;
+    border: 1px solid royalblue;
+    border-bottom: none;
+  }
+  #card-header-property2 {
+    border-radius: 15px 15px 0px 0px;
+    background-color: none;
+    border: 1px solid green;
+    border-bottom: none;
+  }
+  .card {
+    border: none;
+    transition: transform 0.2s ease;
+  }
+
+  .card-body {
+    border-radius: 0px 0px 15px 15px;
+    border: 1px solid royalblue;
+    border-top: none;
+  }
+
+  /* Enhanced Map Container */
+  .leaflet-map {
+    height: calc(100vh - 160px); 
+    min-height: 500px;
+    width: 100%;
+    border-radius: 0 0 15px 15px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  #map-view-header {
+    color: white;
+    border-radius: 15px 15px 0px 0px;
+    border: none;
+    font-family: 'Lexend Deca', sans-serif;
+  }
+  
+  /* Modern Map Controls - Only Fullscreen */
+  .map-controls {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 1000;
+  }
+  
+  .map-controls .control-btn {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    background: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    border: none;
+    transition: all 0.2s ease;
+  }
+  
+  .map-controls .control-btn:hover {
+    background-color: #f8f9fa;
+    transform: scale(1.05);
+  }
+  
+  /* Google-style Map Type Control */
+  .map-type-control {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 1000;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    overflow: hidden;
+  }
+  
+  .map-type-buttons {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .map-type-btn {
+    background: none;
+    border: none;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    width: 100px;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 13px;
+    color: #555;
+  }
+  
+  .map-type-btn:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .map-type-btn.active {
+    background-color: #e6e6e6;
+    color: #1a73e8;
+    font-weight: 500;
+  }
+  
+  .map-type-btn i {
+    margin-right: 8px;
+    width: 16px;
+    text-align: center;
+  }
+  
+  /* Enhanced Legend */
+  .map-legend {
+    position: absolute;
+    bottom: 20px;
+    right: 15px;
+    background: white;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+    max-width: 180px;
+    border: 1px solid #e0e0e0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .map-legend:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  }
+  
+  .map-legend h6 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #3b5998;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 5px;
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 12px;
+  }
+  
+  .legend-color {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    border-radius: 3px;
+  }
+
+  #submit-button1 {
+    font-size: 18px;
+    border-radius: 30px;
+    border: none;
+    overflow: hidden;
+    background-color: #76ba1b;
+    text-align: center;
+    width: 140px;
+    height: 60px;
+    position: relative;
+  }
+  #submit-button1:before {
+    content: "";
+    border-radius: 50%;
+    position: absolute;
+    overflow: hidden;
+    width: 120px;
+    height: 120px;
+    background-color: white;
+    opacity: 0;
+    left: 15px;
+    top: -29px;
+    transform: scale(1.7, 1.7);
+    transition: 0.7s;
+  }
+  #submit-button1:active:before {
+    transform: scale(0, 0);
+    opacity: 1;
+    transition: 0s;
+  }
+  #categories-card {
+    border: 1px solid green;
+    border-top: none;
+  }
+  #results-box-head {
+    border: none;
+    background: #e0e0e0;
+  }
+
+  #results-box {
+    border: none;
+  }
+  
+  /* Improved Loading Container */
+  #loading-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .spinner-wrapper {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  
+  .spinner-border {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .table td.editable {
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  .ol-popup {
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #cccccc;
+    bottom: 12px;
+    left: -50px;
+    min-width: 280px;
+  }
+
+  .table td.editable::after {
+    content: "✎";
+    position: absolute;
+    right: 8px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  /* Animation for loading states */
+  .loading {
+    position: relative;
+    opacity: 0.7;
+  }
+
+  .loading::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    animation: loading 1.5s infinite;
+  }
+
+  @keyframes loading {
+    0% {
+      transform: translateX(-100%);
+    }
+
+    100% {
+      transform: translateX(100%);
+    }
+  }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Global variables
+  let myBarChart;
+  let tableData = [];
+  let selectedLocation = {
+    state: null,
+    stateId: null,
+    districts: [], // Will store district IDs
+    districtNames: [], // Will store district names for display
+    subDistricts: [], // Will store subdistrict IDs
+    subDistrictNames: [], // Will store subdistrict names for display
+    villages: [], // Will store village IDs
+    villageNames: [], // Will store village names for display
+  };
+  
+  // New tier-based location selection
+  let selectedTierLocation = {
+    tier: null,
+    state: null,
+    stateId: null,
+    districts: [], // Will store district IDs
+    districtNames: [], // Will store district names for display
+    subDistricts: [], // Will store subdistrict IDs
+    subDistrictNames: [], // Will store subdistrict names for display
+    towns: [], // Will store town IDs
+    townNames: [], // Will store town names for display
+  };
+  
+  let selectedCategories = [];
+  let currentBoundary = null;
+  let map;
+
+  function showLoader() {
+    document.getElementById("loading-container").style.display = "flex";
+  }
+
+  // Function to hide the loader
+  function hideLoader() {
+    document.getElementById("loading-container").style.display = "none";
+  }
+
+  // Enhanced map initialization
+  function initMap() {
+    // Initialize the map with improved options
+    map = L.map("map", {
+      zoomControl: true,  // Keep default zoom control
+      attributionControl: true,
+      minZoom: 4,
+      maxZoom: 18
+    }).setView([20.5937, 78.9629], 5);
+    
+    // Define different basemap layers
+    const streetLayer = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "© OpenStreetMap contributors",
+    });
+    
+    const satelliteLayer = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+      attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
+    });
+    
+    const terrainLayer = L.tileLayer("https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.png", {
+      attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      subdomains: 'abcd'
+    });
+    
+    // Set default basemap
+    streetLayer.addTo(map);
+    
+    // Add scale control
+    L.control.scale({
+      metric: true,
+      imperial: false,
+      position: 'bottomleft'
+    }).addTo(map);
+    
+    // Add fullscreen functionality
+    document.getElementById('fullscreenBtn').addEventListener('click', function() {
+      const mapElement = document.getElementById('map');
+      
+      if (!document.fullscreenElement) {
+        if (mapElement.requestFullscreen) {
+          mapElement.requestFullscreen();
+        } else if (mapElement.mozRequestFullScreen) {
+          mapElement.mozRequestFullScreen();
+        } else if (mapElement.webkitRequestFullscreen) {
+          mapElement.webkitRequestFullscreen();
+        } else if (mapElement.msRequestFullscreen) {
+          mapElement.msRequestFullscreen();
+        }
+        this.innerHTML = '<i class="fas fa-compress"></i>';
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+        this.innerHTML = '<i class="fas fa-expand"></i>';
+      }
+    });
+    
+    // Add Google-style map type controls
+    document.getElementById('mapTypeStreet').addEventListener('click', function() {
+      map.removeLayer(satelliteLayer);
+      map.removeLayer(terrainLayer);
+      streetLayer.addTo(map);
+      
+      // Update active button state
+      setActiveMapType('mapTypeStreet');
+    });
+    
+    document.getElementById('mapTypeSatellite').addEventListener('click', function() {
+      map.removeLayer(streetLayer);
+      map.removeLayer(terrainLayer);
+      satelliteLayer.addTo(map);
+      
+      // Update active button state
+      setActiveMapType('mapTypeSatellite');
+    });
+    
+    document.getElementById('mapTypeTerrain').addEventListener('click', function() {
+      map.removeLayer(streetLayer);
+      map.removeLayer(satelliteLayer);
+      terrainLayer.addTo(map);
+      
+      // Update active button state
+      setActiveMapType('mapTypeTerrain');
+    });
+  }
+  
+  // Helper function to set active map type
+  function setActiveMapType(activeId) {
+    // Remove active class from all buttons
+    document.querySelectorAll('.map-type-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    
+    // Add active class to the selected button
+    document.getElementById(activeId).classList.add('active');
+  }
+  
+  // Initialize search functionality for dropdowns
+  function initializeSearchFunctionality() {
+    // District search
+    document.getElementById('districtSearchInput').addEventListener('input', function() {
+      filterDropdownItems('districtCheckboxesContainer', this.value);
+    });
+    
+    // Sub-district search
+    document.getElementById('subDistrictSearchInput').addEventListener('input', function() {
+      filterDropdownItems('subDistrictCheckboxesContainer', this.value);
+    });
+    
+    // Village search
+    document.getElementById('villageSearchInput').addEventListener('input', function() {
+      filterDropdownItems('villageCheckboxesContainer', this.value);
+    });
+    
+    // District Tier search
+    document.getElementById('districtTierSearchInput').addEventListener('input', function() {
+      filterDropdownItems('districtCheckboxesContainerTier', this.value);
+    });
+    
+    // Sub-district Tier search
+    document.getElementById('subDistrictTierSearchInput').addEventListener('input', function() {
+      filterDropdownItems('subDistrictCheckboxesContainerTier', this.value);
+    });
+    
+    // Town search
+    document.getElementById('townSearchInput').addEventListener('input', function() {
+      filterDropdownItems('townCheckboxesContainer', this.value);
+    });
+  }
+  
+  // Function to filter dropdown items based on search input
+  function filterDropdownItems(containerId, searchText) {
+    const container = document.getElementById(containerId);
+    const items = container.querySelectorAll('.form-check');
+    
+    searchText = searchText.toLowerCase();
+    
+    items.forEach(item => {
+      const label = item.querySelector('label');
+      const text = label.textContent.toLowerCase();
+      
+      if (text.includes(searchText)) {
+        item.style.display = '';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+  
+  // Load states for both dropdowns
+  async function loadStates() {
+    const stateDropdown = document.getElementById("state-dropdown");
+    const stateTierDropdown = document.getElementById("state-dropdown-tier");
+    
+    try {
+      const response = await fetch("/stp/get_states/");
+      const states = await response.json();
+      console.log("state is ", states);
+
+      // Clear existing options except the default one
+      stateDropdown.innerHTML = '<option value="">--Choose a State--</option>';
+      stateTierDropdown.innerHTML = '<option value="">--Choose a State--</option>';
+
+      // Add new state options to both dropdowns
+      states.forEach((state) => {
+        // For the first dropdown
+        const option = document.createElement("option");
+        option.value = state.id;
+        option.textContent = state.name;
+        stateDropdown.appendChild(option);
+        
+        // For the second dropdown (tier-based)
+        const optionTier = document.createElement("option");
+        optionTier.value = state.id;
+        optionTier.textContent = state.name;
+        stateTierDropdown.appendChild(optionTier);
+      });
+    } catch (error) {
+      console.error("Error fetching states:", error);
+      alert("Failed to load states. Please refresh the page.");
+    }
+  }
+
+  // Clear existing boundary
+  function clearBoundary() {
+    if (currentBoundary) {
+      map.removeLayer(currentBoundary);
+      currentBoundary = null;
+    }
+    if (map.popup) {
+      map.removeLayer(map.popup);
+    }
+  }
+
+  // Load default boundary
+  async function loadDefaultBoundary() {
+    try {
+      showLoader();
+      const response = await fetch("/stp/get_boundary/");
+      console.log("response",response)
+      const featureCollection = await response.json();
+
+      if (featureCollection.features && map) {
+        clearBoundary();
+
+        currentBoundary = L.geoJSON(featureCollection, {
+          style: {
+            color: "#76ba1b",
+            weight: 2,
+            opacity: 1,
+            fillColor: "#76ba1b",
+            fillOpacity: 0.2,
+          },
+          onEachFeature: function(feature, layer) {
+            if (feature.properties && feature.properties.name) {
+              layer.bindTooltip(feature.properties.name, {
+                permanent: false,
+                direction: "center",
+                className: "custom-tooltip"
+              });
+            }
+          }
+        }).addTo(map);
+
+        map.fitBounds(currentBoundary.getBounds(), {
+          padding: [50, 50],
+        });
+      }
+    } catch (error) {
+      console.error("Error loading default boundary:", error);
+    } finally {
+      hideLoader(); // Hide loading GIF after request completes
+    }
+  }
+
+  // Initialize map on page load
+  document.addEventListener("DOMContentLoaded", function () {
+    // Add Leaflet CSS
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+    document.head.appendChild(link);
+
+    // Add Leaflet JS
+    const script = document.createElement("script");
+    script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+    script.onload = function () {
+      initMap();
+      loadDefaultBoundary();
+    };
+    document.head.appendChild(script);
+
+    // Initialize form elements (which now includes loading states)
+    initializeFormElements();
+    
+    // Initialize search functionality
+    initializeSearchFunctionality();
+  });
+  
+  // Utility Functions
+  function getCSRFToken() {
+    return document.querySelector("[name=csrfmiddlewaretoken]")?.value || "";
+  }
+
+  // Enhanced boundary styling in updateBoundaryOnMap function
+  async function updateBoundaryOnMap() {
+    clearBoundary();
+    
+    // Determine which location data to use based on active selection
+    const activeLocation = document.getElementById("tier-dropdown").value ? selectedTierLocation : selectedLocation;
+    
+    if (!activeLocation.state) return;
+
+    try {
+      showLoader();
+      const boundaryResponse = await fetch("/stp/get_boundary/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCSRFToken(),
+        },
+        body: JSON.stringify(activeLocation),
+      });
+
+      const boundaryData = await boundaryResponse.json();
+      if (boundaryData.features && map) {
+        clearBoundary();
+
+        currentBoundary = L.geoJSON(boundaryData, {
+          style: function(feature) {
+            return {
+              color: "#76ba1b",
+              weight: 3,
+              opacity: 1,
+              fillColor: "#76ba1b",
+              fillOpacity: 0.2,
+              dashArray: '5, 5',
+              lineCap: 'round',
+              lineJoin: 'round'
+            };
+          },
+          onEachFeature: function(feature, layer) {
+            // Add tooltips to each feature
+            if (feature.properties && feature.properties.name) {
+              layer.bindTooltip(feature.properties.name, {
+                permanent: false,
+                direction: "center",
+                className: "custom-tooltip"
+              });
+            }
+            
+            // Add popup with more details on click
+            if (feature.properties) {
+              let popupContent = '<div class="custom-popup">';
+              popupContent += `<h6>${feature.properties.name || 'Selected Area'}</h6>`;
+              
+              // Add more properties if available
+              if (feature.properties.population) {
+                popupContent += `<p><strong>Population:</strong> ${feature.properties.population.toLocaleString()}</p>`;
+              }
+              if (feature.properties.area) {
+                popupContent += `<p><strong>Area:</strong> ${feature.properties.area} sq km</p>`;
+              }
+              
+              popupContent += '</div>';
+              
+              layer.bindPopup(popupContent);
+            }
+            
+            // Add hover effect
+            layer.on({
+              mouseover: function(e) {
+                const layer = e.target;
+                layer.setStyle({
+                  weight: 4,
+                  fillOpacity: 0.3
+                });
+                if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+                  layer.bringToFront();
+                }
+              },
+              mouseout: function(e) {
+                currentBoundary.resetStyle(e.target);
+              }
+            });
+          }
+        }).addTo(map);
+
+        map.fitBounds(currentBoundary.getBounds(), {
+          padding: [50, 50],
+          animate: true,
+          duration: 1.0
+        });
+      }
+    } catch (error) {
+      console.error("Error updating boundary:", error);
+    } finally {
+      hideLoader();
+    }
+  }
+  
+  // Location Selection Handlers - First Row
+  async function handleDistrictSelection(event) {
+    const districtId = event.target.getAttribute("data-id");
+    const districtName = event.target.value;
+    const districtButton = document.getElementById("districtDropdown");
+    const subDistrictButton = document.getElementById("subDistrictDropdown");
+
+    if (event.target.checked) {
+      selectedLocation.districts.push(districtId);
+      selectedLocation.districtNames.push(districtName);
+    } else {
+      const index = selectedLocation.districts.indexOf(districtId);
+      if (index > -1) {
+        selectedLocation.districts.splice(index, 1);
+        selectedLocation.districtNames.splice(index, 1);
+      }
+      // Clear sub-districts and villages
+      selectedLocation.subDistricts = [];
+      selectedLocation.subDistrictNames = [];
+      selectedLocation.villages = [];
+      selectedLocation.villageNames = [];
+    }
+
+    // Update button texts with selection count
+    if (selectedLocation.districtNames.length > 0) {
+      if (selectedLocation.districtNames.length <= 2) {
+        districtButton.textContent = selectedLocation.districtNames.join(", ");
+      } else {
+        districtButton.textContent = `${selectedLocation.districtNames.length} Districts Selected`;
+      }
+    } else {
+      districtButton.textContent = "--Choose Districts--";
+    }
+    
+    subDistrictButton.textContent = "--Choose Sub-Districts--";
+
+    // Reset and update dependent dropdowns
+    document.getElementById("subDistrictCheckboxesContainer").innerHTML = "";
+    document.getElementById("villageCheckboxesContainer").innerHTML = "";
+
+    if (selectedLocation.districts.length > 0) {
+      await updateSubDistricts();
+      subDistrictButton.disabled = false;
+    } else {
+      subDistrictButton.disabled = true;
+    }
+
+    await updateBoundaryOnMap();
+  }
+
+  // District Selection for Tier Row
+  async function handleDistrictTierSelection(event) {
+    const districtId = event.target.getAttribute("data-id");
+    const districtName = event.target.value;
+    const districtButton = document.getElementById("districtDropdownTier");
+    const subDistrictButton = document.getElementById("subDistrictDropdownTier");
+
+    if (event.target.checked) {
+      selectedTierLocation.districts.push(districtId);
+      selectedTierLocation.districtNames.push(districtName);
+    } else {
+      const index = selectedTierLocation.districts.indexOf(districtId);
+      if (index > -1) {
+        selectedTierLocation.districts.splice(index, 1);
+        selectedTierLocation.districtNames.splice(index, 1);
+      }
+      // Clear sub-districts and towns
+      selectedTierLocation.subDistricts = [];
+      selectedTierLocation.subDistrictNames = [];
+      selectedTierLocation.towns = [];
+      selectedTierLocation.townNames = [];
+    }
+
+    // Update button texts with selection count
+    if (selectedTierLocation.districtNames.length > 0) {
+      if (selectedTierLocation.districtNames.length <= 2) {
+        districtButton.textContent = selectedTierLocation.districtNames.join(", ");
+      } else {
+        districtButton.textContent = `${selectedTierLocation.districtNames.length} Districts Selected`;
+      }
+    } else {
+      districtButton.textContent = "--Choose Districts--";
+    }
+    
+    subDistrictButton.textContent = "--Choose Sub-Districts--";
+
+    // Reset and update dependent dropdowns
+    document.getElementById("subDistrictCheckboxesContainerTier").innerHTML = "";
+    document.getElementById("townCheckboxesContainer").innerHTML = "";
+
+    if (selectedTierLocation.districts.length > 0) {
+      await updateSubDistrictsTier();
+      subDistrictButton.disabled = false;
+    } else {
+      subDistrictButton.disabled = true;
+    }
+
+    await updateBoundaryOnMap();
+  }
+
+  // Update subdistrict selection handler - First Row
+  async function handleSubDistrictSelection(event) {
+    const subDistrictId = event.target.getAttribute("data-id");
+    const subDistrictName = event.target.value;
+    const subDistrictButton = document.getElementById("subDistrictDropdown");
+    const villageButton = document.getElementById("villageDropdown");
+
+    if (event.target.checked) {
+      selectedLocation.subDistricts.push(subDistrictId);
+      selectedLocation.subDistrictNames.push(subDistrictName);
+    } else {
+      const index = selectedLocation.subDistricts.indexOf(subDistrictId);
+      if (index > -1) {
+        selectedLocation.subDistricts.splice(index, 1);
+        selectedLocation.subDistrictNames.splice(index, 1);
+      }
+      // Clear villages
+      selectedLocation.villages = [];
+      selectedLocation.villageNames = [];
+    }
+
+    // Update button text with selection count
+    if (selectedLocation.subDistrictNames.length > 0) {
+      if (selectedLocation.subDistrictNames.length <= 2) {
+        subDistrictButton.textContent = selectedLocation.subDistrictNames.join(", ");
+      } else {
+        subDistrictButton.textContent = `${selectedLocation.subDistrictNames.length} Sub-Districts Selected`;
+      }
+    } else {
+      subDistrictButton.textContent = "--Choose Sub-Districts--";
+    }
+    
+    villageButton.textContent = "--Choose Villages--";
+
+    await updateVillages();
+    await updateBoundaryOnMap();
+  }
+  
+  // SubDistrict Selection for Tier Row
+  async function handleSubDistrictTierSelection(event) {
+    const subDistrictId = event.target.getAttribute("data-id");
+    const subDistrictName = event.target.value;
+    const subDistrictButton = document.getElementById("subDistrictDropdownTier");
+    const townButton = document.getElementById("townDropdown");
+
+    if (event.target.checked) {
+      selectedTierLocation.subDistricts.push(subDistrictId);
+      selectedTierLocation.subDistrictNames.push(subDistrictName);
+    } else {
+      const index = selectedTierLocation.subDistricts.indexOf(subDistrictId);
+      if (index > -1) {
+        selectedTierLocation.subDistricts.splice(index, 1);
+        selectedTierLocation.subDistrictNames.splice(index, 1);
+      }
+      // Clear towns
+      selectedTierLocation.towns = [];
+      selectedTierLocation.townNames = [];
+    }
+
+    // Update button text with selection count
+    if (selectedTierLocation.subDistrictNames.length > 0) {
+      if (selectedTierLocation.subDistrictNames.length <= 2) {
+        subDistrictButton.textContent = selectedTierLocation.subDistrictNames.join(", ");
+      } else {
+        subDistrictButton.textContent = `${selectedTierLocation.subDistrictNames.length} Sub-Districts Selected`;
+      }
+    } else {
+      subDistrictButton.textContent = "--Choose Sub-Districts--";
+    }
+    
+    townButton.textContent = "--Choose Towns--";
+
+    await updateTowns();
+    await updateBoundaryOnMap();
+  }
+
+  // Update village selection handler - First Row
+  async function handleVillageSelection(event) {
+    const villageId = event.target.getAttribute("data-id");
+    const villageName = event.target.value;
+    const villageButton = document.getElementById("villageDropdown");
+
+    if (event.target.checked) {
+      selectedLocation.villages.push(villageId);
+      selectedLocation.villageNames.push(villageName);
+    } else {
+      const index = selectedLocation.villages.indexOf(villageId);
+      if (index > -1) {
+        selectedLocation.villages.splice(index, 1);
+        selectedLocation.villageNames.splice(index, 1);
+      }
+    }
+    
+    // Update button text with selection count
+    if (selectedLocation.villageNames.length > 0) {
+      if (selectedLocation.villageNames.length <= 2) {
+        villageButton.textContent = selectedLocation.villageNames.join(", ");
+      } else {
+        villageButton.textContent = `${selectedLocation.villageNames.length} Villages Selected`;
+      }
+    } else {
+      villageButton.textContent = "--Choose Villages--";
+    }
+
+    await updateBoundaryOnMap();
+  }
+  
+  // Town selection handler - Second Row
+  async function handleTownSelection(event) {
+    const townId = event.target.getAttribute("data-id");
+    const townName = event.target.value;
+    const townButton = document.getElementById("townDropdown");
+
+    if (event.target.checked) {
+      selectedTierLocation.towns.push(townId);
+      selectedTierLocation.townNames.push(townName);
+    } else {
+      const index = selectedTierLocation.towns.indexOf(townId);
+      if (index > -1) {
+        selectedTierLocation.towns.splice(index, 1);
+        selectedTierLocation.townNames.splice(index, 1);
+      }
+    }
+    
+    // Update button text with selection count
+    if (selectedTierLocation.townNames.length > 0) {
+      if (selectedTierLocation.townNames.length <= 2) {
+        townButton.textContent = selectedTierLocation.townNames.join(", ");
+      } else {
+        townButton.textContent = `${selectedTierLocation.townNames.length} Towns Selected`;
+      }
+    } else {
+      townButton.textContent = "--Choose Towns--";
+    }
+        
+    await updateBoundaryOnMap();
+  }
+
+  // Location Dropdown Updates - First Row
+  async function updateDistricts(stateId) {
+    const container = document.getElementById("districtCheckboxesContainer");
+    const districtButton = document.getElementById("districtDropdown");
+    container.innerHTML = "";
+
+    try {
+      showLoader();
+      const response = await fetch("/stp/get_districts/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCSRFToken(),
+        },
+        body: JSON.stringify({ state: stateId }),
+      });
+
+      const districts = await response.json();
+
+      // Create select all option
+      const selectAllItem = document.createElement("div");
+      selectAllItem.classList.add("form-check", "select-all-option");
+      
+      const selectAllCheckbox = document.createElement("input");
+      selectAllCheckbox.type = "checkbox";
+      selectAllCheckbox.classList.add("form-check-input");
+      selectAllCheckbox.id = "select-all-districts";
+      
+      const selectAllLabel = document.createElement("label");
+      selectAllLabel.classList.add("form-check-label", "fw-bold");
+      selectAllLabel.htmlFor = "select-all-districts";
+      selectAllLabel.textContent = "Select All";
+      
+      selectAllItem.appendChild(selectAllCheckbox);
+      selectAllItem.appendChild(selectAllLabel);
+      container.appendChild(selectAllItem);
+      
+      // Add divider
+      const divider = document.createElement("div");
+      divider.classList.add("dropdown-divider", "my-2");
+      container.appendChild(divider);
+
+      // Add district options
+      districts.forEach((district) => {
+        const listItem = document.createElement("div");
+        listItem.classList.add("form-check");
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.classList.add("form-check-input", "district-checkbox");
+        checkbox.id = `district-${district.id}`;
+        checkbox.value = district.name;
+        checkbox.setAttribute("data-id", district.id);
+
+        const label = document.createElement("label");
+        label.classList.add("form-check-label");
+        label.htmlFor = `district-${district.id}`;
+        label.textContent = district.name;
+
+        checkbox.addEventListener("change", handleDistrictSelection);
+
+        listItem.appendChild(checkbox);
+        listItem.appendChild(label);
+        container.appendChild(listItem);
+      });
+      
+      // Select all functionality
+      selectAllCheckbox.addEventListener("change", function() {
+        const checkboxes = container.querySelectorAll('.district-checkbox');
+        checkboxes.forEach(cb => {
+          if (cb.checked !== this.checked) {
+            cb.checked = this.checked;
+            const event = new Event('change');
+            cb.dispatchEvent(event);
+          }
+        });
+      });
+
+      districtButton.disabled = false;
+    } catch (error) {
+      console.error("Error fetching districts:", error);
+      alert("Failed to load districts. Please try again.");
+    } finally {
+      hideLoader(); // Hide loading GIF after request completes
+    }
+  }
+  
+  // Districts Update - Second Row (Tier-based)
+  async function updateDistrictsTier(stateId) {
+    const container = document.getElementById("districtCheckboxesContainerTier");
+    const districtButton = document.getElementById("districtDropdownTier");
+    container.innerHTML = "";
+
+    try {
+      showLoader();
+      const response = await fetch("/stp/get_districts/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCSRFToken(),
+        },
+        body: JSON.stringify({ 
+          state: stateId,
+          tier: selectedTierLocation.tier
+        }),
+      });
+
+      const districts = await response.json();
+
+      // Create select all option
+      const selectAllItem = document.createElement("div");
+      selectAllItem.classList.add("form-check", "select-all-option");
+      
+      const selectAllCheckbox = document.createElement("input");
+      selectAllCheckbox.type = "checkbox";
+      selectAllCheckbox.classList.add("form-check-input");
+      selectAllCheckbox.id = "select-all-districts-tier";
+      
+      const selectAllLabel = document.createElement("label");
+      selectAllLabel.classList.add("form-check-label", "fw-bold");
+      selectAllLabel.htmlFor = "select-all-districts-tier";
+      selectAllLabel.textContent = "Select All";
+      
+      selectAllItem.appendChild(selectAllCheckbox);
+      selectAllItem.appendChild(selectAllLabel);
+      container.appendChild(selectAllItem);
+      
+      // Add divider
+      const divider = document.createElement("div");
+      divider.classList.add("dropdown-divider", "my-2");
+      container.appendChild(divider);
+
+      districts.forEach((district) => {
+        const listItem = document.createElement("div");
+        listItem.classList.add("form-check");
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.classList.add("form-check-input", "district-tier-checkbox");
+        checkbox.id = `district-tier-${district.id}`;
+        checkbox.value = district.name;
+        checkbox.setAttribute("data-id", district.id);
+
+        const label = document.createElement("label");
+        label.classList.add("form-check-label");
+        label.htmlFor = `district-tier-${district.id}`;
+        label.textContent = district.name;
+
+        checkbox.addEventListener("change", handleDistrictTierSelection);
+
+        listItem.appendChild(checkbox);
+        listItem.appendChild(label);
+        container.appendChild(listItem);
+      });
+      
+      // Select all functionality
+      selectAllCheckbox.addEventListener("change", function() {
+        const checkboxes = container.querySelectorAll('.district-tier-checkbox');
+        checkboxes.forEach(cb => {
+          if (cb.checked !== this.checked) {
+            cb.checked = this.checked;
+            const event = new Event('change');
+            cb.dispatchEvent(event);
+          }
+        });
+      });
+
+      districtButton.disabled = false;
+    } catch (error) {
+      console.error("Error fetching districts for tier:", error);
+      alert("Failed to load tier-based districts. Please try again.");
+    } finally {
+      hideLoader();
+    }
+  }
+
+  // Update Sub-Districts - First Row
+  async function updateSubDistricts() {
+    const container = document.getElementById("subDistrictCheckboxesContainer");
+    container.innerHTML = "";
+
+    if (selectedLocation.districts.length === 0) return;
+
+    try {
+      showLoader();
+      const response = await fetch("/stp/get_sub_districts/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCSRFToken(),
+        },
+        body: JSON.stringify({
+          districts: selectedLocation.districts,
+        }),
+      });
+
+      const subDistricts = await response.json();
+
+      // Create select all option
+      const selectAllItem = document.createElement("div");
+      selectAllItem.classList.add("form-check", "select-all-option");
+      
+      const selectAllCheckbox = document.createElement("input");
+      selectAllCheckbox.type = "checkbox";
+      selectAllCheckbox.classList.add("form-check-input");
+      selectAllCheckbox.id = "select-all-subdistricts";
+      
+      const selectAllLabel = document.createElement("label");
+      selectAllLabel.classList.add("form-check-label", "fw-bold");
+      selectAllLabel.htmlFor = "select-all-subdistricts";
+      selectAllLabel.textContent = "Select All";
+      
+      selectAllItem.appendChild(selectAllCheckbox);
+      selectAllItem.appendChild(selectAllLabel);
+      container.appendChild(selectAllItem);
+      
+      // Add divider
+      const divider = document.createElement("div");
+      divider.classList.add("dropdown-divider", "my-2");
+      container.appendChild(divider);
+
+      subDistricts.forEach((subDistrict) => {
+        const listItem = document.createElement("div");
+        listItem.classList.add("form-check");
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.classList.add("form-check-input", "subdistrict-checkbox");
+        checkbox.id = `subdistrict-${subDistrict.id}`;
+        checkbox.value = subDistrict.name;
+        checkbox.setAttribute("data-id", subDistrict.id);
+
+        const label = document.createElement("label");
+        label.classList.add("form-check-label");
+        label.htmlFor = `subdistrict-${subDistrict.id}`;
+        label.textContent = subDistrict.name;
+
+        checkbox.addEventListener("change", handleSubDistrictSelection);
+
+        listItem.appendChild(checkbox);
+        listItem.appendChild(label);
+        container.appendChild(listItem);
+      });
+      
+      // Select all functionality
+      selectAllCheckbox.addEventListener("change", function() {
+        const checkboxes = container.querySelectorAll('.subdistrict-checkbox');
+        checkboxes.forEach(cb => {
+          if (cb.checked !== this.checked) {
+            cb.checked = this.checked;
+            const event = new Event('change');
+            cb.dispatchEvent(event);
+          }
+        });
+      });
+    } catch (error) {
+      console.error("Error fetching sub-districts:", error);
+      alert("Failed to load sub-districts. Please try again.");
+    } finally {
+      hideLoader();
+    }
+  }
+  
+  // Update Sub-Districts - Second Row (Tier-based)
+  async function updateSubDistrictsTier() {
+    const container = document.getElementById("subDistrictCheckboxesContainerTier");
+    container.innerHTML = "";
+
+    if (selectedTierLocation.districts.length === 0) return;
+
+    try {
+      showLoader();
+      const response = await fetch("/stp/get_sub_districts/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCSRFToken(),
+        },
+        body: JSON.stringify({
+          districts: selectedTierLocation.districts,
+          tier: selectedTierLocation.tier
+        }),
+      });
+
+      const subDistricts = await response.json();
+
+      // Create select all option
+      const selectAllItem = document.createElement("div");
+      selectAllItem.classList.add("form-check", "select-all-option");
+      
+      const selectAllCheckbox = document.createElement("input");
+      selectAllCheckbox.type = "checkbox";
+      selectAllCheckbox.classList.add("form-check-input");
+      selectAllCheckbox.id = "select-all-subdistricts-tier";
+      
+      const selectAllLabel = document.createElement("label");
+      selectAllLabel.classList.add("form-check-label", "fw-bold");
+      selectAllLabel.htmlFor = "select-all-subdistricts-tier";
+      selectAllLabel.textContent = "Select All";
+      
+      selectAllItem.appendChild(selectAllCheckbox);
+      selectAllItem.appendChild(selectAllLabel);
+      container.appendChild(selectAllItem);
+      
+      // Add divider
+      const divider = document.createElement("div");
+      divider.classList.add("dropdown-divider", "my-2");
+      container.appendChild(divider);
+
+      subDistricts.forEach((subDistrict) => {
+        const listItem = document.createElement("div");
+        listItem.classList.add("form-check");
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.classList.add("form-check-input", "subdistrict-tier-checkbox");
+        checkbox.id = `subdistrict-tier-${subDistrict.id}`;
+        checkbox.value = subDistrict.name;
+        checkbox.setAttribute("data-id", subDistrict.id);
+
+        const label = document.createElement("label");
+        label.classList.add("form-check-label");
+        label.htmlFor = `subdistrict-tier-${subDistrict.id}`;
+        label.textContent = subDistrict.name;
+
+        checkbox.addEventListener("change", handleSubDistrictTierSelection);
+
+        listItem.appendChild(checkbox);
+        listItem.appendChild(label);
+        container.appendChild(listItem);
+      });
+      
+      // Select all functionality
+      selectAllCheckbox.addEventListener("change", function() {
+        const checkboxes = container.querySelectorAll('.subdistrict-tier-checkbox');
+        checkboxes.forEach(cb => {
+          if (cb.checked !== this.checked) {
+            cb.checked = this.checked;
+            const event = new Event('change');
+            cb.dispatchEvent(event);
+          }
+        });
+      });
+    } catch (error) {
+      console.error("Error fetching tier-based sub-districts:", error);
+      alert("Failed to load tier-based sub-districts. Please try again.");
+    } finally {
+      hideLoader();
+    }
+  }
+
+  // Update Villages - First Row
+  async function updateVillages() {
+    const container = document.getElementById("villageCheckboxesContainer");
+    const villageButton = document.getElementById("villageDropdown");
+    container.innerHTML = "";
+
+    if (selectedLocation.subDistricts.length === 0) {
+      villageButton.disabled = true;
+      return;
+    }
+
+    try {
+      showLoader();
+      const response = await fetch("/stp/get_villages/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCSRFToken(),
+        },
+        body: JSON.stringify({
+          state: selectedLocation.stateId,
+          districts: selectedLocation.districts,
+          subDistricts: selectedLocation.subDistricts,
+        }),
+      });
+
+      const villages = await response.json();
+
+      // Create select all option
+      const selectAllItem = document.createElement("div");
+      selectAllItem.classList.add("form-check", "select-all-option");
+      
+      const selectAllCheckbox = document.createElement("input");
+      selectAllCheckbox.type = "checkbox";
+      selectAllCheckbox.classList.add("form-check-input");
+      selectAllCheckbox.id = "select-all-villages";
+      
+      const selectAllLabel = document.createElement("label");
+      selectAllLabel.classList.add("form-check-label", "fw-bold");
+      selectAllLabel.htmlFor = "select-all-villages";
+      selectAllLabel.textContent = "Select All";
+      
+      selectAllItem.appendChild(selectAllCheckbox);
+      selectAllItem.appendChild(selectAllLabel);
+      container.appendChild(selectAllItem);
+      
+      // Add divider
+      const divider = document.createElement("div");
+      divider.classList.add("dropdown-divider", "my-2");
+      container.appendChild(divider);
+
+      villages.forEach((village) => {
+        const listItem = document.createElement("div");
+        listItem.classList.add("form-check");
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.classList.add("form-check-input", "village-checkbox");
+        checkbox.id = `village-${village.id}`;
+        checkbox.value = village.name;
+        checkbox.setAttribute("data-id", village.id);
+
+        const label = document.createElement("label");
+        label.classList.add("form-check-label");
+        label.htmlFor = `village-${village.id}`;
+        label.textContent = village.name;
+
+        checkbox.addEventListener("change", handleVillageSelection);
+
+        listItem.appendChild(checkbox);
+        listItem.appendChild(label);
+        container.appendChild(listItem);
+      });
+      
+      // Select all functionality
+      selectAllCheckbox.addEventListener("change", function() {
+        const checkboxes = container.querySelectorAll('.village-checkbox');
+        checkboxes.forEach(cb => {
+          if (cb.checked !== this.checked) {
+            cb.checked = this.checked;
+            const event = new Event('change');
+            cb.dispatchEvent(event);
+          }
+        });
+      });
+      
+      villageButton.disabled = false;
+    } catch (error) {
+      console.error("Error fetching villages:", error);
+      alert("Failed to load villages. Please try again.");
+    } finally {
+      hideLoader();
+    }
+  }
+  
+  // Update Towns - Second Row (Tier-based)
+  async function updateTowns() {
+    const container = document.getElementById("townCheckboxesContainer");
+    const townButton = document.getElementById("townDropdown");
+    container.innerHTML = "";
+
+    if (selectedTierLocation.subDistricts.length === 0) {
+      townButton.disabled = true;
+      return;
+    }
+
+    try {
+      showLoader();
+      const response = await fetch("/stp/get_towns/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCSRFToken(),
+        },
+        body: JSON.stringify({
+          state: selectedTierLocation.stateId,
+          tier: selectedTierLocation.tier,
+          districts: selectedTierLocation.districts,
+          subDistricts: selectedTierLocation.subDistricts,
+        }),
+      });
+
+      const towns = await response.json();
+
+      // Create select all option
+      const selectAllItem = document.createElement("div");
+      selectAllItem.classList.add("form-check", "select-all-option");
+      
+      const selectAllCheckbox = document.createElement("input");
+      selectAllCheckbox.type = "checkbox";
+      selectAllCheckbox.classList.add("form-check-input");
+      selectAllCheckbox.id = "select-all-towns";
+      
+      const selectAllLabel = document.createElement("label");
+      selectAllLabel.classList.add("form-check-label", "fw-bold");
+      selectAllLabel.htmlFor = "select-all-towns";
+      selectAllLabel.textContent = "Select All";
+      
+      selectAllItem.appendChild(selectAllCheckbox);
+      selectAllItem.appendChild(selectAllLabel);
+      container.appendChild(selectAllItem);
+      
+      // Add divider
+      const divider = document.createElement("div");
+      divider.classList.add("dropdown-divider", "my-2");
+      container.appendChild(divider);
+
+      towns.forEach((town) => {
+        const listItem = document.createElement("div");
+        listItem.classList.add("form-check");
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.classList.add("form-check-input", "town-checkbox");
+        checkbox.id = `town-${town.id}`;
+        checkbox.value = town.name;
+        checkbox.setAttribute("data-id", town.id);
+
+        const label = document.createElement("label");
+        label.classList.add("form-check-label");
+        label.htmlFor = `town-${town.id}`;
+        label.textContent = town.name;
+
+        checkbox.addEventListener("change", handleTownSelection);
+
+        listItem.appendChild(checkbox);
+        listItem.appendChild(label);
+        container.appendChild(listItem);
+      });
+      
+      // Select all functionality
+      selectAllCheckbox.addEventListener("change", function() {
+        const checkboxes = container.querySelectorAll('.town-checkbox');
+        checkboxes.forEach(cb => {
+          if (cb.checked !== this.checked) {
+            cb.checked = this.checked;
+            const event = new Event('change');
+            cb.dispatchEvent(event);
+          }
+        });
+      });
+      
+      townButton.disabled = false;
+    } catch (error) {
+      console.error("Error fetching towns:", error);
+      alert("Failed to load towns. Please try again.");
+    } finally {
+      hideLoader();
+    }
+  }
+
+  // Category Selection Handler
+  function updateSelectedList() {
+    selectedCategories = [];
+    for (let i = 1; i <= 7; i++) {
+      const checkbox = document.getElementById(`check${i}`);
+      if (checkbox.checked) {
+        selectedCategories.push(getCategoryName(i));
+      }
+    }
+  }
+
+  function getCategoryName(index) {
+    const categories = {
+      1: "sewage_gap",
+      2: "mean_temperature",
+      3: "mean_rainfall",
+      4: "number_of_tourists",
+      5: "number_of_asi_sites",
+      6: "gdp_at_current_prices",
+      7: "water_quality_index",
+    };
+    return categories[index];
+  }
+
+  // Initialize form elements and attach event listeners
+  function initializeFormElements() {
+    // First row elements
+    const stateDropdown = document.getElementById("state-dropdown");
+    const districtButton = document.getElementById("districtDropdown");
+    const subDistrictButton = document.getElementById("subDistrictDropdown");
+    const villageButton = document.getElementById("villageDropdown");
+    
+    // Second row (tier-based) elements
+    const tierDropdown = document.getElementById("tier-dropdown");
+    const stateTierDropdown = document.getElementById("state-dropdown-tier");
+    const districtTierButton = document.getElementById("districtDropdownTier");
+    const subDistrictTierButton = document.getElementById("subDistrictDropdownTier");
+    const townButton = document.getElementById("townDropdown");
+
+    // Load states immediately
+    loadStates();
+
+    // State Dropdown Change Event - First Row
+    stateDropdown.addEventListener("change", async function () {
+      const stateId = this.value;
+      selectedLocation.stateId = stateId;
+      selectedLocation.state = this.options[this.selectedIndex].text;
+
+      // Reset all selections
+      selectedLocation.districts = [];
+      selectedLocation.districtNames = [];
+      selectedLocation.subDistricts = [];
+      selectedLocation.subDistrictNames = [];
+      selectedLocation.villages = [];
+      selectedLocation.villageNames = [];
+
+      // Reset buttons and containers
+      districtButton.textContent = "--Choose Districts--";
+      subDistrictButton.textContent = "--Choose Sub-Districts--";
+      villageButton.textContent = "--Choose Villages--";
+
+      document.getElementById("districtCheckboxesContainer").innerHTML = "";
+      document.getElementById("subDistrictCheckboxesContainer").innerHTML = "";
+      document.getElementById("villageCheckboxesContainer").innerHTML = "";
+
+      districtButton.disabled = !stateId;
+      subDistrictButton.disabled = true;
+      villageButton.disabled = true;
+
+      if (stateId) {
+        await updateDistricts(stateId);
+        await updateBoundaryOnMap();
+      } else {
+        clearBoundary();
+      }
+    });
+    
+    // Tier Dropdown Change Event - Second Row
+    tierDropdown.addEventListener("change", function() {
+      selectedTierLocation.tier = this.value;
+      
+      // Reset state selection in tier row if tier changes
+      stateTierDropdown.value = "";
+      selectedTierLocation.state = null;
+      selectedTierLocation.stateId = null;
+      
+      // Reset district, subdistrict and town selections
+      selectedTierLocation.districts = [];
+      selectedTierLocation.districtNames = [];
+      selectedTierLocation.subDistricts = [];
+      selectedTierLocation.subDistrictNames = [];
+      selectedTierLocation.towns = [];
+      selectedTierLocation.townNames = [];
+      
+      // Reset buttons
+      districtTierButton.textContent = "--Choose Districts--";
+      subDistrictTierButton.textContent = "--Choose Sub-Districts--";
+      townButton.textContent = "--Choose Towns--";
+      
+      // Clear checkboxes containers
+      document.getElementById("districtCheckboxesContainerTier").innerHTML = "";
+      document.getElementById("subDistrictCheckboxesContainerTier").innerHTML = "";
+      document.getElementById("townCheckboxesContainer").innerHTML = "";
+      
+      // Disable buttons
+      districtTierButton.disabled = true;
+      subDistrictTierButton.disabled = true;
+      townButton.disabled = true;
+    });
+    
+    // State Dropdown Change Event - Second Row (Tier-based)
+    stateTierDropdown.addEventListener("change", async function () {
+      const stateId = this.value;
+      selectedTierLocation.stateId = stateId;
+      selectedTierLocation.state = this.options[this.selectedIndex].text;
+
+      // Reset all tier selections below state
+      selectedTierLocation.districts = [];
+      selectedTierLocation.districtNames = [];
+      selectedTierLocation.subDistricts = [];
+      selectedTierLocation.subDistrictNames = [];
+      selectedTierLocation.towns = [];
+      selectedTierLocation.townNames = [];
+
+      // Reset buttons and containers
+      districtTierButton.textContent = "--Choose Districts--";
+      subDistrictTierButton.textContent = "--Choose Sub-Districts--";
+      townButton.textContent = "--Choose Towns--";
+
+      document.getElementById("districtCheckboxesContainerTier").innerHTML = "";
+      document.getElementById("subDistrictCheckboxesContainerTier").innerHTML = "";
+      document.getElementById("townCheckboxesContainer").innerHTML = "";
+
+      districtTierButton.disabled = !stateId;
+      subDistrictTierButton.disabled = true;
+      townButton.disabled = true;
+
+      if (stateId) {
+        await updateDistrictsTier(stateId);
+        await updateBoundaryOnMap();
+      }
+    });
+    
+    // Initialize category checkboxes
+    for (let i = 1; i <= 7; i++) {
+      const checkbox = document.getElementById(`check${i}`);
+      checkbox.checked = false;
+      checkbox.addEventListener("change", updateSelectedList);
+    }
+    updateSelectedList();
+    
+    // Make dropdown menus persist when clicking inside them
+    document.querySelectorAll('.custom-dropdown-menu').forEach(dropdown => {
+      dropdown.addEventListener('click', function(e) {
+        // Prevent dropdown from closing when clicking inside it (except for select all checkboxes)
+        if (!e.target.classList.contains('select-all-option') && 
+            !e.target.parentElement.classList.contains('select-all-option')) {
+          e.stopPropagation();
+        }
+      });
+    });
+  }
+
+  // Form submission and table handling
+  async function submitForm(event) {
+    event.preventDefault();
+    try {
+      showLoader();
+      
+      // Determine which location data to use based on active selection
+      const activeLocation = document.getElementById("tier-dropdown").value 
+        ? { 
+            ...selectedTierLocation,
+            locationType: 'tier'
+          } 
+        : {
+            ...selectedLocation,
+            locationType: 'standard'
+          };
+      
+      const response = await fetch("/stp/table/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCSRFToken(),
+        },
+        body: JSON.stringify({
+          main_data: activeLocation,
+          categories: selectedCategories,
+        }),
+      });
+      const data = await response.json();
+      updateTable(data);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("Failed to submit form. Please try again.");
+    } finally {
+      hideLoader(); // Hide loading GIF after request completes
+    }
+  }
+
+  // Table update functions
+  function updateTable(data) {
+    tableData = [...data];
+    const headerRow = document.getElementById("headerRow");
+    const tableBody = document.getElementById("tableBody");
+
+    // Clear existing content
+    headerRow.innerHTML = "";
+    tableBody.innerHTML = "";
+
+    // Add headers
+    if (data.length > 0) {
+      Object.keys(data[0]).forEach((key) => {
+        const th = document.createElement("th");
+        th.textContent = key
+          .replace(/_/g, " ")
+          .replace(/\b\w/g, (l) => l.toUpperCase());
+        headerRow.appendChild(th);
+      });
+
+      // Add data rows with editable cells
+      data.forEach((row, rowIndex) => {
+        const tr = document.createElement("tr");
+        Object.entries(row).forEach(([key, value]) => {
+          const td = document.createElement("td");
+          td.className = "editable";
+          td.dataset.field = key;
+          td.dataset.rowIndex = rowIndex;
+          td.dataset.originalValue = value;
+
+          td.textContent = formatCellValue(value, key);
+          addEditableCell(td);
+          tr.appendChild(td);
+        });
+        tableBody.appendChild(tr);
+      });
+    } else {
+      const tr = document.createElement("tr");
+      const td = document.createElement("td");
+      td.colSpan = "100%";
+      td.textContent = "No data available";
+      td.className = "text-center";
+      tr.appendChild(td);
+      tableBody.appendChild(tr);
+    }
+  }
+
+  function formatCellValue(value, field) {
+    if (typeof value !== "number") return value;
+
+    if (field.includes("temperature") || field.includes("rainfall")) {
+      return value.toFixed(2);
+    } else if (field.includes("percentage")) {
+      return value.toFixed(1) + "%";
+    } else {
+      return value.toLocaleString();
+    }
+  }
+
+  function addEditableCell(cell) {
+    cell.addEventListener("dblclick", function (e) {
+      if (this.querySelector("input")) return;
+
+      const input = document.createElement("input");
+      input.type = "text";
+      input.value = this.dataset.originalValue;
+      input.className = "form-control form-control-sm";
+
+      const originalContent = this.innerHTML;
+      this.innerHTML = "";
+      this.appendChild(input);
+      input.focus();
+
+      const handleUpdate = () => {
+        const newValue = input.value;
+        const field = this.dataset.field;
+        const rowIdx = parseInt(this.dataset.rowIndex);
+
+        try {
+          const processedValue = validateAndProcessValue(newValue, field);
+          tableData[rowIdx][field] = processedValue;
+          this.dataset.originalValue = processedValue;
+          this.textContent = formatCellValue(processedValue, field);
+        } catch (error) {
+          alert(error.message);
+          this.innerHTML = originalContent;
+        }
+      };
+
+      input.addEventListener("blur", handleUpdate);
+      input.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") input.blur();
+      });
+    });
+  }
+
+  function validateAndProcessValue(value, field) {
+    if (field.includes("temperature") || field.includes("rainfall")) {
+      const number = parseFloat(value);
+      if (isNaN(number)) {
+        throw new Error(
+          `Please enter a valid number for ${field.replace(/_/g, " ")}`
+        );
+      }
+      return number;
+    }
+
+    if (
+      field.includes("tourists") ||
+      field.includes("sites") ||
+      field.includes("gap")
+    ) {
+      const number = parseInt(value);
+      if (isNaN(number) || !Number.isInteger(number)) {
+        throw new Error(
+          `Please enter a valid whole number for ${field.replace(/_/g, " ")}`
+        );
+      }
+      if (number < 0) {
+        throw new Error(`${field.replace(/_/g, " ")} cannot be negative`);
+      }
+      return number;
+    }
+
+    if (field.includes("gdp")) {
+      const number = parseFloat(value);
+      if (isNaN(number)) {
+        throw new Error("Please enter a valid number for GDP");
+      }
+      if (number < 0) {
+        throw new Error("GDP cannot be negative");
+      }
+      return number;
+    }
+
+    return value;
+  }
+
+  // Rankings chart handling
+  async function ranking(event) {
+    event.preventDefault();
+    try {
+      showLoader();
+      const response = await fetch("/stp/get_rankings/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCSRFToken(),
+        },
+        body: JSON.stringify({ tableData }),
+      });
+
+      if (!response.ok) throw new Error("Network response was not ok");
+
+      const data = await response.json();
+      updateBarChart(data);
+    } catch (error) {
+      console.error("Error during ranking:", error);
+      alert("Failed to process ranking. Please try again.");
+    } finally {
+      hideLoader(); // Hide loading GIF after request completes
+    }
+  }
+
+  function updateBarChart(data) {
+    const canvas = document.getElementById("myBarChart");
+    canvas.style.display = "block";
+    const ctx = canvas.getContext("2d");
+
+    if (myBarChart) {
+      myBarChart.destroy();
+    }
+
+    myBarChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: data.map((item) => item.name),
+        datasets: [
+          {
+            label: "Rank",
+            data: data.map((item) => item.rank),
+            backgroundColor: data.map(() => generateRandomColor(0.2)),
+            borderColor: data.map(() => generateRandomColor(1)),
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        scales: {
+          x: {
+            ticks: {
+              maxRotation: 45,
+              minRotation: 45,
+            },
+          },
+          y: {
+            beginAtZero: true,
+          },
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: "top",
+          },
+          title: {
+            display: true,
+            text: "Location Rankings",
+          },
+        },
+      },
+    });
+  }
+
+  function generateRandomColor(alpha) {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+</script>
+{% endblock %}

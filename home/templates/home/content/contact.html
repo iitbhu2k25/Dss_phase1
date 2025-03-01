@@ -1,0 +1,292 @@
+{% extends 'home/content/home_static.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .contact-container {
+        max-width: 1000px;
+      
+        margin: 4rem auto;
+        padding: 0 1.5rem;
+        border-color: #1A75BB;
+        border-style: ridge;
+        border-radius: 15px;
+    }
+
+    .contact-grid {
+        display: grid;
+        grid-template-columns: 600px 350px;
+        /* Adjusted for more square ratio */
+        gap: 1.5rem;
+        margin: 2rem auto;
+        justify-content: center;
+    }
+
+    .contact-info-wrapper {
+        background: rgb(182, 219, 224);
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 1rem;
+        height: 450px;
+        /* Fixed height for square aspect */
+    }
+
+    .contact-items-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.8rem;
+        height: 100%;
+    }
+
+    .contact-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background: #f8f9fa;
+        border-radius: 6px;
+        padding: 1rem 0.5rem;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+
+
+    .contact-item:hover .contact-icon {
+        background: gray;
+        color: #1A75BB;
+        font:bold;
+        transition: all 0.3s ease;
+    }
+
+    .contact-item:hover .contact-text h3,
+    .contact-item:hover .contact-text p {
+        color: gray;
+        font-size:large;
+        transition: all 0.3s ease;
+
+    }
+
+    .contact-icon {
+        font-size: 1.2rem;
+        color: #1A75BB;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(26, 117, 187, 0.1);
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        margin-bottom: 0.8rem;
+    }
+
+    .contact-text {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .contact-text h3 {
+        margin: 0 0 0.5rem 0;
+        color: #333;
+        font-size: 0.9rem;
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+
+    .contact-text p {
+        margin: 0;
+        color: #666;
+        font-size: 0.8rem;
+        line-height: 1.4;
+        transition: color 0.3s ease;
+    }
+
+    .map-container {
+        height: 450px;
+        /* Match contact info height */
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .map-container iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    .page-title {
+        text-align: center;
+        color: #333;
+        margin-bottom: 1.5rem;
+        position: relative;
+        padding-bottom: 0.8rem;
+        font-size: 2rem;
+    }
+
+    .page-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: #1A75BB;
+        border-radius: 2px;
+    }
+
+    @media (max-width: 992px) {
+        .contact-grid {
+            grid-template-columns: 500px 300px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .contact-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .contact-info-wrapper,
+        .map-container {
+            height: auto;
+        }
+
+        .contact-items-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .contact-items-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .contact-icon {
+        position: relative;
+        width: 50px;
+        height: 50px;
+        background: rgba(26, 117, 187, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0.8rem;
+    }
+
+    .contact-logo {
+        width: 55px;  /* Reduced size for logo */
+        height: 55px;
+        object-fit: contain; /* Maintains aspect ratio */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+  
+
+
+
+</style>
+
+<main class="contact-container">
+    <h1 class="page-title">Contact Us</h1>
+
+    <div class="contact-grid">
+        <div class="contact-info-wrapper">
+            <div class="contact-items-grid">
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <img src="{% static 'Images/mail.gif' %}" alt="Support" class="contact-logo">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h3>Email Us</h3>
+                        <p>coordinator.gtac@itbhu.ac.in</p>
+                        <p>slcr.varanasi@gmail.com</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <img src="{% static 'Images/call_logo.png' %}" alt="Support" class="contact-logo">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h3>Call Us</h3>
+                        <p> +91-542-2575389 </p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <img src="{% static 'Images/visit.png' %}" alt="Support" class="contact-logo">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h3>Visit Us</h3>
+                        <p>Smart Laboratory for Clean Rivers (SLCR)
+
+                            Department of Civil Engineering,
+
+                        </p>
+                        <p>Indian Institute of Technology (BHU)
+
+                            Varanasi 221005</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <img src="{% static 'Images/working.png' %}" alt="Support" class="contact-logo">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h3>Working Hours</h3>
+                        <p>Mon - Fri: 9AM - 6PM</p>
+                        <p>Sat: 9AM - 1PM</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <img src="{% static 'Images/live_chat.png' %}" alt="Support" class="contact-logo">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h3>Live Chat</h3>
+                        <p>Available Mon - Fri</p>
+                        <p>9AM - 5PM IST</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <img src="{% static 'Images/support.png' %}" alt="Support" class="contact-logo">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h3>Support</h3>
+                        <p>Technical Help</p>
+                        <p>24/7 Available</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="map-container">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3608.218529759872!2d82.99154878507075!3d25.26323320476016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x398e322a6031e99d%3A0x962763bc1a36226!2sDepartment%20of%20Civil%20Engineering%2C%20IIT%20(Banaras%20Hindu%20University)!5e0!3m2!1sen!2sin!4v1739171130935!5m2!1sen!2sin"
+                width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+</main>
+{% include 'footer.html' %}
+{% endblock content %}

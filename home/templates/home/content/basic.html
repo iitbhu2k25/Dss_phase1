@@ -1,0 +1,123 @@
+{% extends 'home/content/home_static.html' %}
+{% load static %}
+
+{% block content %}
+  <style>
+        /* Main container styles */
+        .varuna-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Header styles */
+        .varuna-title {
+            color: #2c5282;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid #4299e1;
+        }
+
+        .varuna-heading {
+            color: #2b6cb0;
+            font-size: 2rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            padding-left: 1rem;
+            border-left: 4px solid #4299e1;
+        }
+
+        .varuna-subheading {
+            color: #3182ce;
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Paragraph styles */
+        .varuna-text {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            padding: 0 1rem;
+        }
+
+        /* Strong text emphasis */
+        .varuna-strong {
+            color: #2c5282;
+            font-weight: 600;
+        }
+
+        /* Content section spacing */
+        .varuna-content > * + * {
+            margin-top: 1rem;
+        }
+
+        /* Responsive design */
+        @media screen and (max-width: 768px) {
+            .varuna-content {
+                padding: 1rem;
+            }
+
+            .varuna-title {
+                font-size: 2rem;
+            }
+
+            .varuna-heading {
+                font-size: 1.75rem;
+            }
+
+            .varuna-subheading {
+                font-size: 1.25rem;
+            }
+
+            .varuna-text {
+                padding: 0 0.5rem;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .varuna-content {
+                max-width: 100%;
+                padding: 0;
+            }
+
+            .varuna-title, .varuna-heading, .varuna-subheading {
+                page-break-after: avoid;
+            }
+
+            .varuna-text {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Hover effects */
+        .varuna-heading:hover, .varuna-subheading:hover {
+            transform: translateX(5px);
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+  <h1 class="varuna-title">Varuna River & SLCR</h1>
+  <div class="varuna-content">
+    <p class="varuna-text"><strong class="varuna-strong">Varuna River and SLCR (Sustainable Land and Water Resource Conservation)</strong> are critical for water management and conservation in regions dependent on river systems. The Varuna River faces challenges related to water quality, availability, and seasonal flow, which require coordinated management interventions.</p>
+
+    <h2 class="varuna-heading">Major Submodules and Outcomes</h2>
+    <h3 class="varuna-subheading">River Rejuvenation</h3>
+    <p class="varuna-text">Efforts to rejuvenate the Varuna River include monitoring and managing water quality, improving water availability, and restoring the river’s natural flow regime to ensure its sustainability for future generations.</p>
+
+    <h3 class="varuna-subheading">SLCR Strategies</h3>
+    <p class="varuna-text">Sustainable Land and Water Resource Conservation (SLCR) strategies focus on preventing land degradation, managing water efficiently, and ensuring that local communities engage in water resource management.</p>
+
+    <h2 class="varuna-heading">Applications and Outputs</h2>
+    <p class="varuna-text">Outputs include reports on river health, rejuvenation strategies, water quality improvement plans, and SLCR implementation documents, as well as data-driven decision tools for better management.</p>
+  </div>
+</body>
+{% include 'footer.html' %}
+{% endblock content %}

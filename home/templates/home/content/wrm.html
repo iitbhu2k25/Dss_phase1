@@ -1,0 +1,84 @@
+{% extends 'home/content/home_static.html' %}
+{% load static %}
+
+{% block content %}
+  <style>
+        .wrm-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .wrm-title {
+            color: #2c5282;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid #4299e1;
+        }
+
+        .wrm-subtitle {
+            color: #2b6cb0;
+            font-size: 2rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            padding-left: 1rem;
+            border-left: 4px solid #4299e1;
+        }
+
+        .wrm-section-title {
+            color: #3182ce;
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .wrm-text {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            padding: 0 1rem;
+        }
+
+        .wrm-highlight {
+            color: #2c5282;
+            font-weight: 600;
+        }
+  </style>
+</head>
+<body>
+  <h1 class="wrm-title">Water Resource Management (WRM)</h1>
+  <div class="wrm-content">
+    <p class="wrm-text"><strong class="wrm-highlight">Water Resource Management (WRM)</strong> ensures sustainable water supply, efficient demand forecasting, and equitable resource allocation through data-driven approaches.</p>
+
+    <h2 class="wrm-subtitle">Major Submodules and Outcomes</h2>
+    
+    <h3 class="wrm-section-title">Demand and Forecasting</h3>
+    <p class="wrm-text">Accurate demand assessment ensures water availability while preventing overuse and scarcity. This module provides real-time monitoring and predictive analytics.</p>
+    <ul>
+      <li>IoT-enabled smart meters, SCADA systems, and satellite data for real-time monitoring.</li>
+      <li>Machine learning models predict water demand based on demographic and consumption trends.</li>
+      <li>Prevents overloading of distribution systems and reduces non-revenue water (NRW).</li>
+    </ul>
+    
+    <h3 class="wrm-section-title">Resource Allocation</h3>
+    <p class="wrm-text">Ensures equitable, sustainable, and resilient water supply under changing environmental conditions.</p>
+    <ul>
+      <li>Evaluates long-term sustainability of water sources (rivers, lakes, groundwater).</li>
+      <li>GIS-based mapping for optimal resource allocation.</li>
+      <li>Supports inter-basin water transfers and integrated supply planning.</li>
+    </ul>
+
+    <h2 class="wrm-subtitle">Why This Matters? 🌍</h2>
+    <ul>
+      <li>Ensures water security and resilience against climate change.</li>
+      <li>Reduces wastage and enhances efficiency in water distribution.</li>
+      <li>Strengthens policy-making with data-driven insights for sustainability.</li>
+    </ul>
+  </div>
+</body>
+{% include 'footer.html' %}
+{% endblock content %}

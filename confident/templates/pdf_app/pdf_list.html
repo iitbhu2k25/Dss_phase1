@@ -1,0 +1,1039 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Library</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        // Configure PDF.js worker
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
+    <style>
+        /* Reset and Base Styles */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            background-color: #f0f2f5;
+        }
+
+        /* Main Container with Margins */
+        .app-container {
+            max-width: 1800px;
+            margin: 20px auto;
+            padding: 0;
+            height: calc(100vh - 40px);
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Section */
+        .app-header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+
+        .app-title {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .app-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-upload {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-upload:hover {
+            background-color: #2980b9;
+        }
+
+        /* Main Content Container */
+        .content-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* PDF List Sidebar */
+        .pdf-list {
+            width: 300px;
+            overflow-y: auto;
+            border-right: 1px solid #e0e0e0;
+            background-color: #f8f9fa;
+        }
+
+        .pdf-list-header {
+            padding: 20px;
+            background-color: #f1f1f1;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .pdf-list-title {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .pdf-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e6e6e6;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pdf-item:hover {
+            background-color: #e9ecef;
+        }
+
+        .pdf-item.active {
+            background-color: #e6f2ff;
+            border-left: 4px solid #2980b9;
+        }
+
+        .pdf-title {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #333;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .pdf-date {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .no-pdfs {
+            padding: 20px;
+            text-align: center;
+            color: #777;
+            font-style: italic;
+        }
+
+        /* PDF Viewer Area */
+        .pdf-viewer {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .pdf-toolbar {
+            padding: 12px 20px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pdf-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .control-button {
+            background-color: #fff;
+            border: 1px solid #d0d0d0;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .control-button:hover {
+            background-color: #f0f0f0;
+            border-color: #aaa;
+        }
+
+        .page-info {
+            font-size: 0.9rem;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .page-number {
+            padding: 5px 10px;
+            border: 1px solid #d0d0d0;
+            border-radius: 4px;
+            width: 50px;
+            text-align: center;
+        }
+
+        .pdf-details {
+            text-align: right;
+        }
+
+        .current-pdf-title {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .current-pdf-info {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        /* PDF Canvas Container */
+        .pdf-container {
+            flex-grow: 1;
+            overflow: auto;
+            background-color: #525659;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 30px;
+        }
+
+        .pdf-canvas-wrapper {
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+        }
+
+        #pdf-canvas {
+            background-color: white;
+            display: block;
+        }
+
+        .no-pdf-selected {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            color: #888;
+        }
+
+        .no-pdf-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            color: #d0d0d0;
+        }
+
+        .no-pdf-message {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .no-pdf-hint {
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        /* Upload Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 500px;
+            max-width: 90%;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .file-input-group {
+            border: 2px dashed #ddd;
+            padding: 20px;
+            text-align: center;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            transition: all 0.2s;
+        }
+
+        .file-input-group:hover {
+            border-color: #3498db;
+            background-color: #f0f7fc;
+        }
+
+        .file-input-label {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-name {
+            font-size: 0.9rem;
+            color: #666;
+            word-break: break-all;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            border-top: 1px solid #eee;
+            background-color: #f8f9fa;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: 1px solid #ddd;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+        }
+
+        .btn-secondary {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e9ecef;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .app-container {
+                margin: 10px;
+                height: calc(100vh - 20px);
+            }
+
+            .content-container {
+                flex-direction: column;
+            }
+
+            .pdf-list {
+                width: 100%;
+                max-height: 200px;
+                border-right: none;
+                border-bottom: 1px solid #e0e0e0;
+            }
+
+            .pdf-toolbar {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            .pdf-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .pdf-details {
+                text-align: left;
+                width: 100%;
+            }
+        }
+
+        /* Additional subtle enhancements */
+        .shadow-effect {
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .hover-effect:hover {
+            transform: translateY(-2px);
+            transition: transform 0.2s ease;
+        }
+
+        /* Loading indicator */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .pdf-pages-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .pdf-page-container {
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .pdf-pages-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .pdf-page-container {
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            background-color: white;
+        }
+
+        .pdf-loading {
+            text-align: center;
+            padding: 20px;
+            font-size: 18px;
+            color: #555;
+        }
+
+        /* Make sure canvas elements render at full size */
+        .pdf-page-container canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-container">
+        <div class="app-header">
+            <h1 class="app-title">PDF Document Library</h1>
+            <div class="app-actions">
+                <button class="btn-upload" onclick="openUploadModal()">
+                    <i class="fas fa-upload"></i> Upload PDF
+                </button>
+            </div>
+        </div>
+
+        <div class="content-container">
+            <div class="pdf-list">
+                <div class="pdf-list-header">
+                    <h2 class="pdf-list-title">Your Documents</h2>
+                </div>
+                {% for pdf in pdfs %}
+                <div class="pdf-item {% if selected_pdf.id == pdf.id %}active{% endif %}" data-pdf-id="{{ pdf.id }}"
+                    onclick="loadPdf({{ pdf.id }})">
+                    <div class="pdf-title">{{ pdf.title }}</div>
+                    <div class="pdf-date">
+                        <i class="far fa-calendar-alt"></i> {{ pdf.uploaded_at|date:"M d, Y" }}
+                    </div>
+                </div>
+                {% empty %}
+                <div class="no-pdfs">
+                    <p>No PDF documents available</p>
+                    <p>Upload a PDF to get started</p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="pdf-viewer">
+                {% if selected_pdf %}
+                <div class="pdf-toolbar">
+                    <div class="pdf-controls">
+                        <button class="control-button" id="prev-page">
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </button>
+
+                        <div class="page-info">
+                            <span>Page</span>
+                            <input type="number" id="current-page" class="page-number" value="1" min="1">
+                            <span>of <span id="total-pages">?</span></span>
+                        </div>
+
+                        <button class="control-button" id="next-page">
+                            <i class="fas fa-chevron-right"></i> Next
+                        </button>
+
+                        <button class="control-button" id="zoom-out">
+                            <i class="fas fa-search-minus"></i>
+                        </button>
+
+                        <button class="control-button" id="zoom-in">
+                            <i class="fas fa-search-plus"></i>
+                        </button>
+                    </div>
+
+                    <div class="pdf-details">
+                        <div class="current-pdf-title" id="pdf-title">{{ selected_pdf.title }}</div>
+                        <div class="current-pdf-info">
+                            Uploaded on {{ selected_pdf.uploaded_at|date:"F d, Y" }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pdf-container" id="pdf-container">
+                    <div class="pdf-canvas-wrapper">
+                        <canvas id="pdf-canvas"></canvas>
+                    </div>
+                </div>
+                {% else %}
+                <div class="no-pdf-selected">
+                    <div class="no-pdf-icon">
+                        <i class="far fa-file-pdf"></i>
+                    </div>
+                    <p class="no-pdf-message">No PDF document selected</p>
+                    <p class="no-pdf-hint">Select a document from the list or upload a new one</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Modal -->
+    <div class="modal" id="upload-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Upload PDF Document</h3>
+                <button class="modal-close" onclick="closeUploadModal()">&times;</button>
+            </div>
+
+            <form method="post" action="{% url 'upload_pdf' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="title">Document Title</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description (Optional)</label>
+                        <textarea class="form-control" id="description" name="description"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>PDF File</label>
+                        <div class="file-input-group">
+                            <label for="pdf_file" class="file-input-label">
+                                <i class="fas fa-file-upload"></i> Choose PDF File
+                            </label>
+                            <input type="file" class="file-input" id="pdf_file" name="pdf_file" accept=".pdf" required>
+                            <div class="file-name" id="file-name">No file selected</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeUploadModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <script>
+        // Global variables
+        // Global variables
+        let pdfDoc = null;
+        let pageNum = 1;
+        let pagesRendered = new Set(); // Track which pages have been rendered
+        let scale = 1.5;
+        let pdfContainer = document.getElementById('pdf-container');
+        let isInitialLoad = true;
+
+        // Function to load PDF
+        function loadPdf(pdfId) {
+            // Update active state
+            const items = document.querySelectorAll('.pdf-item');
+            items.forEach(item => {
+                if (parseInt(item.getAttribute('data-pdf-id')) === pdfId) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+
+            // Save state to session storage
+            sessionStorage.setItem('currentPdfId', pdfId);
+
+            // Update URL without reloading the page
+            const url = new URL(window.location);
+            url.searchParams.set('pdf_id', pdfId);
+            window.history.pushState({ pdfId: pdfId }, '', url);
+
+            // Show loading indicator
+            pdfContainer.innerHTML = '<div class="loader"></div>';
+
+            // Get PDF details from API
+            fetch(`/confident/pdf/${pdfId}/detail/`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('pdf-title').textContent = data.title;
+
+                    // Create container for all pages
+                    pdfContainer.innerHTML = '<div class="pdf-pages-container"></div>';
+                    const pagesContainer = document.querySelector('.pdf-pages-container');
+
+                    // Load the PDF content
+                    const pdfUrl = `/confident/pdf/${pdfId}/content/`;
+                    console.log(`Loading PDF from: ${pdfUrl}`);
+
+                    const loadingTask = pdfjsLib.getDocument(pdfUrl);
+
+                    loadingTask.promise.then(function (pdf) {
+                        console.log(`PDF loaded successfully with ${pdf.numPages} pages`);
+                        pdfDoc = pdf;
+                        document.getElementById('total-pages').textContent = pdf.numPages;
+
+                        // Create canvas elements for each page
+                        for (let i = 1; i <= pdf.numPages; i++) {
+                            const pageContainer = document.createElement('div');
+                            pageContainer.className = 'pdf-page-container';
+                            pageContainer.id = `page-container-${i}`;
+                            pageContainer.setAttribute('data-page-num', i);
+
+                            const canvas = document.createElement('canvas');
+                            canvas.id = `pdf-canvas-${i}`;
+                            pageContainer.appendChild(canvas);
+
+                            pagesContainer.appendChild(pageContainer);
+                        }
+
+                        // Set up Intersection Observer to render pages when they come into view
+                        setupIntersectionObserver();
+
+                        // Restore scroll position if it exists
+                        const savedScrollPos = sessionStorage.getItem('pdfScrollPosition');
+                        if (savedScrollPos && !isInitialLoad) {
+                            setTimeout(() => {
+                                window.scrollTo(0, parseInt(savedScrollPos));
+                            }, 100);
+                        }
+
+                        isInitialLoad = false;
+
+                        // Update page number input when scrolling
+                        updateCurrentPageOnScroll();
+
+                    }).catch(function (error) {
+                        console.error('Error loading PDF:', error);
+                        pdfContainer.innerHTML = `
+                    <div class="no-pdf-selected">
+                        <div class="no-pdf-icon" style="color: #e74c3c;">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <p class="no-pdf-message">Error loading PDF</p>
+                        <p class="no-pdf-hint">${error.message}</p>
+                    </div>
+                `;
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching PDF details:', error);
+                    pdfContainer.innerHTML = `
+                <div class="no-pdf-selected">
+                    <div class="no-pdf-icon" style="color: #e74c3c;">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <p class="no-pdf-message">Error loading PDF details</p>
+                    <p class="no-pdf-hint">${error.message}</p>
+                </div>
+            `;
+                });
+        }
+
+        // Set up Intersection Observer to render pages when they come into view
+        function setupIntersectionObserver() {
+            const options = {
+                root: null,
+                rootMargin: '100px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const pageNum = parseInt(entry.target.getAttribute('data-page-num'));
+                        if (!pagesRendered.has(pageNum)) {
+                            renderPage(pageNum);
+                        }
+                    }
+                });
+            }, options);
+
+            // Observe all page containers
+            document.querySelectorAll('.pdf-page-container').forEach(pageContainer => {
+                observer.observe(pageContainer);
+            });
+        }
+
+        // Render a specific page
+        function renderPage(num) {
+            if (pagesRendered.has(num)) return;
+
+            pdfDoc.getPage(num).then(function (page) {
+                const canvas = document.getElementById(`pdf-canvas-${num}`);
+                const ctx = canvas.getContext('2d');
+
+                const viewport = page.getViewport({ scale: scale });
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                // Render PDF page into canvas context
+                const renderContext = {
+                    canvasContext: ctx,
+                    viewport: viewport
+                };
+
+                const renderTask = page.render(renderContext);
+
+                // Mark this page as rendered
+                renderTask.promise.then(function () {
+                    pagesRendered.add(num);
+                });
+            });
+        }
+
+        // Jump to specific page
+        function jumpToPage(num) {
+            if (num < 1 || num > pdfDoc.numPages) return;
+
+            const pageElement = document.getElementById(`page-container-${num}`);
+            if (pageElement) {
+                pageElement.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Update current page based on scroll position
+        function updateCurrentPageOnScroll() {
+            window.addEventListener('scroll', () => {
+                // Save scroll position
+                sessionStorage.setItem('pdfScrollPosition', window.scrollY);
+
+                // Find which page is most visible
+                const pageContainers = document.querySelectorAll('.pdf-page-container');
+                let mostVisiblePage = 1;
+                let maxVisibleHeight = 0;
+
+                pageContainers.forEach(container => {
+                    const rect = container.getBoundingClientRect();
+                    const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+
+                    if (visibleHeight > maxVisibleHeight) {
+                        maxVisibleHeight = visibleHeight;
+                        mostVisiblePage = parseInt(container.getAttribute('data-page-num'));
+                    }
+                });
+
+                // Update page number input
+                if (document.getElementById('current-page')) {
+                    document.getElementById('current-page').value = mostVisiblePage;
+                    pageNum = mostVisiblePage;
+                }
+            });
+        }
+
+        // Handle zoom functions
+        function zoomIn() {
+            scale += 0.25;
+            resetRendering();
+        }
+
+        function zoomOut() {
+            if (scale <= 0.5) return;
+            scale -= 0.25;
+            resetRendering();
+        }
+
+        // Reset rendering on zoom change
+        function resetRendering() {
+            pagesRendered.clear();
+            const currentScroll = window.scrollY;
+
+            // Get all pages that are currently in viewport or near it
+            const pageContainers = document.querySelectorAll('.pdf-page-container');
+            pageContainers.forEach(container => {
+                const rect = container.getBoundingClientRect();
+                if (rect.bottom >= -200 && rect.top <= window.innerHeight + 200) {
+                    const pageNum = parseInt(container.getAttribute('data-page-num'));
+                    renderPage(pageNum);
+                }
+            });
+
+            // Restore scroll position
+            window.scrollTo(0, currentScroll);
+        }
+
+        // Handle back button and history navigation
+        window.addEventListener('popstate', (event) => {
+            if (event.state && event.state.pdfId) {
+                loadPdf(event.state.pdfId);
+            } else {
+                // Try to restore from session storage
+                const savedPdfId = sessionStorage.getItem('currentPdfId');
+                if (savedPdfId) {
+                    loadPdf(parseInt(savedPdfId));
+                }
+            }
+        });
+
+        // Initial load or restore from session storage
+        window.addEventListener('DOMContentLoaded', () => {
+            // Check if there's a PDF ID in the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const pdfId = urlParams.get('pdf_id');
+
+            if (pdfId) {
+                loadPdf(parseInt(pdfId));
+            } else {
+                // Try to restore from session storage
+                const savedPdfId = sessionStorage.getItem('currentPdfId');
+                if (savedPdfId) {
+                    loadPdf(parseInt(savedPdfId));
+                }
+            }
+        });
+
+        // Update event listeners for page navigation
+        if (document.getElementById('current-page')) {
+            document.getElementById('current-page').addEventListener('change', function () {
+                const newPage = parseInt(this.value);
+                if (newPage > 0 && newPage <= pdfDoc.numPages) {
+                    jumpToPage(newPage);
+                } else {
+                    this.value = pageNum;
+                }
+            });
+        }
+
+        if (document.getElementById('prev-page')) {
+            document.getElementById('prev-page').addEventListener('click', function () {
+                if (pageNum <= 1) return;
+                jumpToPage(pageNum - 1);
+            });
+        }
+
+        if (document.getElementById('next-page')) {
+            document.getElementById('next-page').addEventListener('click', function () {
+                if (pageNum >= pdfDoc.numPages) return;
+                jumpToPage(pageNum + 1);
+            });
+        }
+
+        if (document.getElementById('zoom-in')) {
+            document.getElementById('zoom-in').addEventListener('click', zoomIn);
+        }
+
+        if (document.getElementById('zoom-out')) {
+            document.getElementById('zoom-out').addEventListener('click', zoomOut);
+        }
+
+        // Upload modal functions
+        function openUploadModal() {
+            document.getElementById('upload-modal').classList.add('active');
+        }
+
+        function closeUploadModal() {
+            document.getElementById('upload-modal').classList.remove('active');
+        }
+
+        // File input change handler
+        if (document.getElementById('pdf_file')) {
+            document.getElementById('pdf_file').addEventListener('change', function () {
+                const fileName = this.files[0] ? this.files[0].name : 'No file selected';
+                document.getElementById('file-name').textContent = fileName;
+
+                // Auto-fill title with filename (without extension)
+                if (this.files[0] && !document.getElementById('title').value) {
+                    const titleWithoutExt = fileName.replace(/\.[^/.]+$/, "");
+                    document.getElementById('title').value = titleWithoutExt;
+                }
+            });
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function (event) {
+            const modal = document.getElementById('upload-modal');
+            if (event.target === modal) {
+                closeUploadModal();
+            }
+        });
+
+        // Handle keyboard shortcuts
+        document.addEventListener('keydown', function (event) {
+            // Only handle shortcuts when not typing in an input
+            if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
+                return;
+            }
+
+            if (event.key === 'ArrowLeft' || event.key === 'PageUp') {
+                if (pageNum <= 1) return;
+                jumpToPage(pageNum - 1);
+            } else if (event.key === 'ArrowRight' || event.key === 'PageDown') {
+                if (pageNum >= pdfDoc.numPages) return;
+                jumpToPage(pageNum + 1);
+            } else if (event.key === '+') {
+                zoomIn();
+            } else if (event.key === '-') {
+                zoomOut();
+            }
+        });
+
+        // Additional CSS to add to your stylesheet
+        /*
+        .pdf-pages-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 20px 0;
+        }
+        
+        .pdf-page-container {
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+        */
+
+    </script>
+</body>
+
+</html>

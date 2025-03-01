@@ -1,0 +1,604 @@
+{% load static %}
+{% block navbar%}
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg glass-navbar" id="main-navbar">
+    <div class="container-fluid">
+        <!-- Logo and Title -->
+        <!-- Toggle Button for Mobile -->
+        <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Items -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                </li>
+
+                <!-- Basic Modules Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="basicModulesDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Basic Modules
+                    </a>
+                    <ul class="dropdown-menu glass-dropdown" aria-labelledby="basicModulesDropdown">
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Population Estimation Module and Forecasting
+                            </a>
+                            <ul class="dropdown-menu glass-dropdown">
+                                <li><a class="dropdown-item" href="/population/time-series/">Time-series prediction</a>
+                                </li>
+                                <li><a class="dropdown-item" href="/population/scenario-based/">Scenario-based
+                                        Modelling</a></li>
+                                <li><a class="dropdown-item" href="/population/cohort-based/">Cohort Based Forecasting</a>
+                                </li>
+                                <li><a class="dropdown-item" href="/population/demographic-based/">Demographic-based
+                                        prediction</a></li>
+                            </ul>
+                        </li>
+                        <li><a class="dropdown-item" href="/waterdemand">Water Demand</a></li>
+                        <li><a class="dropdown-item" href="/watersupply">Water Supply </a></li>
+                        <li><a class="dropdown-item" href="/sewage">Sewage Generation</a></li>
+
+                    </ul>
+                </li>
+
+                <!-- GWM Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="gwmDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        GWM
+                        <span class="full-form">Ground Water Management</span>
+
+                    </a>
+                    <ul class="dropdown-menu glass-dropdown" aria-labelledby="gwmDropdown">
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Groundwater Potential Assessment
+                            </a>
+                            <ul class="dropdown-menu dropdown-submenu glass-dropdown">
+                                <li><a class="dropdown-item" href="#">Pumping Location Identification</a></li>
+                                <li><a class="dropdown-item" href="#">GW Potential Zone</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Resource Estimation
+                            </a>
+                            <ul class="dropdown-menu dropdown-submenu glass-dropdown">
+                                <li><a class="dropdown-item" href="#">Regional Scale Quantification</a></li>
+                                <li><a class="dropdown-item" href="#">Water Quality Assessment</a></li>
+                                <li><a class="dropdown-item" href="#">Identification Of Vulnerable zones</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Managed Aquifer Recharge
+                            </a>
+                            <ul class="dropdown-menu dropdown-submenu glass-dropdown">
+                                <li><a class="dropdown-item" href="#">Local Scale Water Estimation</a></li>
+                                <li><a class="dropdown-item" href="#">Climate Change</a></li>
+                                <li><a class="dropdown-item" href="">Site sutability For MAR</a></li>
+                                <li><a class="dropdown-item" href="#">Optimized Solution</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                River Aquifer Interaction
+                            </a>
+                            <ul class="dropdown-menu dropdown-submenu glass-dropdown">
+                                <li><a class="dropdown-item" href="#">Baseflow Estimation</a></li>
+                                <li><a class="dropdown-item" href="#">Climate Change and Mitigition</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- RWM Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="rwmDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        RWM
+                        <span class="full-form">River Water Management</span>
+                    </a>
+                    <ul class="dropdown-menu glass-dropdown" aria-labelledby="rwmDropdown">
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Resource Estimation
+                            </a>
+                            <ul class="dropdown-menu dropdown-submenu glass-dropdown">
+                                <li><a class="dropdown-item" href="#">Water Availabilty</a></li>
+                                <li><a class="dropdown-item" href="#">Water Flow and Storage Estimation</a></li>
+                                <li><a class="dropdown-item" href="#">Water Quality Assessment</a></li>
+                                <li><a class="dropdown-item" href="#">Vulnerability Assesment</a></li>
+                                <li><a class="dropdown-item" href="#">Contamination Risk Assessment</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Flood Forecasting and Management
+                            </a>
+                            <ul class="dropdown-menu dropdown-submenu glass-dropdown">
+                                <li><a class="dropdown-item" href="#">Flood simulation</a></li>
+                                <li><a class="dropdown-item" href="#">River Routing</a></li>
+                                <li><a class="dropdown-item" href="#">Contaminant Transport Modelling</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Water Bodies Management
+                            </a>
+                            <ul class="dropdown-menu dropdown-submenu glass-dropdown">
+                                <li><a class="dropdown-item" href="#">Storage and Forecasting</a></li>
+                                <li><a class="dropdown-item" href="#">Reservoir Operation</a></li>
+                                <li><a class="dropdown-item" href="#">Water Quality Monitoring</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Wastewater Treatment
+                            </a>
+                            <ul class="dropdown-menu dropdown-submenu glass-dropdown">
+                                <li><a class="dropdown-item" href="#">Water Pollution Inventory</a></li>
+                                <li><a class="dropdown-item" href="#">Treatment Technology</a></li>
+                                <li><a class="dropdown-item" href="/stp">Site sutability</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- WRM Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="wrmDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        WRM
+                        <span class="full-form">Water Resource Management</span>
+                    </a>
+                    <ul class="dropdown-menu glass-dropdown" aria-labelledby="wrmDropdown">
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Demand and Forecasting
+                            </a>
+                            <ul class="dropdown-menu dropdown-submenu glass-dropdown">
+                                <li><a class="dropdown-item" href="#">Current Consumption Pattern</a></li>
+                                <li><a class="dropdown-item" href="#">Future Demand Projection</a></li>
+
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Resource Allocation
+                            </a>
+                            <ul class="dropdown-menu dropdown-submenu glass-dropdown">
+                                <li><a class="dropdown-item" href="#">Source Sustainability</a></li>
+                                <li><a class="dropdown-item" href="#">Source Demarcation</a></li>
+
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- SHSD Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="shsdDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        System Dynamics
+                        <span class="full-form">Hydrological System Dynamics</span>
+                    </a>
+                    <ul class="dropdown-menu glass-dropdown" aria-labelledby="shsdDropdown">
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Resource Management
+                            </a>
+                            <ul class="dropdown-menu dropdown-submenu glass-dropdown">
+                                <li><a class="dropdown-item" href="#">Optimum and Sustainable Management</a></li>
+                                <li><a class="dropdown-item" href="#">Sensitive Socio-economic Factors</a></li>
+                                <li><a class="dropdown-item" href="#">System Dynamics Modelling</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Impact Assessment
+                            </a>
+                            <ul class="dropdown-menu dropdown-submenu glass-dropdown">
+                                <li><a class="dropdown-item" href="#">Plant Solutions</a></li>
+                                <li><a class="dropdown-item" href="#">Optimization Framework</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+
+
+                <!-- Activities Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="activitiesDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Activities
+                    </a>
+                    <ul class="dropdown-menu glass-dropdown" aria-labelledby="activitiesDropdown">
+                        <li><a class="dropdown-item" href="#">Training and Workshop</a></li>
+                        <li><a class="dropdown-item" href="#">Gallery</a></li>
+                    </ul>
+                </li>
+
+                <!-- Report and Publication Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Report and Publication
+                    </a>
+                    <ul class="dropdown-menu glass-dropdown" aria-labelledby="reportsDropdown">
+                        <li><a class="dropdown-item" href="#">Newsletter</a></li>
+                        <li><a class="dropdown-item" href="">Broucher</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Visualization
+                    </a>
+                    <ul class="dropdown-menu glass-dropdown" aria-labelledby="reportsDropdown">
+                        <li><a class="dropdown-item" href="/mapplot">Vector</a></li>
+                        <li><a class="dropdown-item" href="/visuall">Raster</a></li>
+                    </ul>
+                </li>
+
+              
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                </li>
+
+                <!-- Account Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Account
+                    </a>
+                    <ul class="dropdown-menu glass-dropdown" aria-labelledby="accountDropdown">
+                        <li><a class="dropdown-item" href="#">Sign Up</a></li>
+                        <li><a class="dropdown-item" href="#">Sign In</a></li>
+                        <!-- <li><a class="dropdown-item" href="/confident">Sign In</a></li> -->
+                        <li><a class="dropdown-item" href="#">Log Out</a></li>
+                    
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Styles -->
+<style>
+    /* style for full form shows of navbar item  */
+
+    /* Add these styles inside your existing <style> tag */
+    .nav-item.dropdown .full-form {
+        position: absolute;
+        top: -40px;
+        /* Position above the nav item */
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(238, 108, 1, 0.9);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 1040;
+    }
+
+    .nav-item.dropdown:hover .full-form {
+        opacity: 1;
+        visibility: visible;
+        top: -35px;
+        /* Slight upward animation on hover */
+    }
+
+    /* Arrow pointing down */
+    .nav-item.dropdown .full-form::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: rgba(8, 56, 128, 0.9) transparent transparent transparent;
+    }
+
+    /* Mobile responsiveness for full form */
+    @media (max-width: 991px) {
+        .nav-item.dropdown .full-form {
+            display: none;
+            /* Hide on mobile */
+        }
+    }
+
+    /* end of style of full form shows */
+
+    /* ----------------------------------------------------------------------------------- */
+
+    /* Glassmorphism effect for navbar */
+    .glass-navbar {
+        background: rgba(3, 25, 100, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 15px 0;
+        position: relative;
+        transition: all 0.3s ease;
+        z-index: 1030;
+    }
+
+    .glass-navbar.sticky {
+        position: fixed;
+        top: -10px;
+        left: 0;
+        width: 100%;
+        background: #eea17d;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Brand styling */
+    .brand-text {
+        color: rgb(0, 0, 0);
+        font-size: 3rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+
+    .navbar-nav {
+        justify-content: center;
+    }
+
+    .navbar-logo {
+        filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+        transition: transform 0.3s ease;
+    }
+
+    .navbar-brand:hover .navbar-logo {
+        transform: scale(1.1);
+    }
+
+    /* Navigation links */
+    .nav-link {
+        color: rgb(8, 56, 128);
+        font-weight: 600;
+        font-size: 1.1rem;
+        padding: 10px 20px;
+        margin: 0 5px;
+        position: relative;
+        text-shadow: 1px 1px 2px rgba(9, 134, 184, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .nav-link:before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: rgb(9, 114, 175);
+        transition: width 0.3s ease;
+    }
+
+    .nav-link:hover:before,
+    .nav-link.active:before {
+        width: 100%;
+    }
+
+    .nav-link:hover {
+        transform: translateY(-2px);
+    }
+
+    /* Dropdown styling */
+    .dropdown-menu {
+        display: none;
+    }
+
+    .glass-dropdown {
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 13px;
+        min-width: 200px;
+    }
+
+    /* Dropdown items */
+    .dropdown-item {
+        font-size: 1rem;
+        font-weight: 600;
+        color: rgb(31, 110, 212);
+        transition: all 0.2s ease;
+        padding: 8px 15px;
+        position: relative;
+    }
+
+    .dropdown-item:hover {
+        background: rgba(0, 0, 0, 0.1);
+        color: rgb(8, 56, 128);
+    }
+
+    /* Submenu positioning and styling */
+    .dropdown-submenu {
+        position: relative;
+    }
+
+    .dropdown-submenu>.dropdown-menu {
+        top: 0;
+        left: 100%;
+        margin-top: -8px;
+        margin-left: -1px;
+        border-radius: 8px;
+        display: none;
+    }
+
+    /* Show dropdowns on hover */
+    .dropdown:hover>.dropdown-menu,
+    .dropdown-submenu:hover>.dropdown-menu {
+        display: block;
+    }
+
+    /* Submenu arrow indicator */
+    .dropdown-submenu .dropdown-toggle::after {
+        display: inline-block;
+        margin-left: 0.5rem;
+        vertical-align: middle;
+        content: "";
+        border-top: 0.3em solid transparent;
+        border-right: 0;
+        border-bottom: 0.3em solid transparent;
+        border-left: 0.3em solid;
+        position: absolute;
+        right: 6px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 991px) {
+        .glass-navbar {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .glass-dropdown {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            box-shadow: none;
+        }
+
+        .dropdown-submenu>.dropdown-menu {
+            left: 0;
+            margin-left: 1rem;
+            margin-top: 0;
+        }
+
+        .nav-link:before {
+            display: none;
+        }
+
+        .dropdown-item {
+            padding: 10px;
+        }
+
+        .brand-text {
+            font-size: 1.4rem;
+        }
+
+        /* Adjust submenu positioning for mobile */
+        .dropdown-submenu .dropdown-menu {
+            position: static;
+            margin-left: 15px;
+            box-shadow: none;
+            border: none;
+        }
+
+        /* Hide submenu arrows on mobile */
+        .dropdown-submenu .dropdown-toggle::after {
+            display: none;
+        }
+    }
+
+    /* Custom toggler for mobile */
+    .custom-toggler {
+        border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .custom-toggler .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+</style>
+
+<!-- Scripts -->
+<script>
+    // JavaScript to handle sticky navbar and dropdowns
+    document.addEventListener('DOMContentLoaded', function () {
+        // Sticky navbar functionality
+        window.addEventListener('scroll', function () {
+            const navbar = document.getElementById('main-navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('sticky');
+            } else {
+                navbar.classList.remove('sticky');
+            }
+        });
+
+        // Handle nested dropdowns
+        const dropdownSubmenus = document.querySelectorAll('.dropdown-submenu');
+
+        dropdownSubmenus.forEach(function (dropdown) {
+            dropdown.addEventListener('click', function (e) {
+                e.stopPropagation();
+                const submenu = this.querySelector('.dropdown-menu');
+
+                // Close other submenus
+                dropdownSubmenus.forEach(function (other) {
+                    if (other !== dropdown) {
+                        const otherSubmenu = other.querySelector('.dropdown-menu');
+                        if (otherSubmenu) {
+                            otherSubmenu.style.display = 'none';
+                        }
+                    }
+                });
+
+                // Toggle current submenu
+                if (submenu) {
+                    submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
+                }
+            });
+        });
+
+        // Close submenus when clicking outside
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.dropdown-submenu')) {
+                dropdownSubmenus.forEach(function (dropdown) {
+                    const submenu = dropdown.querySelector('.dropdown-menu');
+                    if (submenu) {
+                        submenu.style.display = 'none';
+                    }
+                });
+            }
+        });
+
+        // Handle mobile menu closing when clicking outside
+        document.addEventListener('click', function (e) {
+            const navbarCollapse = document.getElementById('navbarNav');
+            const isNavbarButton = e.target.closest('.navbar-toggler');
+            const isNavbarMenu = e.target.closest('.navbar-collapse');
+
+            if (!isNavbarButton && !isNavbarMenu && navbarCollapse.classList.contains('show')) {
+                const bsCollapse = new bootstrap.Collapse(navbarCollapse);
+                bsCollapse.hide();
+            }
+        });
+    });
+</script>
+{% endblock navbar %}

@@ -1,0 +1,196 @@
+{% extends 'population/base.html' %}
+{% block content %}
+
+
+
+
+<div class="container-2 my-5" style="border: 1.5px solid;">
+
+  <form method="post">
+    {% csrf_token %}
+    <h3 class="text-center mb-4" style="color: #ff00cc;">Demographic-based prediction</h3>
+
+    <!-- State, District, and Sub-District Selection -->
+    <div class="row">
+      <div class="form-group col-12 col-md-3 mb-3">
+        <label for="state">State:</label>
+        <select id="state" name="state">
+          <option value="">Select a State</option>
+        </select>
+      </div>
+
+      <div class="form-group col-12 col-md-3 mb-3">
+        <label for="district">District:</label>
+        <select id="district" name="district">
+          <option value="">Select a District</option>
+        </select>
+      </div>
+
+      <div class="form-group col-12 col-md-3 mb-3">
+        <label for="subdistrict">Sub-District:</label>
+        <select id="subdistrict" name="subdistrict">
+          <option value="">Select a Sub-District</option>
+        </select>
+      </div>
+
+      <div class="form-group col-10 col-md-5 mb-3">
+        <label for="town-village">Town/Village:</label>
+        <div id="town-village-container" class="border p-2" style="max-height: 200px; overflow-y: auto;">
+          <!-- Villages/Towns checkboxes will be dynamically populated here -->
+        </div>
+      </div>
+
+      <!-- Selected Villages/Towns Display -->
+      <div class="form-group col-10 col-md-5 mb-3">
+        <label>Selected Town/Village:</label>
+        <div id="selected-villages" class="border p-2">
+          <!-- Selected villages/towns will be displayed here -->
+        </div>
+        <div id="total-population" class="mt-3"></div>
+
+      </div>
+
+
+      <div class="form-group col-12 col-md-3 mb-3">
+        <label for="base-year">Last Census Year:</label>
+        <select id="base-year" name="base_year">
+          <option value="2011" selected>2011</option>
+        </select>
+      </div>
+
+      <div class="form-group col-5 mb-3">
+        <label class="mb-2">Select Target Year:</label>
+        <div class="d-flex align-items-center flex-wrap gap-3">
+            
+            <!-- Single Year Option -->
+            <div class="d-flex align-items-center">
+                <input type="radio" id="single-year-option" name="year_selection" value="single" class="me-2" checked onclick="toggleYearInputs()">
+                <label for="single-year-option" class="me-2 mb-0">Single Year:</label>
+                <input type="number" id="target-year" name="target_year" class="form-control form-control-sm"
+                    placeholder="Enter year (e.g., 2025)" style="width: 200px;"
+                    min="2000" max="2100"
+                    oninput="validateSingleYear(this)">
+                <small id="single-year-error" class="text-danger" style="display: none; margin-left: 10px;">Invalid range! (2000-2100)</small>
+            </div>
+    
+            <!-- Range Year Option -->
+            <div class="d-flex align-items-center">
+                <input type="radio" id="range-year-option" name="year_selection" value="range" class="me-2" onclick="toggleYearInputs()">
+                <label for="range-year-option" class="me-2 mb-0">Range of Years:</label>
+                <div class="input-group input-group-sm" style="max-width: 500px;">
+                    <input type="number" id="target-year-range-start" name="target_year_start" class="form-control"
+                        placeholder="Start Year (e.g., 2020)" style="width: 150px;"
+                        min="2000" max="2100"
+                        oninput="validateYearRange()" disabled>
+                    <span class="input-group-text">to</span>
+                    <input type="number" id="target-year-range-end" name="target_year_end" class="form-control"
+                        placeholder="End Year (e.g., 2030)" style="width: 150px;"
+                        min="2000" max="2100"
+                        oninput="validateYearRange()" disabled>
+                </div>
+                <small id="range-year-error" class="text-danger" style="display: none; margin-left: 10px;">Invalid range! (2000-2100, Start ≤ End)</small>
+            </div>
+    
+        </div>
+    </div>
+      <div class="row">
+        <div class="form-group col-12 col-md-3 mb-3">
+          <label for="birth-rate">Annual Birth Rate:</label>
+          <input type="number" id="birth-rate" name="birth_rate" class="form-control" placeholder="Enter births/1000 people">
+        </div>
+
+        <div class="form-group col-12 col-md-3 mb-3">
+          <label for="death-rate">Annual Death Rate:</label>
+          <input type="number" id="death-rate" name="death_rate" class="form-control" placeholder="Enter deaths/1000 people">
+        </div>
+
+        <div class="form-group col-12 col-md-3 mb-3">
+          <label for="emigration-rate">Annual Emigration Rate:</label>
+          <input type="number" id="emigration-rate" name="emigration_rate" class="form-control"
+            placeholder="Enter emigrations/1000 people">
+        </div>
+
+        <div class="form-group col-12 col-md-3 mb-3">
+          <label for="immigration-rate">Annual Immigration Rate:</label>
+          <input type="number" id="immigration-rate" name="immigration_rate" class="form-control"
+            placeholder="Enter immigrations/1000 people">
+        </div>
+      </div>
+    </div>
+
+
+    <button id="submit-btn" class="btn btn-dark mt-3">Submit</button>
+    <button class="btn btn-warning mt-3" style="margin-left: 12px;">Reset</button>
+
+    <div id="projection-values" class="mt-3">
+      <div class="projection-view tables-view">
+        <div class="projection-item demographic-attribute" style="display: block;">
+          <h6>Click submit to see the predicted population and graph below :</h6>
+          <div class="container my-5">
+
+            <div id="dynamic-tables-demographic-attribute">
+              <!-- Dynamic tables for Arithmetic Increase will be rendered here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="graph-container" id="container-demographic-attribute" style="display: block;">
+      <canvas id="graph-demographic-attribute"></canvas>
+    </div>
+
+  </form>
+</div>
+
+<script>
+  function toggleYearInputs() {
+      let singleYearInput = document.getElementById("target-year");
+      let rangeStartInput = document.getElementById("target-year-range-start");
+      let rangeEndInput = document.getElementById("target-year-range-end");
+  
+      if (document.getElementById("single-year-option").checked) {
+          singleYearInput.disabled = false;
+          rangeStartInput.disabled = true;
+          rangeEndInput.disabled = true;
+          rangeStartInput.value = "";
+          rangeEndInput.value = "";
+          document.getElementById("range-year-error").style.display = "none";
+      } else {
+          singleYearInput.disabled = true;
+          singleYearInput.value = "";
+          rangeStartInput.disabled = false;
+          rangeEndInput.disabled = false;
+          document.getElementById("single-year-error").style.display = "none";
+      }
+  }
+  
+  function validateSingleYear(input) {
+      let year = parseInt(input.value, 10);
+      let errorMsg = document.getElementById("single-year-error");
+  
+      if (year < 2000 || year > 2100) {
+          errorMsg.style.display = "inline"; // Show error message
+      } else {
+          errorMsg.style.display = "none"; // Hide error message
+      }
+  }
+  
+  function validateYearRange() {
+      let startYear = parseInt(document.getElementById("target-year-range-start").value, 10);
+      let endYear = parseInt(document.getElementById("target-year-range-end").value, 10);
+      let errorMsg = document.getElementById("range-year-error");
+  
+      if (isNaN(startYear) || isNaN(endYear)) {
+          errorMsg.style.display = "none"; // Hide error if fields are empty
+          return;
+      }
+  
+      if (startYear < 2000 || startYear > 2100 || endYear < 2000 || endYear > 2100 || startYear > endYear) {
+          errorMsg.style.display = "inline"; // Show error message
+      } else {
+          errorMsg.style.display = "none"; // Hide error message
+      }
+  }
+  </script>
+{%endblock%}

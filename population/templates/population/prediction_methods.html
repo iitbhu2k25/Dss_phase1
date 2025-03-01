@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Increase button size */
+    .dropdown .btn {
+      font-size: 1.2rem;
+      /* Increase font size */
+      padding: 10px 20px;
+
+    }
+
+    /* Lower the button */
+    .dropdown {
+      margin: auto;
+    }
+  </style>
+  <title>Population-Prediction</title>
+</head>
+
+{% extends 'population/base.html' %}
+{% block content %}
+
+<body>
+  <div class="dropdown"
+    style="position: relative; display: flex; justify-content: center; margin-top: 50px; margin-bottom: 50px;">
+    <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"
+      style="width: 350px; height: 50px; font-size: 20px; background-color: white; color: black; border: 1px solid black;">
+      <b>Prediction Methods</b>
+    </button>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="/population/time-series/"><b>Time series-based analysis</b></a></li>
+      <li><a class="dropdown-item" href="/population/scenario-based/"><b>Scenario-based modelling</b></a>
+      </li>
+      <li><a class="dropdown-item" href="/population/cohort-based/"><b>Cohort component method</b></a></li>
+      <li><a class="dropdown-item" href="/population/demographic-based/"><b>Demographic methods</b></a></li>
+    </ul>
+  </div>
+
+
+
+</body>
+
+</html>
+
+
+
+
+{%endblock%}

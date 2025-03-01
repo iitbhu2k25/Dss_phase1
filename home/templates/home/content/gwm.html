@@ -1,0 +1,88 @@
+{% extends 'home/content/home_static.html' %}
+{% load static %}
+
+{% block content %}
+  <style>
+    .gwm-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        font-family: 'Arial', sans-serif;
+        line-height: 1.6;
+        color: #333;
+    }
+    .gwm-heading {
+        color: #2c5282;
+        font-size: 2.5rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 3px solid #4299e1;
+    }
+    .gwm-subheading {
+        color: #2b6cb0;
+        font-size: 2rem;
+        margin-top: 2.5rem;
+        margin-bottom: 1.5rem;
+        padding-left: 1rem;
+        border-left: 4px solid #4299e1;
+    }
+    .gwm-subtitle {
+        color: #3182ce;
+        font-size: 1.5rem;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+    .gwm-text {
+        margin-bottom: 1.5rem;
+        text-align: justify;
+        padding: 0 1rem;
+    }
+    .gwm-content strong {
+        color: #2c5282;
+        font-weight: 600;
+    }
+  </style>
+
+  <h1 class="gwm-heading">Groundwater Management (GWM)</h1>
+  <div class="gwm-content">
+    <p class="gwm-text"><strong>Groundwater management (GWM)</strong> ensures the sustainable use of water resources. It involves groundwater potential assessment, resource estimation, and managed aquifer recharge (MAR) systems.</p>
+    
+    <h2 class="gwm-subheading">Groundwater Potential Assessment</h2>
+    <h3 class="gwm-subtitle">Applications:</h3>
+    <ul>
+      <li>Identifies optimal well locations using hydrogeological and geophysical methods.</li>
+      <li>Reduces over-extraction and ensures efficient groundwater utilization.</li>
+      <li>Uses remote sensing and GIS-based multi-criteria analysis to delineate high-potential zones.</li>
+    </ul>
+    
+    <h2 class="gwm-subheading">Resource Estimation</h2>
+    <h3 class="gwm-subtitle">Applications:</h3>
+    <ul>
+      <li>Determines groundwater availability using recharge-discharge balance models.</li>
+      <li>Assesses contamination risks from industrial, agricultural, and urban sources.</li>
+      <li>Identifies areas prone to over-extraction, saline intrusion, and contamination.</li>
+    </ul>
+    
+    <h2 class="gwm-subheading">Managed Aquifer Recharge (MAR)</h2>
+    <h3 class="gwm-subtitle">Applications:</h3>
+    <ul>
+      <li>Assesses groundwater recharge rates at different spatial scales.</li>
+      <li>Models climate change impacts on aquifer recharge and baseflow.</li>
+      <li>Uses GIS-based suitability mapping for artificial recharge projects.</li>
+    </ul>
+    
+    <h2 class="gwm-subheading">River-Aquifer Interaction</h2>
+    <h3 class="gwm-subtitle">Applications:</h3>
+    <ul>
+      <li>Quantifies groundwater contribution to river flow using hydrograph separation and isotopic analysis.</li>
+      <li>Analyzes the impact of climate change on river baseflow.</li>
+      <li>Develops strategies such as controlled groundwater pumping to maintain ecological balance.</li>
+    </ul>
+    
+    <h2 class="gwm-subheading">Why This Matters?</h2>
+    <p class="gwm-text">Ensuring sustainable water resource management is crucial for urban and rural landscapes. These methods support climate resilience, disaster mitigation, and provide insights for policymakers.</p>
+  </div>
+
+  {% include 'footer.html' %}
+{% endblock content %}

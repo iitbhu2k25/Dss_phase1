@@ -1,0 +1,115 @@
+{% extends 'home/content/home_static.html' %}
+{% load static %}
+
+{% block content %}
+  <style>
+        .content-rwm {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .rwm-h1 {
+            color: #2c5282;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid #4299e1;
+        }
+
+        .rwm-h2 {
+            color: #2b6cb0;
+            font-size: 2rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            padding-left: 1rem;
+            border-left: 4px solid #4299e1;
+        }
+
+        .rwm-h3 {
+            color: #3182ce;
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .rwm-p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            padding: 0 1rem;
+        }
+
+        .rwm-strong {
+            color: #2c5282;
+            font-weight: 600;
+        }
+
+        .content-rwm > * + * {
+            margin-top: 1rem;
+        }
+
+        @media screen and (max-width: 768px) {
+            .content-rwm {
+                padding: 1rem;
+            }
+
+            .rwm-h1 {
+                font-size: 2rem;
+            }
+
+            .rwm-h2 {
+                font-size: 1.75rem;
+            }
+
+            .rwm-h3 {
+                font-size: 1.25rem;
+            }
+        }
+  </style>
+
+  <h1 class="rwm-h1">River Water Management (RWM)</h1>
+  <div class="content-rwm">
+    <p class="rwm-p"><strong class="rwm-strong">Efficient River Water Management (RWM)</strong> is essential for sustainable water resource utilization, flood control, pollution management, and ecosystem preservation. This module provides advanced tools for river system assessment, forecasting, and decision-making.</p>
+
+    <h2 class="rwm-h2">Resource Estimation</h2>
+    <p class="rwm-p">Understanding river water availability, storage, and quality is fundamental for sustainable planning. This module integrates hydrological modeling, remote sensing, and real-time monitoring for comprehensive resource estimation.</p>
+    <ul>
+      <li><strong>Water Availability:</strong> Estimates river discharge and seasonal variations for water allocation planning.</li>
+      <li><strong>Volumetric Flux & Storage:</strong> Quantifies river flow rates using GIS and remote sensing.</li>
+      <li><strong>Water Quality Assessment:</strong> Monitors physical, chemical, and biological parameters.</li>
+      <li><strong>Vulnerable Reaches:</strong> Identifies pollution hotspots and sensitive ecological zones.</li>
+      <li><strong>Short-Term Contamination:</strong> Predicts contamination spikes during festivals and cultural activities.</li>
+    </ul>
+
+    <h2 class="rwm-h2">Flood Forecasting & Management</h2>
+    <p class="rwm-p">Flooding poses severe risks to life, infrastructure, and ecosystems. This module provides real-time flood forecasting and risk assessment tools to enhance preparedness and mitigation efforts.</p>
+    <ul>
+      <li><strong>Flood Simulations:</strong> Uses hydrodynamic models to predict flood scenarios.</li>
+      <li><strong>River Routing:</strong> Models floodwater movement and optimizes dam releases.</li>
+      <li><strong>Contaminant Transport:</strong> Tracks pollutants to support water quality policies.</li>
+    </ul>
+
+    <h2 class="rwm-h2">Water Bodies Management</h2>
+    <ul>
+      <li><strong>Storage Estimation:</strong> Monitors reservoir variations in real-time.</li>
+      <li><strong>Reservoir Operations:</strong> Plans water releases based on climate and agriculture needs.</li>
+      <li><strong>Water Quality Monitoring:</strong> Tracks dissolved oxygen, turbidity, and pollution sources.</li>
+    </ul>
+
+    <h2 class="rwm-h2">Wastewater Treatment</h2>
+    <ul>
+      <li><strong>Pollution Inventory:</strong> Maps pollution sources along river stretches.</li>
+      <li><strong>STP Site Selection:</strong> Uses GIS to identify optimal wastewater treatment locations.</li>
+      <li><strong>Technology Recommendations:</strong> Proposes effective wastewater treatment methods.</li>
+    </ul>
+
+    <h2 class="rwm-h2">Why This Matters? 🌍</h2>
+    <p class="rwm-p">With advanced data-driven insights, this module provides a holistic approach to river water sustainability, disaster resilience, and pollution control.</p>
+  </div>
+  
+{% include 'footer.html' %}
+{% endblock content %}

@@ -1,0 +1,317 @@
+{% extends 'home/content/home_static.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        color: #333;
+        background-color: #f4f7fb; /* Light background color for the body */
+    }
+
+    .about-container {
+        padding: 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #e9eef3; /* Light blue-gray background */
+        background-image: url('https://www.transparenttextures.com/patterns/diamond-pattern.png');
+        min-height: 100vh;
+        position: relative;
+        z-index: 1;
+    }
+
+    .about-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(231, 234, 236, 0.98) 100%);
+        z-index: -1;
+    }
+
+    .about-content-wrapper {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #ffffff; /* White background for content */
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .about-h1 {
+        font-family: 'Merriweather', serif;
+        font-size: 3.2em;
+        margin-bottom: 1.5em;
+        text-align: center;
+        color: #1e3c72;
+        text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+        letter-spacing: 0.5px;
+    }
+
+    .about-h2 {
+        font-family: 'Merriweather', serif;
+        font-size: 2.2em;
+        margin-top: 2em;
+        margin-bottom: 0.5em;
+        text-align: left;
+        color: #1e3c72;
+        border-bottom: 3px solid rgba(255, 255, 255, 0.4);
+        padding-bottom: 0.5em;
+        text-decoration: none;
+    }
+    .Heading-text{
+        text-decoration: underline;
+    }
+    .about-h2::after{
+        content: ":";
+        margin-left: 0.3em;
+        font-size: 1em;
+        color: #1e3c72;
+    }
+
+    .about-p {
+        font-size: 1.2em;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        line-height: 1.8;
+        margin: 0 0 2em 0;
+        color: #1e3c72;
+        text-align: justify;
+        letter-spacing: 0.3px;
+        hyphens: auto;
+        text-justify: inter-word;
+    }
+
+    .about-objectives,
+    .about-applications {
+        text-align: left;
+        margin: 2.5em 0;
+        padding: 2em;
+        background: rgba(255, 255, 255, 0.8); /* Slight white background */
+        border-radius: 8px;
+        backdrop-filter: blur(5px);
+    }
+
+    .about-objectives ul,
+    .about-applications ul {
+        list-style-type: disc;
+        padding: 0;
+        margin-top: 0.5em;
+        margin-bottom: 0;
+    }
+
+    .about-objectives li,
+    .about-applications li {
+        margin-bottom: 1em;
+        font-size: 1.1em;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        color: #1e3c72;
+        padding-left: 1.5em;
+        position: relative;
+        line-height: 1.8;
+        text-align: justify;
+    }
+
+    .about-objectives li:last-child,
+    .about-applications li:last-child {
+        margin-bottom: 0;
+    }
+
+    .about-objectives li::before,
+    .about-applications li::before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .about-strong {
+        color: #FFD700;
+        font-weight: 600;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .about-section {
+        margin-bottom: 3em;
+        padding: 0 1em;
+    }
+
+    /* Button styles */
+    .documents-button {
+        display: block;
+        width: 200px;
+        margin: 0 auto 20px;
+        padding: 12px 20px;
+        background-color: #1e3c72;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 1.1em;
+        font-weight: 600;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-decoration: none;
+    }
+
+    .documents-button:hover {
+        background-color: #2a4d8a;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .documents-button:active {
+        transform: translateY(1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .about-container > * {
+        animation: fadeIn 0.5s ease-out forwards;
+        opacity: 0;
+    }
+.about-section:nth-child(3) {
+    margin-bottom: 0.5em;
+}
+
+.about-section:nth-child(4) {
+    margin-top: 0.5em; 
+}
+
+
+    .about-section:nth-child(1) { animation-delay: 0.1s; }
+    .about-section:nth-child(2) { animation-delay: 0.2s; }
+    .about-section:nth-child(3) { animation-delay: 0.3s; }
+    .about-section:nth-child(4) { animation-delay: 0.4s; }
+    .about-section:nth-child(5) { animation-delay: 0.5s; }
+
+    @media (max-width: 768px) {
+        .about-container {
+            padding: 20px;
+        }
+
+        .about-content-wrapper {
+            padding: 10px;
+        }
+
+        .about-h1 {
+            font-size: 2.4em;
+            margin-bottom: 1em;
+        }
+
+        .about-h2 {
+            font-size: 1.8em;
+            margin-top: 1.5em;
+            margin-bottom: 1em;
+        }
+
+        .about-p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 1.5em;
+        }
+
+        .about-objectives,
+        .about-applications {
+            padding: 1.5em;
+            margin: 2em 0;
+        }
+        
+        .documents-button {
+            width: 180px;
+            font-size: 1em;
+            padding: 10px 16px;
+        }
+    }
+</style>
+
+<div class="about-container">
+    <div class="about-content-wrapper">
+        <!-- Documents Button -->
+        <a href="/confident" class="documents-button">Documents</a>
+        
+        <!-- Main Title Section -->
+        <section class="about-section">
+            <h1 class="about-h1">Decision Support System for Water Governance</h1>
+            <p class="about-p">
+                This project proposal addresses the critical need for a comprehensive Decision Support System (DSS) to manage water resources effectively. By integrating sophisticated models and simulations, the system will support sustainable water governance, ultimately contributing to the achievement of Sustainable Development Goals (SDGs).
+            </p>
+        </section>
+
+        <!-- Introduction Section -->
+        <section class="about-section">
+            <h2 class="about-h2">  
+                <span class="Heading-text">Introduction: Water Governance Challenges</span>
+            </h2>
+            <p class="about-p">
+                &nbsp; &nbsp; &nbsp; &nbsp;Water governance is a complex, multi-dimensional challenge exacerbated by climate change, urban expansion, and socio-economic dynamics. The aim of this DSS is to provide holistic solutions to water management by combining hydrological, socio-economic, and ecological factors through an integrated modeling framework.
+            </p>
+        </section>
+
+        <!-- Objectives Section -->
+        <section class="about-section">
+            <h2 class="about-h2">
+                <span class="Heading-text">Project Objectives</span>
+            </h2>
+            <div class="about-objectives">
+                <ul>
+                    <li>Development of a Data Management Framework to handle large-scale, multi-source water data.</li>
+                    <li>Design of an Integrated Hydro-Computational Modeling Framework to simulate water behaviors.</li>
+                    <li>Creation of a Graphical User Interface (GUI) for simplified decision-making and visual data representation.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Applications Section -->
+        <section class="about-section">
+            <h2 class="about-h2">
+                <span class="Heading-text">Potential Applications of the DSS</span>
+            </h2>
+            <div class="about-applications">
+                <ul id="applications-list">
+                    <!-- List items will be populated by JavaScript -->
+                </ul>
+            </div>
+        </section>
+
+        <!-- Collaborations Section -->
+        <section class="about-section">
+            <h2 class="about-h2">
+                <span class="Heading-text">Key Collaborations and Supporting Missions</span>
+            </h2>
+            <p class="about-p">
+                &nbsp; &nbsp; &nbsp; &nbsp; This DSS will work in alignment with national water projects like the <strong class="about-strong">Jal Jeevan Mission</strong>, <strong class="about-strong">Atal Bhujal Yojana</strong>, <strong class="about-strong">National Hydrological Project</strong>, and <strong class="about-strong">National Groundwater Management Improvement Program-2</strong>, to name a few. By integrating these missions' goals into our system, we aim to enhance India's water resource management capabilities.
+            </p>
+        </section>
+
+        <!-- Technology Section -->
+        <section class="about-section">
+            <h2 class="about-h2">
+                <span class="Heading-text">Technological Framework</span>
+            </h2>
+            <p class="about-p">
+                &nbsp;The DSS will utilize advanced data from sources such as the Central Water Commission (CWC), India Meteorological Department (IMD), and satellite imagery from NASA's MODIS and Sentinel satellites. By combining these data sources and applying system thinking methodologies, the DSS will facilitate informed, effective decision-making at multiple levels of water governance.
+            </p>
+        </section>
+
+        <!-- Conclusion Section -->
+        <section class="about-section">
+            <h2 class="about-h2">
+                <span class="Heading-text">Conclusion</span>
+            </h2>
+            <p class="about-p">
+                &nbsp;This DSS will serve as a critical tool for water resource management, supporting policymakers, stakeholders, and local authorities in managing water systems sustainably and effectively, contributing to the long-term achievement of the SDGs.
+            </p>
+        </section>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+{% endblock content %}

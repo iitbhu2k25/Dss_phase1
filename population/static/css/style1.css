@@ -1,0 +1,111 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: black;
+}
+
+.container-2 {
+  width: 100%;
+  max-width: 1250px;  /* Maximum width */
+  background: white;
+  padding: 25px;
+  border-radius: 5px;
+  margin: 0 auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  flex: 1; /* Ensure all form groups are equal in flexbox */
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  appearance: none;
+}
+
+select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+.btn-submit {
+  margin-top: 20px;
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-submit:hover {
+  background-color: #0056b3;
+}
+
+
+
+.projection-view.graphs-view {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.graph-container {
+  width: 40%; /* Adjust graph size */
+  height: auto;
+  display: none; /* Hide by default */
+}
+
+.graph-container.active {
+  display: block; /* Show active graphs */
+}
+
+
+#projection-values {
+  max-width: 100%; /* Ensures the parent container does not overflow */
+  overflow: hidden; /* Hide overflow from the parent container */
+}
+
+/* Wrapper around the table that allows horizontal scroll */
+.table-wrapper {
+  overflow-x: auto;  /* Allows horizontal scrolling */
+  -webkit-overflow-scrolling: touch;  /* Smooth scrolling on mobile */
+  width: 100%;  /* Ensures it doesn’t exceed the form width */
+}
+
+/* Styling for the table to prevent content from squishing */
+.table {
+  table-layout: auto;  /* Allows table to adjust width dynamically based on content */
+  width: 100%;  /* Make sure table fills up the available space */
+}
+
+/* Optionally, limit the width of the table cells to avoid text getting squished */
+.table th, .table td {
+  white-space: nowrap; /* Prevent content from breaking into multiple lines */
+  overflow: hidden;  /* Hide overflowed content within cells */
+  text-overflow: ellipsis; /* Add ellipsis (...) for overflowed text */
+}
+
+
+
+
+
+
+
+
+
