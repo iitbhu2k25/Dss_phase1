@@ -15,6 +15,7 @@ geopandas
 geojson
 shapely
 gsconfig-py3
+rasterio   # for raster 
 
 # Data Science & ML
 pandas

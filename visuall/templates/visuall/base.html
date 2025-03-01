@@ -1,2516 +1,2949 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>India GIS Raster Data Viewer</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"
+    />
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        
-        :root {
-            --primary-color: #3498db;
-            --primary-dark: #2980b9;
-            --secondary-color: #2c3e50;
-            --accent-color: #f39c12;
-            --light-color: #f8f9fa;
-            --dark-color: #343a40;
-            --success-color: #2ecc71;
-            --danger-color: #e74c3c;
-            --border-radius: 10px;
-            --box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            --transition-speed: 0.3s;
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+      :root {
+        --primary-color: #3498db;
+        --primary-dark: #2980b9;
+        --secondary-color: #2c3e50;
+        --accent-color: #f39c12;
+        --light-color: #f8f9fa;
+        --dark-color: #343a40;
+        --success-color: #2ecc71;
+        --danger-color: #e74c3c;
+        --border-radius: 10px;
+        --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        --transition-speed: 0.3s;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Poppins", sans-serif;
+        background-color: var(--light-color);
+        color: var(--dark-color);
+      }
+
+      .app-container {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background-color: #f0f2f5;
+      }
+
+      header {
+        background: linear-gradient(
+          135deg,
+          var(--secondary-color),
+          var(--primary-color)
+        );
+        color: white;
+        padding: 0.75rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        z-index: 1010;
+        position: relative;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+      }
+
+      .logo i {
+        font-size: 24px;
+        margin-right: 10px;
+        animation: pulse-light 3s infinite;
+      }
+
+      .main-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        flex: 1;
+      }
+
+      .content-wrapper {
+        display: flex;
+        width: 95%;
+        max-width: 1600px;
+        background-color: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        overflow: hidden;
+        margin: 0 auto;
+        position: relative;
+      }
+
+      .sidebar {
+        width: 300px;
+        background: white;
+        padding: 20px;
+        overflow-y: auto;
+        transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 100;
+        border-right: 1px solid #eaeaea;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .sidebar.collapsed {
+        width: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      .sidebar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--primary-color);
+      }
+
+      .sidebar-header h5 {
+        font-weight: 600;
+        color: var(--secondary-color);
+      }
+
+      .control-section {
+        background: #f8f9fa;
+        border-radius: var(--border-radius);
+        padding: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .control-section:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .section-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: var(--secondary-color);
+        display: flex;
+        align-items: center;
+      }
+
+      .section-title i {
+        margin-right: 8px;
+        color: var(--primary-color);
+      }
+
+      .map-container {
+        flex: 1;
+        position: relative;
+        height: 70vh;
+        overflow: hidden;
+        border-radius: 0 var(--border-radius) var(--border-radius) 0;
+      }
+
+      #map {
+        height: 100%;
+        width: 100%;
+        z-index: 1;
+      }
+
+      .toggle-sidebar {
+        position: absolute;
+        left: 300px;
+        top: 20px;
+        z-index: 999;
+        background: white;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--box-shadow);
+        cursor: pointer;
+        transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .toggle-sidebar:hover {
+        background: var(--primary-color);
+        color: white;
+        transform: scale(1.1);
+      }
+
+      .toggle-sidebar.collapsed {
+        left: 20px;
+      }
+
+      .download-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 15px;
+        box-shadow: var(--box-shadow);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        font-weight: 500;
+        color: var(--secondary-color);
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .download-btn:hover {
+        background: var(--primary-color);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+      }
+
+      .download-btn:hover i {
+        color: white;
+      }
+
+      .download-btn i {
+        margin-right: 8px;
+        color: var(--primary-color);
+        transition: color 0.3s;
+      }
+
+      .select-wrapper {
+        position: relative;
+        margin-bottom: 15px;
+      }
+
+      .select-wrapper .custom-dropdown {
+        width: 100%;
+        padding: 12px 15px;
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+        background-color: white;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        color: var(--secondary-color);
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%233498db' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: calc(100% - 12px) center;
+        background-size: 12px;
+        padding-right: 30px;
+      }
+
+      .select-wrapper .custom-dropdown:hover {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+      }
+
+      .select-wrapper .custom-dropdown:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+      }
+
+      .select-wrapper label {
+        position: absolute;
+        background: white;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--primary-color);
+        padding: 0 5px;
+        left: 12px;
+        top: -8px;
+        z-index: 1;
+      }
+
+      .modern-dropdown {
+        position: relative;
+        margin-bottom: 15px;
+      }
+
+      .dropdown-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 15px;
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: 500;
+      }
+
+      .dropdown-header:hover {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+      }
+
+      .dropdown-header.active {
+        border-color: var(--primary-color);
+        border-radius: 8px 8px 0 0;
+        background: #f8f9fa;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+      }
+
+      .dropdown-header i:first-child {
+        color: var(--primary-color);
+        margin-right: 8px;
+      }
+
+      .dropdown-header i:last-child {
+        transition: transform 0.3s ease;
+      }
+
+      .dropdown-header.active i:last-child {
+        transform: rotate(180deg);
+      }
+
+      .dropdown-content {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border-radius: 0 0 8px 8px;
+        border: 1px solid var(--primary-color);
+        border-top: none;
+        z-index: 1001;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      .dropdown-content.show {
+        max-height: 300px;
+        opacity: 1;
+        transform: translateY(0);
+        transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+          opacity 0.2s ease, transform 0.2s ease;
+      }
+
+      .dropdown-item {
+        padding: 12px 15px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        transition: background 0.2s, transform 0.2s;
+        border-bottom: 1px solid #f1f1f1;
+      }
+
+      .dropdown-item:hover {
+        background: #f5f5f5;
+        transform: translateX(5px);
+      }
+
+      .dropdown-item:active {
+        background: #e9f7fe;
+      }
+
+      .dropdown-item i {
+        margin-right: 10px;
+        width: 20px;
+        text-align: center;
+        color: var(--primary-color);
+        font-size: 15px;
+      }
+
+      .dropdown-item:last-child {
+        border-radius: 0 0 8px 8px;
+        border-bottom: none;
+      }
+
+      /* Modern Compass Styles Begin */
+      .compass-container {
+        position: absolute;
+        top: 80px;
+        left: 20px;
+        z-index: 990;
+        width: 100px;
+        height: 100px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 50%;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+      }
+
+      .compass-rose {
+        width: 90px;
+        height: 90px;
+        position: relative;
+        animation: compass-fade-in 1s ease;
+      }
+
+      .compass-ring {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 2px solid rgba(52, 152, 219, 0.2);
+        border-radius: 50%;
+      }
+
+      .compass-face {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        right: 5px;
+        bottom: 5px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .compass-needle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 4px;
+        height: 70%;
+        transform: translate(-50%, -50%);
+        transform-origin: center;
+      }
+
+      .needle-north {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        background: linear-gradient(to top, transparent 0%, #e74c3c 100%);
+        clip-path: polygon(0 0, 100% 0, 50% 100%);
+        transform-origin: bottom center;
+        box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.2);
+      }
+
+      .needle-south {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        background: linear-gradient(to bottom, transparent 0%, #2c3e50 100%);
+        clip-path: polygon(0 100%, 100% 100%, 50% 0);
+        transform-origin: top center;
+      }
+
+      .compass-center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 12px;
+        height: 12px;
+        background: radial-gradient(circle, #fff 0%, #ddd 70%, #bbb 100%);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        z-index: 3;
+      }
+
+      .compass-cardinal-points {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        font-size: 12px;
+        pointer-events: none;
+      }
+
+      .compass-n {
+        position: absolute;
+        top: 5px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #e74c3c;
+      }
+
+      .compass-ne {
+        position: absolute;
+        top: 18%;
+        right: 18%;
+        color: #555;
+        font-size: 10px;
+      }
+
+      .compass-e {
+        position: absolute;
+        top: 50%;
+        right: 5px;
+        transform: translateY(-50%);
+        color: #555;
+      }
+
+      .compass-se {
+        position: absolute;
+        bottom: 18%;
+        right: 18%;
+        color: #555;
+        font-size: 10px;
+      }
+
+      .compass-s {
+        position: absolute;
+        bottom: 5px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #555;
+      }
+
+      .compass-sw {
+        position: absolute;
+        bottom: 18%;
+        left: 18%;
+        color: #555;
+        font-size: 10px;
+      }
+
+      .compass-w {
+        position: absolute;
+        top: 50%;
+        left: 5px;
+        transform: translateY(-50%);
+        color: #555;
+      }
+
+      .compass-nw {
+        position: absolute;
+        top: 18%;
+        left: 18%;
+        color: #555;
+        font-size: 10px;
+      }
+
+      .compass-degrees {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+      }
+
+      .compass-degrees::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: conic-gradient(
+          from 0deg,
+          transparent 0deg,
+          transparent 29deg,
+          rgba(52, 152, 219, 0.15) 30deg,
+          rgba(52, 152, 219, 0.15) 59deg,
+          transparent 60deg,
+          transparent 89deg,
+          rgba(52, 152, 219, 0.15) 90deg,
+          rgba(52, 152, 219, 0.15) 119deg,
+          transparent 120deg,
+          transparent 149deg,
+          rgba(52, 152, 219, 0.15) 150deg,
+          rgba(52, 152, 219, 0.15) 179deg,
+          transparent 180deg,
+          transparent 209deg,
+          rgba(52, 152, 219, 0.15) 210deg,
+          rgba(52, 152, 219, 0.15) 239deg,
+          transparent 240deg,
+          transparent 269deg,
+          rgba(52, 152, 219, 0.15) 270deg,
+          rgba(52, 152, 219, 0.15) 299deg,
+          transparent 300deg,
+          transparent 329deg,
+          rgba(52, 152, 219, 0.15) 330deg,
+          rgba(52, 152, 219, 0.15) 359deg
+        );
+        opacity: 0.8;
+      }
+      /* Modern Compass Styles End */
+
+      @keyframes compass-fade-in {
+        from {
+          opacity: 0;
+          transform: scale(0.8) rotate(-20deg);
         }
-        
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        to {
+          opacity: 1;
+          transform: scale(1) rotate(0);
         }
-        
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--light-color);
-            color: var(--dark-color);
+      }
+
+      .map-controls {
+        position: absolute;
+        right: 20px;
+        bottom: 30px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: var(--box-shadow);
+        z-index: 999;
+        display: flex;
+        flex-direction: column;
+        padding: 5px;
+        transition: transform 0.3s ease;
+      }
+
+      .map-controls:hover {
+        transform: translateX(-5px);
+      }
+
+      .map-control-btn {
+        width: 40px;
+        height: 40px;
+        border: none;
+        background: white;
+        border-radius: 8px;
+        margin: 3px 0;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--secondary-color);
+      }
+
+      .map-control-btn:hover {
+        background: var(--primary-color);
+        color: white;
+        transform: scale(1.1);
+      }
+
+      .loader {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(255, 255, 255, 0.95);
+        padding: 25px 30px;
+        border-radius: 15px;
+        box-shadow: var(--box-shadow);
+        z-index: 1000;
+        display: none;
+        transition: all 0.3s ease;
+      }
+
+      .loader.active {
+        display: flex;
+        animation: fade-in 0.3s ease;
+      }
+
+      .spinner-border {
+        margin-right: 15px;
+        color: var(--primary-color);
+      }
+
+      .info-panel {
+        position: absolute;
+        bottom: 30px;
+        left: 20px;
+        background: white;
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: var(--box-shadow);
+        z-index: 999;
+        min-width: 200px;
+        font-size: 14px;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+      }
+
+      .info-panel:hover {
+        transform: translateY(-5px);
+      }
+
+      .layer-badge {
+        display: inline-block;
+        padding: 5px 12px;
+        background: var(--primary-color);
+        color: white;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 5px rgba(52, 152, 219, 0.3);
+      }
+
+      .map-legend {
+        position: absolute;
+        bottom: 30px;
+        right: 80px;
+        background: white;
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: var(--box-shadow);
+        z-index: 999;
+        min-width: 200px;
+        transition: transform 0.3s ease;
+      }
+
+      .map-legend:hover {
+        transform: translateY(-5px);
+      }
+
+      .legend-title {
+        font-weight: 600;
+        margin-bottom: 10px;
+        font-size: 14px;
+        color: var(--secondary-color);
+        border-bottom: 2px solid var(--primary-color);
+        padding-bottom: 5px;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+
+      .legend-color {
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+        border-radius: 3px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      }
+
+      .coordinate-label {
+        background: none !important;
+        font-size: 12px;
+        color: #333;
+        font-weight: bold;
+        text-shadow: 1px 1px 2px white;
+      }
+
+      /* Animation for pulse effect */
+      @keyframes pulse {
+        0% {
+          transform: scale(0);
+          opacity: 0.5;
         }
-        
-        .app-container {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            background-color: #f0f2f5;
+        100% {
+          transform: scale(1.5);
+          opacity: 0;
         }
-        
-        header {
-            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
-            color: white;
-            padding: 0.75rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-            z-index: 1010;
-            position: relative;
+      }
+
+      @keyframes pulse-light {
+        0% {
+          opacity: 0.7;
         }
-        
-        .logo {
-            display: flex;
-            align-items: center;
+        50% {
+          opacity: 1;
         }
-        
-        .logo i {
-            font-size: 24px;
-            margin-right: 10px;
-            animation: pulse-light 3s infinite;
+        100% {
+          opacity: 0.7;
         }
-        
-        .main-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            flex: 1;
+      }
+
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+          transform: translate(-50%, -60%);
         }
-        
+        to {
+          opacity: 1;
+          transform: translate(-50%, -50%);
+        }
+      }
+
+      .data-tooltip {
+        position: absolute;
+        bottom: 130px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(52, 152, 219, 0.9);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        box-shadow: var(--box-shadow);
+        opacity: 0;
+        transition: opacity 0.5s ease, transform 0.5s ease;
+        pointer-events: none;
+        z-index: 1000;
+      }
+
+      .data-tooltip.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-10px);
+      }
+
+      .notification {
+        position: fixed;
+        bottom: -100px;
+        right: 20px;
+        background: white;
+        border-left: 5px solid var(--primary-color);
+        padding: 15px 20px;
+        border-radius: 8px;
+        box-shadow: var(--box-shadow);
+        z-index: 9999;
+        transition: bottom 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        min-width: 300px;
+      }
+
+      .notification.active {
+        bottom: 20px;
+      }
+
+      .notification-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+      }
+
+      .notification-icon {
+        margin-right: 10px;
+        color: var(--primary-color);
+        font-size: 20px;
+      }
+
+      .notification-title {
+        font-weight: 600;
+        color: var(--secondary-color);
+      }
+
+      .notification-body {
+        color: #666;
+        font-size: 14px;
+      }
+
+      .pulse-btn {
+        position: relative;
+      }
+
+      .pulse-btn::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: inherit;
+        background: var(--primary-color);
+        z-index: -1;
+        opacity: 0.5;
+        animation: pulse-animation 1.5s infinite;
+      }
+
+      @keyframes pulse-animation {
+        0% {
+          transform: scale(1);
+          opacity: 0.5;
+        }
+        50% {
+          transform: scale(1.2);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 0;
+        }
+      }
+
+      /* Style improvements for Leaflet controls */
+      .leaflet-control-zoom {
+        border-radius: 10px !important;
+        overflow: hidden;
+        box-shadow: var(--box-shadow) !important;
+      }
+
+      .leaflet-control-zoom a {
+        background: white !important;
+        color: var(--secondary-color) !important;
+        width: 36px !important;
+        height: 36px !important;
+        line-height: 36px !important;
+        font-size: 18px !important;
+        transition: all 0.3s !important;
+      }
+
+      .leaflet-control-zoom a:hover {
+        background: var(--primary-color) !important;
+        color: white !important;
+      }
+
+      .leaflet-control-attribution {
+        background: rgba(255, 255, 255, 0.8) !important;
+        padding: 3px 8px !important;
+        border-radius: 5px !important;
+        font-size: 11px !important;
+      }
+
+      .leaflet-control-scale {
+        background: rgba(255, 255, 255, 0.8) !important;
+        padding: 2px 5px !important;
+        border-radius: 5px !important;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1) !important;
+      }
+
+      .leaflet-control-scale-line {
+        border-color: var(--secondary-color) !important;
+        color: var(--secondary-color) !important;
+        font-weight: 500 !important;
+      }
+
+      .leaflet-popup {
+        margin-bottom: 5px;
+      }
+
+      .leaflet-popup-content-wrapper {
+        border-radius: 10px !important;
+        box-shadow: var(--box-shadow) !important;
+        padding: 5px;
+      }
+
+      .leaflet-popup-content {
+        margin: 10px !important;
+        font-family: "Poppins", sans-serif !important;
+      }
+
+      .leaflet-popup-tip {
+        box-shadow: var(--box-shadow) !important;
+      }
+
+      .leaflet-popup-close-button {
+        color: var(--secondary-color) !important;
+        font-size: 18px !important;
+        padding: 5px !important;
+        transition: all 0.3s;
+      }
+
+      .leaflet-popup-close-button:hover {
+        color: var(--danger-color) !important;
+        transform: scale(1.2);
+      }
+
+      .leaflet-touch .leaflet-bar {
+        border: none !important;
+      }
+
+      .coordinates-tooltip {
+        display: none !important; /* Ensure it's always hidden */
+        position: absolute;
+        bottom: 100px;
+        left: 20px;
+        background: rgba(44, 62, 80, 0.9);
+        color: white;
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-family: monospace;
+        max-width: 220px;
+        opacity: 0.9;
+        transition: all 0.3s;
+        z-index: 990;
+        pointer-events: none;
+      }
+
+      /* Responsive improvements */
+      @media (max-width: 768px) {
         .content-wrapper {
-            display: flex;
-            width: 95%;
-            max-width: 1600px;
-            background-color: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            overflow: hidden;
-            margin: 0 auto;
-            position: relative;
+          flex-direction: column;
+          width: 95%;
         }
-        
+
         .sidebar {
-            width: 300px;
-            background: white;
-            padding: 20px;
-            overflow-y: auto;
-            transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 100;
-            border-right: 1px solid #eaeaea;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+          width: 100%;
+          max-height: 300px;
+          border-right: none;
+          border-bottom: 1px solid #eaeaea;
         }
-        
+
         .sidebar.collapsed {
-            width: 0;
-            padding: 0;
-            overflow: hidden;
+          max-height: 0;
         }
-        
-        .sidebar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--primary-color);
-        }
-        
-        .sidebar-header h5 {
-            font-weight: 600;
-            color: var(--secondary-color);
-        }
-        
-        .control-section {
-            background: #f8f9fa;
-            border-radius: var(--border-radius);
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        
-        .control-section:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        
-        .section-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: var(--secondary-color);
-            display: flex;
-            align-items: center;
-        }
-        
-        .section-title i {
-            margin-right: 8px;
-            color: var(--primary-color);
-        }
-        
-        .map-container {
-            flex: 1;
-            position: relative;
-            height: 70vh;
-            overflow: hidden;
-            border-radius: 0 var(--border-radius) var(--border-radius) 0;
-        }
-        
-        #map {
-            height: 100%;
-            width: 100%;
-            z-index: 1;
-        }
-        
+
         .toggle-sidebar {
-            position: absolute;
-            left: 300px;
-            top: 20px;
-            z-index: 999;
-            background: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--box-shadow);
-            cursor: pointer;
-            transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+          top: 300px;
+          left: 20px;
         }
-        
-        .toggle-sidebar:hover {
-            background: var(--primary-color);
-            color: white;
-            transform: scale(1.1);
-        }
-        
+
         .toggle-sidebar.collapsed {
-            left: 20px;
+          top: 20px;
         }
-        
+
+        .map-container {
+          height: 60vh;
+          border-radius: 0 0 10px 10px;
+        }
+
         .download-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: white;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 15px;
-            box-shadow: var(--box-shadow);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            font-weight: 500;
-            color: var(--secondary-color);
-            cursor: pointer;
-            transition: all 0.3s;
+          right: 20px;
+          top: 70px;
         }
-        
-        .download-btn:hover {
-            background: var(--primary-color);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-        }
-        
-        .download-btn:hover i {
-            color: white;
-        }
-        
-        .download-btn i {
-            margin-right: 8px;
-            color: var(--primary-color);
-            transition: color 0.3s;
-        }
-        
-        .select-wrapper {
-            position: relative;
-            margin-bottom: 15px;
-        }
-        
-        .select-wrapper .custom-dropdown {
-            width: 100%;
-            padding: 12px 15px;
-            border-radius: 8px;
-            border: 1px solid #dee2e6;
-            background-color: white;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            color: var(--secondary-color);
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%233498db' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: calc(100% - 12px) center;
-            background-size: 12px;
-            padding-right: 30px;
-        }
-        
-        .select-wrapper .custom-dropdown:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-        }
-        
-        .select-wrapper .custom-dropdown:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
-        }
-        
-        .select-wrapper label {
-            position: absolute;
-            background: white;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: var(--primary-color);
-            padding: 0 5px;
-            left: 12px;
-            top: -8px;
-            z-index: 1;
-        }
-        
-        .modern-dropdown {
-            position: relative;
-            margin-bottom: 15px;
-        }
-        
-        .dropdown-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 15px;
-            background: white;
-            border-radius: 8px;
-            border: 1px solid #e0e0e0;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 500;
-        }
-        
-        .dropdown-header:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-        }
-        
-        .dropdown-header.active {
-            border-color: var(--primary-color);
-            border-radius: 8px 8px 0 0;
-            background: #f8f9fa;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-        }
-        
-        .dropdown-header i:first-child {
-            color: var(--primary-color);
-            margin-right: 8px;
-        }
-        
-        .dropdown-header i:last-child {
-            transition: transform 0.3s ease;
-        }
-        
-        .dropdown-header.active i:last-child {
-            transform: rotate(180deg);
-        }
-        
-        .dropdown-content {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border-radius: 0 0 8px 8px;
-            border: 1px solid var(--primary-color);
-            border-top: none;
-            z-index: 1001;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-        
-        .dropdown-content.show {
-            max-height: 300px;
-            opacity: 1;
-            transform: translateY(0);
-            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease, transform 0.2s ease;
-        }
-        
-        .dropdown-item {
-            padding: 12px 15px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            transition: background 0.2s, transform 0.2s;
-            border-bottom: 1px solid #f1f1f1;
-        }
-        
-        .dropdown-item:hover {
-            background: #f5f5f5;
-            transform: translateX(5px);
-        }
-        
-        .dropdown-item:active {
-            background: #e9f7fe;
-        }
-        
-        .dropdown-item i {
-            margin-right: 10px;
-            width: 20px;
-            text-align: center;
-            color: var(--primary-color);
-            font-size: 15px;
-        }
-        
-        .dropdown-item:last-child {
-            border-radius: 0 0 8px 8px;
-            border-bottom: none;
-        }
-        
-        /* Modern Compass Styles Begin */
+
         .compass-container {
-            position: absolute;
-            top: 80px;
-            left: 20px;
-            z-index: 990;
-            width: 100px;
-            height: 100px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 50%;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: none;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
+          top: 140px;
+          left: 20px;
+          width: 70px;
+          height: 70px;
         }
-        
+
         .compass-rose {
-            width: 90px;
-            height: 90px;
-            position: relative;
-            animation: compass-fade-in 1s ease;
+          width: 60px;
+          height: 60px;
         }
-        
-        .compass-ring {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 2px solid rgba(52, 152, 219, 0.2);
-            border-radius: 50%;
-        }
-        
-        .compass-face {
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            right: 5px;
-            bottom: 5px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .compass-needle {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 4px;
-            height: 70%;
-            transform: translate(-50%, -50%);
-            transform-origin: center;
-        }
-        
-        .needle-north {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 50%;
-            background: linear-gradient(to top, transparent 0%, #e74c3c 100%);
-            clip-path: polygon(0 0, 100% 0, 50% 100%);
-            transform-origin: bottom center;
-            box-shadow: 0 -1px 3px rgba(0,0,0,0.2);
-        }
-        
-        .needle-south {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 50%;
-            background: linear-gradient(to bottom, transparent 0%, #2c3e50 100%);
-            clip-path: polygon(0 100%, 100% 100%, 50% 0);
-            transform-origin: top center;
-        }
-        
-        .compass-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 12px;
-            height: 12px;
-            background: radial-gradient(circle, #fff 0%, #ddd 70%, #bbb 100%);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-            z-index: 3;
-        }
-        
-        .compass-cardinal-points {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 12px;
-            pointer-events: none;
-        }
-        
-        .compass-n {
-            position: absolute;
-            top: 5px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #e74c3c;
-        }
-        
-        .compass-ne {
-            position: absolute;
-            top: 18%;
-            right: 18%;
-            color: #555;
-            font-size: 10px;
-        }
-        
-        .compass-e {
-            position: absolute;
-            top: 50%;
-            right: 5px;
-            transform: translateY(-50%);
-            color: #555;
-        }
-        
-        .compass-se {
-            position: absolute;
-            bottom: 18%;
-            right: 18%;
-            color: #555;
-            font-size: 10px;
-        }
-        
-        .compass-s {
-            position: absolute;
-            bottom: 5px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #555;
-        }
-        
-        .compass-sw {
-            position: absolute;
-            bottom: 18%;
-            left: 18%;
-            color: #555;
-            font-size: 10px;
-        }
-        
-        .compass-w {
-            position: absolute;
-            top: 50%;
-            left: 5px;
-            transform: translateY(-50%);
-            color: #555;
-        }
-        
-        .compass-nw {
-            position: absolute;
-            top: 18%;
-            left: 18%;
-            color: #555;
-            font-size: 10px;
-        }
-        
-        .compass-degrees {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-        }
-        
-        .compass-degrees::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: conic-gradient(
-                from 0deg,
-                transparent 0deg,
-                transparent 29deg,
-                rgba(52, 152, 219, 0.15) 30deg,
-                rgba(52, 152, 219, 0.15) 59deg,
-                transparent 60deg,
-                transparent 89deg,
-                rgba(52, 152, 219, 0.15) 90deg,
-                rgba(52, 152, 219, 0.15) 119deg,
-                transparent 120deg,
-                transparent 149deg,
-                rgba(52, 152, 219, 0.15) 150deg,
-                rgba(52, 152, 219, 0.15) 179deg,
-                transparent 180deg,
-                transparent 209deg,
-                rgba(52, 152, 219, 0.15) 210deg,
-                rgba(52, 152, 219, 0.15) 239deg,
-                transparent 240deg,
-                transparent 269deg,
-                rgba(52, 152, 219, 0.15) 270deg,
-                rgba(52, 152, 219, 0.15) 299deg,
-                transparent 300deg,
-                transparent 329deg,
-                rgba(52, 152, 219, 0.15) 330deg,
-                rgba(52, 152, 219, 0.15) 359deg
-            );
-            opacity: 0.8;
-        }
-        /* Modern Compass Styles End */
-        
-        @keyframes compass-fade-in {
-            from {
-                opacity: 0;
-                transform: scale(0.8) rotate(-20deg);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) rotate(0);
-            }
-        }
-        
-        .map-controls {
-            position: absolute;
-            right: 20px;
-            bottom: 30px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: var(--box-shadow);
-            z-index: 999;
-            display: flex;
-            flex-direction: column;
-            padding: 5px;
-            transition: transform 0.3s ease;
-        }
-        
-        .map-controls:hover {
-            transform: translateX(-5px);
-        }
-        
-        .map-control-btn {
-            width: 40px;
-            height: 40px;
-            border: none;
-            background: white;
-            border-radius: 8px;
-            margin: 3px 0;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--secondary-color);
-        }
-        
-        .map-control-btn:hover {
-            background: var(--primary-color);
-            color: white;
-            transform: scale(1.1);
-        }
-        
-        .loader {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255,255,255,0.95);
-            padding: 25px 30px;
-            border-radius: 15px;
-            box-shadow: var(--box-shadow);
-            z-index: 1000;
-            display: none;
-            transition: all 0.3s ease;
-        }
-        
-        .loader.active {
-            display: flex;
-            animation: fade-in 0.3s ease;
-        }
-        
-        .spinner-border {
-            margin-right: 15px;
-            color: var(--primary-color);
-        }
-        
-        .info-panel {
-            position: absolute;
-            bottom: 30px;
-            left: 20px;
-            background: white;
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: var(--box-shadow);
-            z-index: 999;
-            min-width: 200px;
-            font-size: 14px;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-        
-        .info-panel:hover {
-            transform: translateY(-5px);
-        }
-        
-        .layer-badge {
-            display: inline-block;
-            padding: 5px 12px;
-            background: var(--primary-color);
-            color: white;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 5px rgba(52, 152, 219, 0.3);
-        }
-        
+
         .map-legend {
-            position: absolute;
-            bottom: 30px;
-            right: 80px;
-            background: white;
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: var(--box-shadow);
-            z-index: 999;
-            min-width: 200px;
-            transition: transform 0.3s ease;
+          right: 20px;
+          bottom: 80px;
         }
-        
-        .map-legend:hover {
-            transform: translateY(-5px);
+      }
+
+      /* New styles for improved dropdowns */
+      .select-wrapper {
+        position: relative;
+        margin-bottom: 20px;
+      }
+
+      .select-wrapper::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: 15px;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 6px solid var(--primary-color);
+        pointer-events: none;
+      }
+
+      .disabled-section {
+        opacity: 0.6;
+        pointer-events: none;
+      }
+
+      .disabled-section::after {
+        content: "Select category first";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-size: 12px;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+
+      .disabled-section:hover::after {
+        opacity: 1;
+      }
+
+      /* New loader animation */
+      .spinner {
+        width: 24px;
+        height: 24px;
+        border: 3px solid rgba(52, 152, 219, 0.3);
+        border-radius: 50%;
+        border-top-color: var(--primary-color);
+        animation: spin 1s ease-in-out infinite;
+        margin-right: 10px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
         }
-        
-        .legend-title {
-            font-weight: 600;
-            margin-bottom: 10px;
-            font-size: 14px;
-            color: var(--secondary-color);
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 5px;
-        }
-        
-        .legend-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-        
-        .legend-color {
-            width: 16px;
-            height: 16px;
-            margin-right: 8px;
-            border-radius: 3px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-        }
-        
-        .coordinate-label {
-            background: none !important;
-            font-size: 12px;
-            color: #333;
-            font-weight: bold;
-            text-shadow: 1px 1px 2px white;
-        }
-        
-        /* Animation for pulse effect */
-        @keyframes pulse {
-            0% {
-                transform: scale(0);
-                opacity: 0.5;
-            }
-            100% {
-                transform: scale(1.5);
-                opacity: 0;
-            }
-        }
-        
-        @keyframes pulse-light {
-            0% {
-                opacity: 0.7;
-            }
-            50% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0.7;
-            }
-        }
-        
-        @keyframes fade-in {
-            from {
-                opacity: 0;
-                transform: translate(-50%, -60%);
-            }
-            to {
-                opacity: 1;
-                transform: translate(-50%, -50%);
-            }
-        }
-        
-        .data-tooltip {
-            position: absolute;
-            bottom: 130px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(52, 152, 219, 0.9);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            box-shadow: var(--box-shadow);
-            opacity: 0;
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            pointer-events: none;
-            z-index: 1000;
-        }
-        
-        .data-tooltip.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(-10px);
-        }
-        
-        .notification {
-            position: fixed;
-            bottom: -100px;
-            right: 20px;
-            background: white;
-            border-left: 5px solid var(--primary-color);
-            padding: 15px 20px;
-            border-radius: 8px;
-            box-shadow: var(--box-shadow);
-            z-index: 9999;
-            transition: bottom 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            min-width: 300px;
-        }
-        
-        .notification.active {
-            bottom: 20px;
-        }
-        
-        .notification-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 5px;
-        }
-        
-        .notification-icon {
-            margin-right: 10px;
-            color: var(--primary-color);
-            font-size: 20px;
-        }
-        
-        .notification-title {
-            font-weight: 600;
-            color: var(--secondary-color);
-        }
-        
-        .notification-body {
-            color: #666;
-            font-size: 14px;
-        }
-        
-        .pulse-btn {
-            position: relative;
-        }
-        
-        .pulse-btn::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: inherit;
-            background: var(--primary-color);
-            z-index: -1;
-            opacity: 0.5;
-            animation: pulse-animation 1.5s infinite;
-        }
-        
-        @keyframes pulse-animation {
-            0% {
-                transform: scale(1);
-                opacity: 0.5;
-            }
-            50% {
-                transform: scale(1.2);
-                opacity: 0;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 0;
-            }
-        }
-        
-        /* Style improvements for Leaflet controls */
-        .leaflet-control-zoom {
-            border-radius: 10px !important;
-            overflow: hidden;
-            box-shadow: var(--box-shadow) !important;
-        }
-        
-        .leaflet-control-zoom a {
-            background: white !important;
-            color: var(--secondary-color) !important;
-            width: 36px !important;
-            height: 36px !important;
-            line-height: 36px !important;
-            font-size: 18px !important;
-            transition: all 0.3s !important;
-        }
-        
-        .leaflet-control-zoom a:hover {
-            background: var(--primary-color) !important;
-            color: white !important;
-        }
-        
-        .leaflet-control-attribution {
-            background: rgba(255, 255, 255, 0.8) !important;
-            padding: 3px 8px !important;
-            border-radius: 5px !important;
-            font-size: 11px !important;
-        }
-        
-        .leaflet-control-scale {
-            background: rgba(255, 255, 255, 0.8) !important;
-            padding: 2px 5px !important;
-            border-radius: 5px !important;
-            box-shadow: 0 1px 5px rgba(0,0,0,0.1) !important;
-        }
-        
-        .leaflet-control-scale-line {
-            border-color: var(--secondary-color) !important;
-            color: var(--secondary-color) !important;
-            font-weight: 500 !important;
-        }
-        
-        .leaflet-popup {
-            margin-bottom: 5px;
-        }
-        
-        .leaflet-popup-content-wrapper {
-            border-radius: 10px !important;
-            box-shadow: var(--box-shadow) !important;
-            padding: 5px;
-        }
-        
-        .leaflet-popup-content {
-            margin: 10px !important;
-            font-family: 'Poppins', sans-serif !important;
-        }
-        
-        .leaflet-popup-tip {
-            box-shadow: var(--box-shadow) !important;
-        }
-        
-        .leaflet-popup-close-button {
-            color: var(--secondary-color) !important;
-            font-size: 18px !important;
-            padding: 5px !important;
-            transition: all 0.3s;
-        }
-        
-        .leaflet-popup-close-button:hover {
-            color: var(--danger-color) !important;
-            transform: scale(1.2);
-        }
-        
-        .leaflet-touch .leaflet-bar {
-            border: none !important;
-        }
-        
-        .coordinates-tooltip {
-            display: none !important; /* Ensure it's always hidden */
-            position: absolute;
-            bottom: 100px;
-            left: 20px;
-            background: rgba(44, 62, 80, 0.9);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-family: monospace;
-            max-width: 220px;
-            opacity: 0.9;
-            transition: all 0.3s;
-            z-index: 990;
-            pointer-events: none;
-        }
-        
-        /* Responsive improvements */
-        @media (max-width: 768px) {
-            .content-wrapper {
-                flex-direction: column;
-                width: 95%;
-            }
-            
-            .sidebar {
-                width: 100%;
-                max-height: 300px;
-                border-right: none;
-                border-bottom: 1px solid #eaeaea;
-            }
-            
-            .sidebar.collapsed {
-                max-height: 0;
-            }
-            
-            .toggle-sidebar {
-                top: 300px;
-                left: 20px;
-            }
-            
-            .toggle-sidebar.collapsed {
-                top: 20px;
-            }
-            
-            .map-container {
-                height: 60vh;
-                border-radius: 0 0 10px 10px;
-            }
-            
-            .download-btn {
-                right: 20px;
-                top: 70px;
-            }
-            
-            .compass-container {
-                top: 140px;
-                left: 20px;
-                width: 70px;
-                height: 70px;
-            }
-            
-            .compass-rose {
-                width: 60px;
-                height: 60px;
-            }
-            
-            .map-legend {
-                right: 20px;
-                bottom: 80px;
-            }
-        }
-        
-        /* New styles for improved dropdowns */
-        .select-wrapper {
-            position: relative;
-            margin-bottom: 20px;
-        }
-        
-        .select-wrapper::after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            right: 15px;
-            transform: translateY(-50%);
-            width: 0;
-            height: 0;
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-top: 6px solid var(--primary-color);
-            pointer-events: none;
-        }
-        
-        .disabled-section {
-            opacity: 0.6;
-            pointer-events: none;
-        }
-        
-        .disabled-section::after {
-            content: "Select category first";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-size: 12px;
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-        
-        .disabled-section:hover::after {
-            opacity: 1;
-        }
-        
-        /* New loader animation */
-        .spinner {
-            width: 24px;
-            height: 24px;
-            border: 3px solid rgba(52, 152, 219, 0.3);
-            border-radius: 50%;
-            border-top-color: var(--primary-color);
-            animation: spin 1s ease-in-out infinite;
-            margin-right: 10px;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Data availability indicator */
-        .data-indicator {
-            display: inline-flex;
-            align-items: center;
-            margin-top: 5px;
-            font-size: 12px;
-            color: var(--success-color);
-        }
-        
-        .data-indicator i {
-            margin-right: 5px;
-        }
-        
-        .data-indicator.no-data {
-            color: var(--danger-color);
-        }
-        
-        /* Loading state for selects */
-        .select-wrapper.loading::after {
-            content: "";
-            border: 2px solid rgba(52, 152, 219, 0.3);
-            border-top: 2px solid var(--primary-color);
-            border-radius: 50%;
-            width: 15px;
-            height: 15px;
-            animation: spin 1s linear infinite;
-        }
-        
-        .select-wrapper.loading .custom-dropdown {
-            background-image: none;
-        }
+      }
+
+      /* Data availability indicator */
+      .data-indicator {
+        display: inline-flex;
+        align-items: center;
+        margin-top: 5px;
+        font-size: 12px;
+        color: var(--success-color);
+      }
+
+      .data-indicator i {
+        margin-right: 5px;
+      }
+
+      .data-indicator.no-data {
+        color: var(--danger-color);
+      }
+
+      /* Loading state for selects */
+      .select-wrapper.loading::after {
+        content: "";
+        border: 2px solid rgba(52, 152, 219, 0.3);
+        border-top: 2px solid var(--primary-color);
+        border-radius: 50%;
+        width: 15px;
+        height: 15px;
+        animation: spin 1s linear infinite;
+      }
+
+      .select-wrapper.loading .custom-dropdown {
+        background-image: none;
+      }
     </style>
-</head>
-<body>
-    {% include 'header.html' %}
-    {% include 'navbar.html' %}
+  </head>
+  <body>
+    {% include 'header.html' %} {% include 'navbar.html' %}
     <div class="app-container">
-        <header>
-            <div class="container-fluid">
-                <div class="row align-items-center">
-                    <div class="col-md-6">
-                        <div class="logo">
-                            <i class="fas fa-globe-asia"></i>
-                            <h3 class="m-0">India GIS Raster Data Viewer</h3>
-                        </div>
-                    </div>
-                    <div class="col-md-6 text-end">
-                        <span class="text-light">Advanced Geospatial Analysis Tool</span>
-                    </div>
-                </div>
+      <header>
+        <div class="container-fluid">
+          <div class="row align-items-center">
+            <div class="col-md-6">
+              <div class="logo">
+                <i class="fas fa-globe-asia"></i>
+                <h3 class="m-0">India GIS Raster Data Viewer</h3>
+              </div>
             </div>
-        </header>
-        
-        <div class="main-content">
-            <div class="content-wrapper">
-                <div class="sidebar" id="sidebar">
-                    <div class="sidebar-header">
-                        <h5 class="m-0">Control Panel</h5>
-                    </div>
-                    
-                    <div class="control-section">
-                        <div class="section-title">
-                            <i class="fas fa-database"></i> Data Selection
-                        </div>
-                        
-                        <!-- Category Selection -->
-                        <div class="select-wrapper" id="category-wrapper">
-                            <label>Category</label>
-                            <select class="custom-dropdown" id="category-dropdown">
-                                <option value="" disabled selected>Loading categories...</option>
-                            </select>
-                            <div class="data-indicator" id="category-indicator" style="display: none;">
-                                <i class="fas fa-check-circle"></i> Categories loaded
-                            </div>
-                        </div>
-                        
-                        <!-- Raster Files Selection -->
-                        <div class="select-wrapper disabled-section" id="raster-wrapper">
-                            <label>Raster File</label>
-                            <select class="custom-dropdown" id="raster-dropdown" disabled>
-                                <option value="" disabled selected>Select a category first</option>
-                            </select>
-                            <div class="data-indicator" id="raster-indicator" style="display: none;">
-                                <i class="fas fa-check-circle"></i> <span id="raster-count">0</span> files available
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="control-section">
-                        <div class="section-title">
-                            <i class="fas fa-layer-group"></i> Map Options
-                        </div>
-                        
-                        <div class="modern-dropdown" id="basemap-dropdown">
-                            <div class="dropdown-header">
-                                <div><i class="fas fa-map"></i> Base Map</div>
-                                <i class="fas fa-chevron-down"></i>
-                            </div>
-                            <div class="dropdown-content">
-                                <div class="dropdown-item" data-basemap="streets">
-                                    <i class="fas fa-road"></i> Streets
-                                </div>
-                                <div class="dropdown-item" data-basemap="satellite">
-                                    <i class="fas fa-satellite"></i> Satellite
-                                </div>
-                                <div class="dropdown-item" data-basemap="terrain">
-                                    <i class="fas fa-mountain"></i> Terrain
-                                </div>
-                                <div class="dropdown-item" data-basemap="hybrid">
-                                    <i class="fas fa-globe"></i> Hybrid
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="modern-dropdown mt-3" id="drawing-dropdown">
-                            <div class="dropdown-header">
-                                <div><i class="fas fa-pencil-alt"></i> Drawing Tools</div>
-                                <i class="fas fa-chevron-down"></i>
-                            </div>
-                            <div class="dropdown-content">
-                                <div class="dropdown-item" data-tool="point">
-                                    <i class="fas fa-map-marker-alt"></i> Add Point
-                                </div>
-                                <div class="dropdown-item" data-tool="line">
-                                    <i class="fas fa-slash"></i> Draw Line
-                                </div>
-                                <div class="dropdown-item" data-tool="polygon">
-                                    <i class="fas fa-draw-polygon"></i> Draw Polygon
-                                </div>
-                                <div class="dropdown-item" data-tool="measure">
-                                    <i class="fas fa-ruler"></i> Measure
-                                </div>
-                                <div class="dropdown-item" data-tool="clear">
-                                    <i class="fas fa-trash-alt"></i> Clear All
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="modern-dropdown mt-3" id="analysis-dropdown">
-                            <div class="dropdown-header">
-                                <div><i class="fas fa-chart-line"></i> Analysis Tools</div>
-                                <i class="fas fa-chevron-down"></i>
-                            </div>
-                            <div class="dropdown-content">
-                                <div class="dropdown-item" data-analysis="elevation">
-                                    <i class="fas fa-mountain"></i> Elevation Profile
-                                </div>
-                                <div class="dropdown-item" data-analysis="viewshed">
-                                    <i class="fas fa-eye"></i> Viewshed Analysis
-                                </div>
-                                <div class="dropdown-item" data-analysis="buffer">
-                                    <i class="fas fa-expand-alt"></i> Buffer Zone
-                                </div>
-                                <div class="dropdown-item" data-analysis="statistics">
-                                    <i class="fas fa-calculator"></i> Zonal Statistics
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="control-section">
-                        <div class="section-title">
-                            <i class="fas fa-sliders-h"></i> Display Settings
-                        </div>
-                        
-                        <div class="form-check form-switch mb-2">
-                            <input class="form-check-input" type="checkbox" id="grid-toggle" checked>
-                            <label class="form-check-label" for="grid-toggle">Coordinate Grid</label>
-                        </div>
-                        
-                        <div class="form-check form-switch mb-2">
-                            <input class="form-check-input" type="checkbox" id="legend-toggle" checked>
-                            <label class="form-check-label" for="legend-toggle">Show Legend</label>
-                        </div>
-                        
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="compass-toggle" checked>
-                            <label class="form-check-label" for="compass-toggle">Show Compass</label>
-                        </div>
-                    </div>
-                </div>
-                
-                <button class="toggle-sidebar" id="toggle-sidebar">
-                    <i class="fas fa-chevron-left" id="toggle-icon"></i>
-                </button>
-                
-                <div class="map-container">
-                    <div id="map"></div>
-                    
-                    <!-- Modern Compass HTML Start -->
-                    <div class="compass-container" id="compass">
-                        <div class="compass-rose">
-                            <div class="compass-ring"></div>
-                            <div class="compass-face"></div>
-                            <div class="compass-needle">
-                                <div class="needle-north"></div>
-                                <div class="needle-south"></div>
-                            </div>
-                            <div class="compass-center"></div>
-                            <div class="compass-cardinal-points">
-                                <span class="compass-n">N</span>
-                                <span class="compass-ne">NE</span>
-                                <span class="compass-e">E</span>
-                                <span class="compass-se">SE</span>
-                                <span class="compass-s">S</span>
-                                <span class="compass-sw">SW</span>
-                                <span class="compass-w">W</span>
-                                <span class="compass-nw">NW</span>
-                            </div>
-                            <div class="compass-degrees"></div>
-                        </div>
-                    </div>
-                    <!-- Modern Compass HTML End -->
-                    
-                    <div class="rotation-control" id="rotation-control">
-                        <i class="fas fa-sync-alt"></i>
-                    </div>
-                    
-                    <button class="download-btn" id="download-btn">
-                        <i class="fas fa-download"></i> Download Raster
-                    </button>
-                    
-                    <div class="map-controls">
-                        <button class="map-control-btn" id="zoom-in-btn" title="Zoom In">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                        <button class="map-control-btn" id="zoom-out-btn" title="Zoom Out">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button class="map-control-btn" id="home-btn" title="Default View">
-                            <i class="fas fa-home"></i>
-                        </button>
-                        <button class="map-control-btn pulse-btn" id="locate-btn" title="My Location">
-                            <i class="fas fa-location-arrow"></i>
-                        </button>
-                        <button class="map-control-btn" id="fullscreen-btn" title="Fullscreen">
-                            <i class="fas fa-expand"></i>
-                        </button>
-                    </div>
-                    
-                    <div class="info-panel">
-                        <div class="layer-badge" id="current-layer-display">No Data Loaded</div>
-                        <div>
-                            <small>Coordinates:</small>
-                            <div id="coordinates-display">0.00000, 0.00000</div>
-                        </div>
-                    </div>
-                    
-                    <div class="map-legend" id="map-legend">
-                        <div class="legend-title">Raster Legend</div>
-                        <div id="legend-content">
-                            <div class="legend-item">
-                                <div class="legend-color" style="background-color: #1a5276;"></div>
-                                <div>0 - 25</div>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-color" style="background-color: #2874a6;"></div>
-                                <div>25 - 50</div>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-color" style="background-color: #3498db;"></div>
-                                <div>50 - 75</div>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-color" style="background-color: #85c1e9;"></div>
-                                <div>75 - 100</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="data-tooltip" id="data-tooltip">Loading data...</div>
-                    
-                    <div class="coordinates-tooltip" id="coordinates-tooltip">
-                        Lat: 20.5937, Lng: 78.9629<br>
-                        <small>UTM: 43Q 791543 2278410</small>
-                    </div>
-                    
-                    <div class="loader" id="loader">
-                        <div class="d-flex align-items-center">
-                            <div class="spinner-border" role="status"></div>
-                            <span>Loading data...</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-md-6 text-end">
+              <span class="text-light">Advanced Geospatial Analysis Tool</span>
             </div>
+          </div>
         </div>
-        
-        <div class="notification" id="notification">
-            <div class="notification-header">
-                <i class="fas fa-check-circle notification-icon"></i>
-                <div class="notification-title">Success</div>
+      </header>
+
+      <div class="main-content">
+        <div class="content-wrapper">
+          <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+              <h5 class="m-0">Control Panel</h5>
             </div>
-            <div class="notification-body" id="notification-text">
-                Data loaded successfully.
+
+            <div class="control-section">
+              <div class="section-title">
+                <i class="fas fa-database"></i> Data Selection
+              </div>
+
+              <!-- Category Selection -->
+              <div class="select-wrapper" id="category-wrapper">
+                <label>Category</label>
+                <select class="custom-dropdown" id="category-dropdown">
+                  <option value="" disabled selected>
+                    Loading categories...
+                  </option>
+                </select>
+                <div
+                  class="data-indicator"
+                  id="category-indicator"
+                  style="display: none"
+                >
+                  <i class="fas fa-check-circle"></i> Categories loaded
+                </div>
+              </div>
+
+              <!-- Raster Files Selection -->
+              <div class="select-wrapper disabled-section" id="raster-wrapper">
+                <label>Raster File</label>
+                <select class="custom-dropdown" id="raster-dropdown" disabled>
+                  <option value="" disabled selected>
+                    Select a category first
+                  </option>
+                </select>
+                <div
+                  class="data-indicator"
+                  id="raster-indicator"
+                  style="display: none"
+                >
+                  <i class="fas fa-check-circle"></i>
+                  <span id="raster-count">0</span> files available
+                </div>
+              </div>
             </div>
+
+            <div class="control-section">
+              <div class="section-title">
+                <i class="fas fa-layer-group"></i> Map Options
+              </div>
+
+              <div class="modern-dropdown" id="basemap-dropdown">
+                <div class="dropdown-header">
+                  <div><i class="fas fa-map"></i> Base Map</div>
+                  <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="dropdown-content">
+                  <div class="dropdown-item" data-basemap="streets">
+                    <i class="fas fa-road"></i> Streets
+                  </div>
+                  <div class="dropdown-item" data-basemap="satellite">
+                    <i class="fas fa-satellite"></i> Satellite
+                  </div>
+                  <div class="dropdown-item" data-basemap="terrain">
+                    <i class="fas fa-mountain"></i> Terrain
+                  </div>
+                  <div class="dropdown-item" data-basemap="hybrid">
+                    <i class="fas fa-globe"></i> Hybrid
+                  </div>
+                </div>
+              </div>
+
+              <div class="modern-dropdown mt-3" id="drawing-dropdown">
+                <div class="dropdown-header">
+                  <div><i class="fas fa-pencil-alt"></i> Drawing Tools</div>
+                  <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="dropdown-content">
+                  <div class="dropdown-item" data-tool="point">
+                    <i class="fas fa-map-marker-alt"></i> Add Point
+                  </div>
+                  <div class="dropdown-item" data-tool="line">
+                    <i class="fas fa-slash"></i> Draw Line
+                  </div>
+                  <div class="dropdown-item" data-tool="polygon">
+                    <i class="fas fa-draw-polygon"></i> Draw Polygon
+                  </div>
+                  <div class="dropdown-item" data-tool="measure">
+                    <i class="fas fa-ruler"></i> Measure
+                  </div>
+                  <div class="dropdown-item" data-tool="clear">
+                    <i class="fas fa-trash-alt"></i> Clear All
+                  </div>
+                </div>
+              </div>
+
+              <div class="modern-dropdown mt-3" id="analysis-dropdown">
+                <div class="dropdown-header">
+                  <div><i class="fas fa-chart-line"></i> Analysis Tools</div>
+                  <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="dropdown-content">
+                  <div class="dropdown-item" data-analysis="elevation">
+                    <i class="fas fa-mountain"></i> Elevation Profile
+                  </div>
+                  <div class="dropdown-item" data-analysis="viewshed">
+                    <i class="fas fa-eye"></i> Viewshed Analysis
+                  </div>
+                  <div class="dropdown-item" data-analysis="buffer">
+                    <i class="fas fa-expand-alt"></i> Buffer Zone
+                  </div>
+                  <div class="dropdown-item" data-analysis="statistics">
+                    <i class="fas fa-calculator"></i> Zonal Statistics
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="control-section">
+              <div class="section-title">
+                <i class="fas fa-sliders-h"></i> Display Settings
+              </div>
+
+              <div class="form-check form-switch mb-2">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="grid-toggle"
+                  checked
+                />
+                <label class="form-check-label" for="grid-toggle"
+                  >Coordinate Grid</label
+                >
+              </div>
+
+              <div class="form-check form-switch mb-2">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="legend-toggle"
+                  checked
+                />
+                <label class="form-check-label" for="legend-toggle"
+                  >Show Legend</label
+                >
+              </div>
+
+              <div class="form-check form-switch">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="compass-toggle"
+                  checked
+                />
+                <label class="form-check-label" for="compass-toggle"
+                  >Show Compass</label
+                >
+              </div>
+            </div>
+          </div>
+
+          <button class="toggle-sidebar" id="toggle-sidebar">
+            <i class="fas fa-chevron-left" id="toggle-icon"></i>
+          </button>
+
+          <div class="map-container">
+            <div id="map"></div>
+
+            <!-- Modern Compass HTML Start -->
+            <div class="compass-container" id="compass">
+              <div class="compass-rose">
+                <div class="compass-ring"></div>
+                <div class="compass-face"></div>
+                <div class="compass-needle">
+                  <div class="needle-north"></div>
+                  <div class="needle-south"></div>
+                </div>
+                <div class="compass-center"></div>
+                <div class="compass-cardinal-points">
+                  <span class="compass-n">N</span>
+                  <span class="compass-ne">NE</span>
+                  <span class="compass-e">E</span>
+                  <span class="compass-se">SE</span>
+                  <span class="compass-s">S</span>
+                  <span class="compass-sw">SW</span>
+                  <span class="compass-w">W</span>
+                  <span class="compass-nw">NW</span>
+                </div>
+                <div class="compass-degrees"></div>
+              </div>
+            </div>
+            <!-- Modern Compass HTML End -->
+
+            <div class="rotation-control" id="rotation-control">
+              <i class="fas fa-sync-alt"></i>
+            </div>
+
+            <button class="download-btn" id="download-btn">
+              <i class="fas fa-download"></i> Download Raster
+            </button>
+
+            <div class="map-controls">
+              <button class="map-control-btn" id="zoom-in-btn" title="Zoom In">
+                <i class="fas fa-plus"></i>
+              </button>
+              <button
+                class="map-control-btn"
+                id="zoom-out-btn"
+                title="Zoom Out"
+              >
+                <i class="fas fa-minus"></i>
+              </button>
+              <button
+                class="map-control-btn"
+                id="home-btn"
+                title="Default View"
+              >
+                <i class="fas fa-home"></i>
+              </button>
+              <button
+                class="map-control-btn pulse-btn"
+                id="locate-btn"
+                title="My Location"
+              >
+                <i class="fas fa-location-arrow"></i>
+              </button>
+              <button
+                class="map-control-btn"
+                id="fullscreen-btn"
+                title="Fullscreen"
+              >
+                <i class="fas fa-expand"></i>
+              </button>
+            </div>
+
+            <div class="info-panel">
+              <div class="layer-badge" id="current-layer-display">
+                No Data Loaded
+              </div>
+              <div>
+                <small>Coordinates:</small>
+                <div id="coordinates-display">0.00000, 0.00000</div>
+              </div>
+            </div>
+
+            <div class="map-legend" id="map-legend">
+              <div class="legend-title">Raster Legend</div>
+              <div id="legend-content">
+                <div class="legend-item">
+                  <div
+                    class="legend-color"
+                    style="background-color: #1a5276"
+                  ></div>
+                  <div>0 - 25</div>
+                </div>
+                <div class="legend-item">
+                  <div
+                    class="legend-color"
+                    style="background-color: #2874a6"
+                  ></div>
+                  <div>25 - 50</div>
+                </div>
+                <div class="legend-item">
+                  <div
+                    class="legend-color"
+                    style="background-color: #3498db"
+                  ></div>
+                  <div>50 - 75</div>
+                </div>
+                <div class="legend-item">
+                  <div
+                    class="legend-color"
+                    style="background-color: #85c1e9"
+                  ></div>
+                  <div>75 - 100</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="data-tooltip" id="data-tooltip">Loading data...</div>
+
+            <div class="coordinates-tooltip" id="coordinates-tooltip">
+              Lat: 20.5937, Lng: 78.9629<br />
+              <small>UTM: 43Q 791543 2278410</small>
+            </div>
+
+            <div class="loader" id="loader">
+              <div class="d-flex align-items-center">
+                <div class="spinner-border" role="status"></div>
+                <span>Loading data...</span>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <div class="notification" id="notification">
+        <div class="notification-header">
+          <i class="fas fa-check-circle notification-icon"></i>
+          <div class="notification-title">Success</div>
+        </div>
+        <div class="notification-body" id="notification-text">
+          Data loaded successfully.
+        </div>
+      </div>
     </div>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
-    
+
     <script>
-        // Wait for DOM to be fully loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // India coordinates and constants
-            const INDIA_CENTER = [20.5937, 78.9629];
-            const INDIA_ZOOM = 5;
-            
-            // Initialize the map
-            const map = L.map('map', {
-                center: INDIA_CENTER,
-                zoom: INDIA_ZOOM,
-                minZoom: 4,
-                maxZoom: 18,
-                zoomControl: false // We'll add our own zoom controls
-            });
-            
-            // Base map layers
-            const streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                maxZoom: 19
-            }).addTo(map);
-            
-            const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-                maxZoom: 19
-            });
-            
-            const terrainLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-                attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
-                maxZoom: 17
-            });
-            
-            const hybridLayer = L.layerGroup([
-                L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-                    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-                    maxZoom: 19
-                }),
-                L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-labels/{z}/{x}/{y}{r}.png', {
-                    attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                    subdomains: 'abcd',
-                    maxZoom: 20,
-                    opacity: 0.7
-                })
-            ]);
-            
-            // Add scale control
-            L.control.scale({
-                imperial: false,
-                position: 'bottomright'
-            }).addTo(map);
-            
-            // Track state
-            let currentRasterLayer = null;
-            let gridLines = [];
-            let mapRotation = 0;
-            let currentCategory = null;
-            let currentRasterFile = null;
-            
-            // Drawing layer
-            const drawnItems = new L.FeatureGroup();
-            map.addLayer(drawnItems);
-            
-            // Initialize UI elements
-            const compassToggle = document.getElementById('compass-toggle');
-            const gridToggle = document.getElementById('grid-toggle');
-            const legendToggle = document.getElementById('legend-toggle');
-            const coordTooltip = document.getElementById('coordinates-tooltip');
-            const categoryDropdown = document.getElementById('category-dropdown');
-            const rasterDropdown = document.getElementById('raster-dropdown');
-            const rasterWrapper = document.getElementById('raster-wrapper');
-            
-            // Hide coordinate tooltip by default
-            coordTooltip.style.display = 'none';
-            
-            // Toggle UI elements
-            compassToggle.addEventListener('change', function() {
-                document.getElementById('compass').style.display = this.checked ? 'flex' : 'none';
-                document.getElementById('rotation-control').style.display = this.checked ? 'flex' : 'none';
-            });
-            
-            legendToggle.addEventListener('change', function() {
-                document.getElementById('map-legend').style.display = this.checked ? 'block' : 'none';
-            });
-            
-            gridToggle.addEventListener('change', function() {
-                if (this.checked) {
-                    addCoordinateGrid();
-                } else {
-                    gridLines.forEach(line => {
-                        if (map.hasLayer(line)) {
-                            map.removeLayer(line);
-                        }
-                    });
-                    gridLines = [];
-                }
-            });
-            
-            // Function to add coordinate grid lines
-            function addCoordinateGrid() {
-                // Clear previous grid lines
-                gridLines.forEach(line => {
-                    if (map.hasLayer(line)) {
-                        map.removeLayer(line);
-                    }
-                });
-                gridLines = [];
-                
-                // Latitude lines (every 5 degrees)
-                for (let lat = 5; lat <= 40; lat += 5) {
-                    const line = L.polyline([
-                        [lat, 65],
-                        [lat, 100]
-                    ], {
-                        color: '#3498db',
-                        weight: 1,
-                        opacity: 0.5,
-                        dashArray: '5,5'
-                    }).addTo(map);
-                    
-                    const label = L.marker([lat, 65], {
-                        icon: L.divIcon({
-                            className: 'coordinate-label',
-                            html: `${lat}°N`,
-                            iconSize: [40, 20],
-                            iconAnchor: [0, 10]
-                        })
-                    }).addTo(map);
-                    
-                    gridLines.push(line, label);
-                }
-                
-                // Longitude lines (every 5 degrees)
-                for (let lng = 65; lng <= 100; lng += 5) {
-                    const line = L.polyline([
-                        [5, lng],
-                        [40, lng]
-                    ], {
-                        color: '#3498db',
-                        weight: 1,
-                        opacity: 0.5,
-                        dashArray: '5,5'
-                    }).addTo(map);
-                    
-                    const label = L.marker([5, lng], {
-                        icon: L.divIcon({
-                            className: 'coordinate-label',
-                            html: `${lng}°E`,
-                            iconSize: [40, 20],
-                            iconAnchor: [20, -5]
-                        })
-                    }).addTo(map);
-                    
-                    gridLines.push(line, label);
-                }
+      // Wait for DOM to be fully loaded
+      document.addEventListener("DOMContentLoaded", function () {
+        // India coordinates and constants
+        const INDIA_CENTER = [20.5937, 78.9629];
+        const INDIA_ZOOM = 5;
+
+        // Initialize the map
+        const map = L.map("map", {
+          center: INDIA_CENTER,
+          zoom: INDIA_ZOOM,
+          minZoom: 4,
+          maxZoom: 18,
+          zoomControl: false, // We'll add our own zoom controls
+        });
+
+        // Base map layers
+        const streetLayer = L.tileLayer(
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          {
+            attribution:
+              '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 19,
+          }
+        ).addTo(map);
+
+        const satelliteLayer = L.tileLayer(
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+          {
+            attribution:
+              "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
+            maxZoom: 19,
+          }
+        );
+
+        const terrainLayer = L.tileLayer(
+          "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+          {
+            attribution:
+              'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
+            maxZoom: 17,
+          }
+        );
+
+        const hybridLayer = L.layerGroup([
+          L.tileLayer(
+            "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+            {
+              attribution:
+                "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
+              maxZoom: 19,
             }
-            
-            // Update legend with color scale
-            function updateLegend(category) {
-                const legendContent = document.getElementById('legend-content');
-                legendContent.innerHTML = '';
-                
-                // Generate color scale based on selected category
-                const colors = getColorScaleForCategory(category);
-                
-                // Add items to legend
-                colors.forEach((color, index) => {
-                    const value = (index * 25); // Example value range
-                    const legendItem = document.createElement('div');
-                    legendItem.className = 'legend-item';
-                    legendItem.innerHTML = `
+          ),
+          L.tileLayer(
+            "https://stamen-tiles-{s}.a.ssl.fastly.net/toner-labels/{z}/{x}/{y}{r}.png",
+            {
+              attribution:
+                'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+              subdomains: "abcd",
+              maxZoom: 20,
+              opacity: 0.7,
+            }
+          ),
+        ]);
+
+        // Add scale control
+        L.control
+          .scale({
+            imperial: false,
+            position: "bottomright",
+          })
+          .addTo(map);
+
+        // Track state
+        let currentRasterLayer = null;
+        let gridLines = [];
+        let mapRotation = 0;
+        let currentCategory = null;
+        let currentRasterFile = null;
+
+        // Drawing layer
+        const drawnItems = new L.FeatureGroup();
+        map.addLayer(drawnItems);
+
+        // Initialize UI elements
+        const compassToggle = document.getElementById("compass-toggle");
+        const gridToggle = document.getElementById("grid-toggle");
+        const legendToggle = document.getElementById("legend-toggle");
+        const coordTooltip = document.getElementById("coordinates-tooltip");
+        const categoryDropdown = document.getElementById("category-dropdown");
+        const rasterDropdown = document.getElementById("raster-dropdown");
+        const rasterWrapper = document.getElementById("raster-wrapper");
+
+        // Hide coordinate tooltip by default
+        coordTooltip.style.display = "none";
+
+        // Toggle UI elements
+        compassToggle.addEventListener("change", function () {
+          document.getElementById("compass").style.display = this.checked
+            ? "flex"
+            : "none";
+          document.getElementById("rotation-control").style.display = this
+            .checked
+            ? "flex"
+            : "none";
+        });
+
+        legendToggle.addEventListener("change", function () {
+          document.getElementById("map-legend").style.display = this.checked
+            ? "block"
+            : "none";
+        });
+
+        gridToggle.addEventListener("change", function () {
+          if (this.checked) {
+            addCoordinateGrid();
+          } else {
+            gridLines.forEach((line) => {
+              if (map.hasLayer(line)) {
+                map.removeLayer(line);
+              }
+            });
+            gridLines = [];
+          }
+        });
+
+        // Function to add coordinate grid lines
+        function addCoordinateGrid() {
+          // Clear previous grid lines
+          gridLines.forEach((line) => {
+            if (map.hasLayer(line)) {
+              map.removeLayer(line);
+            }
+          });
+          gridLines = [];
+
+          // Latitude lines (every 5 degrees)
+          for (let lat = 5; lat <= 40; lat += 5) {
+            const line = L.polyline(
+              [
+                [lat, 65],
+                [lat, 100],
+              ],
+              {
+                color: "#3498db",
+                weight: 1,
+                opacity: 0.5,
+                dashArray: "5,5",
+              }
+            ).addTo(map);
+
+            const label = L.marker([lat, 65], {
+              icon: L.divIcon({
+                className: "coordinate-label",
+                html: `${lat}°N`,
+                iconSize: [40, 20],
+                iconAnchor: [0, 10],
+              }),
+            }).addTo(map);
+
+            gridLines.push(line, label);
+          }
+
+          // Longitude lines (every 5 degrees)
+          for (let lng = 65; lng <= 100; lng += 5) {
+            const line = L.polyline(
+              [
+                [5, lng],
+                [40, lng],
+              ],
+              {
+                color: "#3498db",
+                weight: 1,
+                opacity: 0.5,
+                dashArray: "5,5",
+              }
+            ).addTo(map);
+
+            const label = L.marker([5, lng], {
+              icon: L.divIcon({
+                className: "coordinate-label",
+                html: `${lng}°E`,
+                iconSize: [40, 20],
+                iconAnchor: [20, -5],
+              }),
+            }).addTo(map);
+
+            gridLines.push(line, label);
+          }
+        }
+
+        // Update legend with color scale
+        function updateLegend(category) {
+          const legendContent = document.getElementById("legend-content");
+          legendContent.innerHTML = "";
+
+          // Generate color scale based on selected category
+          const colors = getColorScaleForCategory(category);
+
+          // Add items to legend
+          colors.forEach((color, index) => {
+            const value = index * 25; // Example value range
+            const legendItem = document.createElement("div");
+            legendItem.className = "legend-item";
+            legendItem.innerHTML = `
                         <div class="legend-color" style="background-color: ${color};"></div>
                         <div>${value} - ${value + 25}</div>
                     `;
-                    legendContent.appendChild(legendItem);
-                });
-                
-                // Add category to legend
-                const categoryItem = document.createElement('div');
-                categoryItem.className = 'legend-item';
-                categoryItem.innerHTML = `<div style="font-weight: 600; margin-top: 10px;">Category: ${category}</div>`;
-                legendContent.appendChild(categoryItem);
-                
-                // Adjust legend title based on category
-                document.querySelector('.legend-title').textContent = `${category} Legend`;
+            legendContent.appendChild(legendItem);
+          });
+
+          // Add category to legend
+          const categoryItem = document.createElement("div");
+          categoryItem.className = "legend-item";
+          categoryItem.innerHTML = `<div style="font-weight: 600; margin-top: 10px;">Category: ${category}</div>`;
+          legendContent.appendChild(categoryItem);
+
+          // Adjust legend title based on category
+          document.querySelector(
+            ".legend-title"
+          ).textContent = `${category} Legend`;
+        }
+
+        // Get color scale based on category
+        function getColorScaleForCategory(category) {
+          // Different color scales for different categories
+          switch (category) {
+            case "Rainfall":
+              return ["#d4f1f9", "#89c4f4", "#59abe3", "#2980b9", "#1a5276"];
+            case "Temperature":
+              return ["#f9e79f", "#f4d03f", "#f39c12", "#d35400", "#a93226"];
+            case "Population":
+              return ["#d5f5e3", "#7dcea0", "#27ae60", "#196f3d", "#145a32"];
+            case "Vegetation":
+              return ["#fcf3cf", "#a9dfbf", "#52be80", "#229954", "#145a32"];
+            case "Air Quality":
+              return ["#ebf5fb", "#aed6f1", "#5dade2", "#3498db", "#21618c"];
+            case "Water Resources":
+              return ["#eafaf1", "#abebc6", "#58d68d", "#2ecc71", "#186a3b"];
+            case "Soil Health":
+              return ["#fef9e7", "#f9e79f", "#f4d03f", "#f1c40f", "#b7950b"];
+            case "Land Use":
+              return ["#f4ecf7", "#d7bde2", "#a569bd", "#8e44ad", "#6c3483"];
+            default:
+              // Default blue scale for unknown categories
+              return ["#d4e6f1", "#7fb3d5", "#2980b9", "#1a5276", "#154360"];
+          }
+        }
+
+        // Get color for a raster value
+        function getColorForValue(value, category) {
+          const colors = getColorScaleForCategory(category);
+          const colorIndex = Math.min(4, Math.floor(value / 25));
+          return colors[colorIndex];
+        }
+
+        // Show notification
+        function showNotification(title, message, type = "success") {
+          const notification = document.getElementById("notification");
+          const notificationIcon =
+            notification.querySelector(".notification-icon");
+          const notificationTitle = notification.querySelector(
+            ".notification-title"
+          );
+          const notificationText = document.getElementById("notification-text");
+
+          // Set content
+          notificationTitle.textContent = title;
+          notificationText.textContent = message;
+
+          // Set icon based on type
+          if (type === "success") {
+            notificationIcon.className =
+              "fas fa-check-circle notification-icon";
+            notificationIcon.style.color = "#2ecc71";
+          } else if (type === "error") {
+            notificationIcon.className =
+              "fas fa-exclamation-circle notification-icon";
+            notificationIcon.style.color = "#e74c3c";
+          } else if (type === "info") {
+            notificationIcon.className = "fas fa-info-circle notification-icon";
+            notificationIcon.style.color = "#3498db";
+          }
+
+          // Show notification
+          notification.classList.add("active");
+
+          // Hide after 4 seconds
+          setTimeout(() => {
+            notification.classList.remove("active");
+          }, 4000);
+        }
+
+        // Function to fetch categories from the backend
+        async function fetchCategories() {
+          document.getElementById("loader").classList.add("active");
+          const categoryWrapper = document.getElementById("category-wrapper");
+          categoryWrapper.classList.add("loading");
+
+          try {
+            const response = await fetch("/visuall/categories/");
+
+            if (!response.ok) {
+              throw new Error(`API responded with status ${response.status}`);
             }
-            
-            // Get color scale based on category
-            function getColorScaleForCategory(category) {
-                // Different color scales for different categories
-                switch (category) {
-                    case 'Rainfall':
-                        return ['#d4f1f9', '#89c4f4', '#59abe3', '#2980b9', '#1a5276'];
-                    case 'Temperature':
-                        return ['#f9e79f', '#f4d03f', '#f39c12', '#d35400', '#a93226'];
-                    case 'Population':
-                        return ['#d5f5e3', '#7dcea0', '#27ae60', '#196f3d', '#145a32'];
-                    case 'Vegetation':
-                        return ['#fcf3cf', '#a9dfbf', '#52be80', '#229954', '#145a32'];
-                    case 'Air Quality':
-                        return ['#ebf5fb', '#aed6f1', '#5dade2', '#3498db', '#21618c'];
-                    case 'Water Resources':
-                        return ['#eafaf1', '#abebc6', '#58d68d', '#2ecc71', '#186a3b'];
-                    case 'Soil Health':
-                        return ['#fef9e7', '#f9e79f', '#f4d03f', '#f1c40f', '#b7950b'];
-                    case 'Land Use':
-                        return ['#f4ecf7', '#d7bde2', '#a569bd', '#8e44ad', '#6c3483'];
-                    default:
-                        // Default blue scale for unknown categories
-                        return ['#d4e6f1', '#7fb3d5', '#2980b9', '#1a5276', '#154360'];
+
+            // Parse the JSON response
+            const data = await response.json();
+            console.log("Backend categories response:", data);
+
+            // Clear existing options
+            categoryDropdown.innerHTML = "";
+
+            // Add default option
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "Select a category";
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            categoryDropdown.appendChild(defaultOption);
+
+            // Add categories from API response
+            data.forEach((category) => {
+              const option = document.createElement("option");
+              option.value = category;
+              option.textContent = category;
+              categoryDropdown.appendChild(option);
+            });
+
+            // Show indicator
+            document.getElementById("category-indicator").style.display =
+              "flex";
+
+            // Hide loader
+            document.getElementById("loader").classList.remove("active");
+            categoryWrapper.classList.remove("loading");
+
+            // Show success notification
+            showNotification(
+              "Success",
+              "Categories loaded successfully",
+              "success"
+            );
+          } catch (error) {
+            console.error("Error fetching categories:", error);
+
+            // Hide loader
+            document.getElementById("loader").classList.remove("active");
+            categoryWrapper.classList.remove("loading");
+
+            // Show error notification
+            showNotification(
+              "Error",
+              `Failed to load categories: ${error.message}`,
+              "error"
+            );
+
+            // Add some fallback categories for demo
+            const fallbackCategories = [
+              "Rainfall",
+              "Temperature",
+              "Population",
+              "Vegetation",
+              "Air Quality",
+              "Water Resources",
+              "Soil Health",
+              "Land Use",
+            ];
+
+            // Clear existing options
+            categoryDropdown.innerHTML = "";
+
+            // Add default option
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "Select a category";
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            categoryDropdown.appendChild(defaultOption);
+
+            // Add fallback categories
+            fallbackCategories.forEach((category) => {
+              const option = document.createElement("option");
+              option.value = category;
+              option.textContent = category;
+              categoryDropdown.appendChild(option);
+            });
+
+            // Show indicator with warning
+            const indicator = document.getElementById("category-indicator");
+            indicator.style.display = "flex";
+            indicator.innerHTML =
+              '<i class="fas fa-exclamation-triangle"></i> Using demo categories';
+            indicator.style.color = "#f39c12";
+          }
+        }
+
+        // Function to fetch raster files for a selected category
+        async function fetchRasterFiles(category) {
+          // Show loading state
+          const rasterWrapper = document.getElementById("raster-wrapper");
+          rasterWrapper.classList.add("loading");
+          rasterDropdown.disabled = true;
+
+          // Show loader
+          document.getElementById("loader").classList.add("active");
+
+          // Show data tooltip
+          const dataTooltip = document.getElementById("data-tooltip");
+          dataTooltip.textContent = `Loading raster files for ${category}...`;
+          dataTooltip.classList.add("show");
+
+          try {
+            // API endpoint for fetching raster files
+            const response = await fetch(`/visuall/raster_data/${category}/`);
+
+            if (!response.ok) {
+              throw new Error(`API responded with status ${response.status}`);
+            }
+
+            // Parse the response
+            const data = await response.json();
+            console.log("Raster files response:", data);
+
+            // Enable the dropdown
+            rasterDropdown.disabled = false;
+            rasterWrapper.classList.remove("disabled-section");
+
+            // Clear existing options
+            rasterDropdown.innerHTML = "";
+
+            // Add default option
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "Select a raster file";
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            rasterDropdown.appendChild(defaultOption);
+
+            // Add raster files from API response
+            data.forEach((file) => {
+              const option = document.createElement("option");
+              option.value = file.id || file;
+              option.textContent = file.name || file;
+              rasterDropdown.appendChild(option);
+            });
+
+            // Update indicator
+            const indicator = document.getElementById("raster-indicator");
+            indicator.style.display = "flex";
+            document.getElementById("raster-count").textContent = data.length;
+
+            // Hide loading states
+            document.getElementById("loader").classList.remove("active");
+            rasterWrapper.classList.remove("loading");
+            dataTooltip.classList.remove("show");
+
+            // Show success notification
+            showNotification(
+              "Files Available",
+              `${data.length} raster files found for ${category}`,
+              "success"
+            );
+          } catch (error) {
+            console.error("Error fetching raster files:", error);
+
+            // Hide loading states
+            document.getElementById("loader").classList.remove("active");
+            rasterWrapper.classList.remove("loading");
+            dataTooltip.classList.remove("show");
+
+            // Show error notification
+            showNotification(
+              "Error",
+              `Failed to load raster files: ${error.message}`,
+              "error"
+            );
+
+            // Enable the dropdown anyway for demo
+            rasterDropdown.disabled = false;
+            rasterWrapper.classList.remove("disabled-section");
+
+            // Clear existing options
+            rasterDropdown.innerHTML = "";
+
+            // Add default option
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "Select a raster file";
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            rasterDropdown.appendChild(defaultOption);
+
+            dummyFiles.forEach((file) => {
+              const option = document.createElement("option");
+              option.value = file;
+              option.textContent = file;
+              rasterDropdown.appendChild(option);
+            });
+
+            // Update indicator
+            const indicator = document.getElementById("raster-indicator");
+            indicator.style.display = "flex";
+            indicator.innerHTML =
+              '<i class="fas fa-exclamation-triangle"></i> Using sample files';
+            indicator.style.color = "#f39c12";
+            document.getElementById("raster-count").textContent =
+              dummyFiles.length;
+          }
+        }
+
+        // Function to fetch and display raster data
+        async function fetchRasterData(category, filename) {
+          // Show loader
+          document.getElementById("loader").classList.add("active");
+
+          // Show data tooltip
+          const dataTooltip = document.getElementById("data-tooltip");
+          dataTooltip.textContent = `Loading ${filename}...`;
+          dataTooltip.classList.add("show");
+
+          // Update UI
+          document.getElementById(
+            "current-layer-display"
+          ).textContent = `${category}: ${filename}`;
+
+          try {
+            // API endpoint for fetching raster data
+            const apiUrl = `/visuall/raster_file/${category}/${filename}/`;
+
+            const response = await fetch(apiUrl);
+
+            if (!response.ok) {
+              throw new Error(`API responded with status ${response.status}`);
+            }
+
+            // Parse the response
+            const data = await response.json();
+            console.log("Raster data response:", data);
+
+            // Validate required data
+            if (!data.bounds) {
+              throw new Error("Missing bounds in raster data response");
+            }
+
+            // Remove existing raster layer if any
+            if (currentRasterLayer) {
+              map.removeLayer(currentRasterLayer);
+            }
+
+            // Create and add the raster layer to the map
+            currentRasterLayer = createRasterLayer(data, category);
+            currentRasterLayer.addTo(map);
+
+            // Update state variables
+            currentCategory = category;
+            currentRasterFile = filename;
+
+            // Update legend
+            updateLegend(category);
+
+            // Hide data tooltip
+            dataTooltip.classList.remove("show");
+
+            // Hide loader
+            document.getElementById("loader").classList.remove("active");
+
+            // Show success notification
+            showNotification(
+              "Success",
+              `Raster data for ${filename} loaded successfully`,
+              "success"
+            );
+
+            // Create pulse effect
+            createPulseEffect();
+          } catch (error) {
+            console.error("Error fetching raster data:", error);
+
+            // Hide loader
+            document.getElementById("loader").classList.remove("active");
+
+            // Hide data tooltip
+            dataTooltip.classList.remove("show");
+
+            // Show error notification
+            showNotification(
+              "Error",
+              `Failed to load raster data: ${error.message}`,
+              "error"
+            );
+
+            // Fallback to demo mode
+            simulateRasterLayer(category, filename);
+          }
+        }
+
+        // Create a raster layer from the API response data
+        function createRasterLayer(data, category) {
+          // Check if we have our expected data format with bounds, data array, and dimensions
+          if (data.bounds && data.data && data.width && data.height) {
+            // Create bounds object for Leaflet from the coordinate pairs
+            const bounds = L.latLngBounds(
+              [data.bounds[0][0], data.bounds[0][1]], // Southwest corner
+              [data.bounds[1][0], data.bounds[1][1]] // Northeast corner
+            );
+
+            // Get min and max values for normalization
+            let min = Infinity;
+            let max = -Infinity;
+
+            // Scan the data array to find min/max values
+            for (let y = 0; y < data.height; y++) {
+              for (let x = 0; x < data.width; x++) {
+                const val = data.data[y][x];
+                if (val !== null && val !== undefined && !isNaN(val)) {
+                  min = Math.min(min, val);
+                  max = Math.max(max, val);
                 }
+              }
             }
-            
-            // Get color for a raster value
-            function getColorForValue(value, category) {
-                const colors = getColorScaleForCategory(category);
+
+            // Store min/max values for use in tile rendering
+            data.minValue = min;
+            data.maxValue = max;
+
+            // Get color scale based on category for efficient access during tile rendering
+            const colors = getColorScaleForCategory(category);
+            data.colorScale = colors;
+
+            // Create a custom GridLayer for efficient raster rendering
+            const RasterLayer = L.GridLayer.extend({
+              createTile: function (coords) {
+                const tile = document.createElement("canvas");
+                const size = this.getTileSize();
+                tile.width = size.x;
+                tile.height = size.y;
+
+                this._renderTile(tile, coords, data, category);
+                return tile;
+              },
+
+              _renderTile: function (canvas, coords, rasterData, category) {
+                const ctx = canvas.getContext("2d");
+                const tileSize = this.getTileSize();
+                const zoom = coords.z;
+
+                // Get the projected bounds of the tile
+                const nwPoint = coords.scaleBy(tileSize);
+                const sePoint = nwPoint.add(tileSize);
+
+                // Convert to latitude/longitude
+                const nw = this._map.unproject(nwPoint, zoom);
+                const se = this._map.unproject(sePoint, zoom);
+                const tileBounds = L.latLngBounds(nw, se);
+
+                // Check if this tile intersects with our raster bounds
+                const rasterBounds = L.latLngBounds(
+                  [rasterData.bounds[0][0], rasterData.bounds[0][1]],
+                  [rasterData.bounds[1][0], rasterData.bounds[1][1]]
+                );
+
+                if (!rasterBounds.intersects(tileBounds)) {
+                  return; // Tile doesn't intersect with our raster data
+                }
+
+                // Calculate raster data extents
+                const rasterLatRange =
+                  rasterData.bounds[1][0] - rasterData.bounds[0][0];
+                const rasterLngRange =
+                  rasterData.bounds[1][1] - rasterData.bounds[0][1];
+
+                // Calculate the overlapping area between tile and raster
+                const overlapBounds = L.latLngBounds(
+                  [
+                    Math.max(tileBounds.getSouth(), rasterBounds.getSouth()),
+                    Math.max(tileBounds.getWest(), rasterBounds.getWest()),
+                  ],
+                  [
+                    Math.min(tileBounds.getNorth(), rasterBounds.getNorth()),
+                    Math.min(tileBounds.getEast(), rasterBounds.getEast()),
+                  ]
+                );
+
+                // Create image data
+                const imageData = ctx.createImageData(tileSize.x, tileSize.y);
+
+                // For each pixel in the tile
+                for (let y = 0; y < tileSize.y; y++) {
+                  for (let x = 0; x < tileSize.x; x++) {
+                    // Convert pixel to lat/lng
+                    const pointNW = L.point(nwPoint.x + x, nwPoint.y + y);
+                    const latlng = this._map.unproject(pointNW, zoom);
+
+                    // Skip pixels outside our raster bounds
+                    if (!rasterBounds.contains(latlng)) {
+                      // Set transparent pixel
+                      const i = (y * tileSize.x + x) * 4;
+                      imageData.data[i + 3] = 0;
+                      continue;
+                    }
+
+                    // Calculate the position in the raster data array
+                    const rasterX = Math.floor(
+                      ((latlng.lng - rasterData.bounds[0][1]) /
+                        rasterLngRange) *
+                        rasterData.width
+                    );
+                    const rasterY = Math.floor(
+                      ((rasterData.bounds[1][0] - latlng.lat) /
+                        rasterLatRange) *
+                        rasterData.height
+                    );
+
+                    // Boundary checks
+                    if (
+                      rasterX < 0 ||
+                      rasterX >= rasterData.width ||
+                      rasterY < 0 ||
+                      rasterY >= rasterData.height
+                    ) {
+                      // Set transparent pixel
+                      const i = (y * tileSize.x + x) * 4;
+                      imageData.data[i + 3] = 0;
+                      continue;
+                    }
+
+                    // Get the value from our raster data
+                    const value = rasterData.data[rasterY][rasterX];
+
+                    // Set the pixel color
+                    const i = (y * tileSize.x + x) * 4;
+
+                    if (value === null || value === undefined || isNaN(value)) {
+                      // Set transparent pixel for no data
+                      imageData.data[i + 3] = 0;
+                    } else {
+                      // Normalize value between 0-100
+                      const normalized = Math.min(
+                        100,
+                        Math.max(
+                          0,
+                          ((value - rasterData.minValue) /
+                            (rasterData.maxValue - rasterData.minValue)) *
+                            100
+                        )
+                      );
+
+                      // Get color for this value
+                      const colorIndex = Math.min(
+                        4,
+                        Math.floor(normalized / 25)
+                      );
+                      const color = hexToRgb(rasterData.colorScale[colorIndex]);
+
+                      // Set RGBA values
+                      imageData.data[i] = color.r;
+                      imageData.data[i + 1] = color.g;
+                      imageData.data[i + 2] = color.b;
+                      imageData.data[i + 3] = 200; // Semi-transparent
+                    }
+                  }
+                }
+
+                // Put image data on canvas
+                ctx.putImageData(imageData, 0, 0);
+              },
+            });
+
+            return new RasterLayer({
+              attribution: `${category} raster data`,
+              minZoom: 5,
+              maxZoom: 18,
+              tileSize: 256,
+            });
+          }
+
+          // Fallback to image overlay if we have a file_url but not the data array
+          if (data.bounds && data.file_url) {
+            const bounds = L.latLngBounds(
+              [data.bounds[0][0], data.bounds[0][1]],
+              [data.bounds[1][0], data.bounds[1][1]]
+            );
+
+            return L.imageOverlay(data.file_url, bounds, {
+              opacity: 0.7,
+              attribution: `India Raster Data - ${category}`,
+            });
+          }
+
+          // Fallback to simulation if data format is not recognized
+          console.warn("Falling back to simulated raster data");
+          return simulateRasterLayer(category);
+        }
+        // Helper function to convert hex color to RGB
+        function hexToRgb(hex) {
+          if (!hex || typeof hex !== "string") {
+            return { r: 0, g: 0, b: 0 }; // Default to black if hex is invalid
+          }
+
+          // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+          const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+          hex = hex.replace(shorthandRegex, function (m, r, g, b) {
+            return r + r + g + g + b + b;
+          });
+
+          const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+          return result
+            ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16),
+              }
+            : { r: 0, g: 0, b: 0 };
+        }
+        // Simulate a raster layer for demo or fallback purposes
+        function simulateRasterLayer(category, filename) {
+          // Create a simple grid overlay for demonstration
+          const colorScale = getColorScaleForCategory(category);
+          const gridSize = 0.5; // Grid cell size in degrees
+          const features = [];
+
+          // Generate a grid covering India
+          for (let lat = 6; lat <= 37; lat += gridSize) {
+            for (let lng = 68; lng <= 97; lng += gridSize) {
+              // Skip cells outside approximate India boundary (simplified)
+              if (!isInIndia(lat, lng)) continue;
+
+              // Generate a random value based on category
+              let value;
+              if (category === "Rainfall") {
+                value = Math.sin(lat * 0.1) * Math.cos(lng * 0.1) * 50 + 50;
+              } else if (category === "Temperature") {
+                value = Math.cos(lat * 0.1) * Math.sin(lng * 0.1) * 40 + 60;
+              } else if (category === "Population") {
+                value =
+                  (40 - Math.abs(lat - 23)) * (Math.random() * 0.5 + 0.75);
+              } else if (category === "Vegetation") {
+                value = Math.sin(lat * 0.15) * Math.cos(lng * 0.15) * 30 + 60;
+              } else if (category === "Air Quality") {
+                value =
+                  100 - (Math.sin(lat * 0.2) * Math.cos(lng * 0.2) * 30 + 50);
+              } else if (category === "Water Resources") {
+                value = Math.cos(lat * 0.12) * Math.sin(lng * 0.12) * 45 + 55;
+              } else if (category === "Soil Health") {
+                value = Math.sin(lat * 0.08) * Math.cos(lng * 0.08) * 40 + 60;
+              } else if (category === "Land Use") {
+                value = Math.cos(lat * 0.14) * Math.sin(lng * 0.14) * 35 + 65;
+              } else {
+                // Default pattern for other categories
+                value = Math.sin(lat * 0.2) * Math.cos(lng * 0.2) * 50 + 50;
+              }
+
+              // Modify pattern based on filename to show different patterns for different files
+              if (filename && filename.includes("2020")) {
+                value = value * 0.8;
+              } else if (filename && filename.includes("2021")) {
+                value = value * 0.9;
+              } else if (filename && filename.includes("2022")) {
+                value = value * 1.1;
+              } else if (filename && filename.includes("2023")) {
+                value = value * 1.2;
+              } else if (filename && filename.includes("mean")) {
+                // Smoother pattern for mean data
+                value = Math.cos(lat * 0.05) * Math.sin(lng * 0.05) * 40 + 60;
+              }
+
+              value = Math.max(0, Math.min(100, value));
+
+              features.push({
+                type: "Feature",
+                properties: {
+                  value: value,
+                  filename: filename || "simulated",
+                },
+                geometry: {
+                  type: "Polygon",
+                  coordinates: [
+                    [
+                      [lng, lat],
+                      [lng + gridSize, lat],
+                      [lng + gridSize, lat + gridSize],
+                      [lng, lat + gridSize],
+                      [lng, lat],
+                    ],
+                  ],
+                },
+              });
+            }
+          }
+
+          // Update UI
+          document.getElementById(
+            "current-layer-display"
+          ).textContent = `${category}: ${filename || "Simulated Data"}`;
+
+          // Update state variables
+          currentCategory = category;
+          currentRasterFile = filename || "simulated";
+
+          // Update legend
+          updateLegend(category);
+
+          // Create GeoJSON layer
+          const layer = L.geoJSON(
+            {
+              type: "FeatureCollection",
+              features: features,
+            },
+            {
+              style: function (feature) {
+                const value = feature.properties.value;
                 const colorIndex = Math.min(4, Math.floor(value / 25));
-                return colors[colorIndex];
+                return {
+                  fillColor: colorScale[colorIndex],
+                  weight: 0,
+                  opacity: 1,
+                  color: "transparent",
+                  fillOpacity: 0.7,
+                };
+              },
+              onEachFeature: function (feature, layer) {
+                layer.bindPopup(
+                  `${category} Value: ${feature.properties.value.toFixed(
+                    2
+                  )}<br>File: ${feature.properties.filename}`
+                );
+              },
             }
-            
+          );
+
+          // Remove existing layer if any
+          if (currentRasterLayer) {
+            map.removeLayer(currentRasterLayer);
+          }
+
+          // Add new layer to map
+          currentRasterLayer = layer;
+          currentRasterLayer.addTo(map);
+
+          return layer;
+        }
+
+        // Helper function to check if a point is roughly within India's boundaries
+        function isInIndia(lat, lng) {
+          // This is a very rough approximation of India's shape
+          if (lat < 6 || lat > 37 || lng < 68 || lng > 97) return false;
+
+          // Exclude obvious areas outside India (Pakistan, Bangladesh, etc.)
+          if (lat > 32 && lng < 76) return false; // Parts of Pakistan
+          if (lat < 8 && lng > 77) return false; // Parts of Indian Ocean
+
+          return true;
+        }
+
+        // Create pulse effect for new raster data
+        function createPulseEffect() {
+          const pulseContainer = document.createElement("div");
+          pulseContainer.className = "pulse-container";
+          pulseContainer.style.position = "absolute";
+          pulseContainer.style.top = "50%";
+          pulseContainer.style.left = "50%";
+          pulseContainer.style.transform = "translate(-50%, -50%)";
+          pulseContainer.style.zIndex = "800";
+
+          const pulse = document.createElement("div");
+          pulse.className = "pulse";
+          pulse.style.width = "300px";
+          pulse.style.height = "300px";
+          pulse.style.borderRadius = "50%";
+          pulse.style.background = "rgba(52, 152, 219, 0.3)";
+          pulse.style.animation = "pulse 1.5s ease-out";
+          pulse.style.position = "absolute";
+          pulse.style.opacity = "0";
+
+          pulseContainer.appendChild(pulse);
+          document.querySelector(".map-container").appendChild(pulseContainer);
+
+          // Remove after animation
+          setTimeout(() => {
+            if (
+              document.querySelector(".map-container").contains(pulseContainer)
+            ) {
+              document
+                .querySelector(".map-container")
+                .removeChild(pulseContainer);
+            }
+          }, 1500);
+        }
+
+        // Category dropdown change event
+        categoryDropdown.addEventListener("change", function (e) {
+          const category = e.target.value;
+          if (category) {
+            currentCategory = category;
+            fetchRasterFiles(category);
+
+            // Reset raster dropdown
+            rasterDropdown.innerHTML =
+              '<option value="" disabled selected>Loading raster files...</option>';
+
             // Show notification
-            function showNotification(title, message, type = 'success') {
-                const notification = document.getElementById('notification');
-                const notificationIcon = notification.querySelector('.notification-icon');
-                const notificationTitle = notification.querySelector('.notification-title');
-                const notificationText = document.getElementById('notification-text');
-                
-                // Set content
-                notificationTitle.textContent = title;
-                notificationText.textContent = message;
-                
-                // Set icon based on type
-                if (type === 'success') {
-                    notificationIcon.className = 'fas fa-check-circle notification-icon';
-                    notificationIcon.style.color = '#2ecc71';
-                } else if (type === 'error') {
-                    notificationIcon.className = 'fas fa-exclamation-circle notification-icon';
-                    notificationIcon.style.color = '#e74c3c';
-                } else if (type === 'info') {
-                    notificationIcon.className = 'fas fa-info-circle notification-icon';
-                    notificationIcon.style.color = '#3498db';
-                }
-                
-                // Show notification
-                notification.classList.add('active');
-                
-                // Hide after 4 seconds
-                setTimeout(() => {
-                    notification.classList.remove('active');
-                }, 4000);
-            }
-            
-            // Function to fetch categories from the backend
-            async function fetchCategories() {
-                document.getElementById('loader').classList.add('active');
-                const categoryWrapper = document.getElementById('category-wrapper');
-                categoryWrapper.classList.add('loading');
-                
-                try {
-                    const response = await fetch("/visuall/categories/");
-                    
-                    if (!response.ok) {
-                        throw new Error(`API responded with status ${response.status}`);
-                    }
-                    
-                    // Parse the JSON response
-                    const data = await response.json();
-                    console.log("Backend categories response:", data);
-                    
-                    // Clear existing options
-                    categoryDropdown.innerHTML = '';
-                    
-                    // Add default option
-                    const defaultOption = document.createElement('option');
-                    defaultOption.value = '';
-                    defaultOption.textContent = 'Select a category';
-                    defaultOption.disabled = true;
-                    defaultOption.selected = true;
-                    categoryDropdown.appendChild(defaultOption);
-                    
-                    // Add categories from API response
-                    data.forEach(category => {
-                        const option = document.createElement('option');
-                        option.value = category;
-                        option.textContent = category;
-                        categoryDropdown.appendChild(option);
-                    });
-                    
-                    // Show indicator
-                    document.getElementById('category-indicator').style.display = 'flex';
-                    
-                    // Hide loader
-                    document.getElementById('loader').classList.remove('active');
-                    categoryWrapper.classList.remove('loading');
-                    
-                    // Show success notification
-                    showNotification('Success', 'Categories loaded successfully', 'success');
-                    
-                } catch (error) {
-                    console.error('Error fetching categories:', error);
-                    
-                    // Hide loader
-                    document.getElementById('loader').classList.remove('active');
-                    categoryWrapper.classList.remove('loading');
-                    
-                    // Show error notification
-                    showNotification('Error', `Failed to load categories: ${error.message}`, 'error');
-                    
-                    // Add some fallback categories for demo
-                    const fallbackCategories = [
-                        'Rainfall', 'Temperature', 'Population', 'Vegetation', 
-                        'Air Quality', 'Water Resources', 'Soil Health', 'Land Use'
-                    ];
-                    
-                    // Clear existing options
-                    categoryDropdown.innerHTML = '';
-                    
-                    // Add default option
-                    const defaultOption = document.createElement('option');
-                    defaultOption.value = '';
-                    defaultOption.textContent = 'Select a category';
-                    defaultOption.disabled = true;
-                    defaultOption.selected = true;
-                    categoryDropdown.appendChild(defaultOption);
-                    
-                    // Add fallback categories
-                    fallbackCategories.forEach(category => {
-                        const option = document.createElement('option');
-                        option.value = category;
-                        option.textContent = category;
-                        categoryDropdown.appendChild(option);
-                    });
-                    
-                    // Show indicator with warning
-                    const indicator = document.getElementById('category-indicator');
-                    indicator.style.display = 'flex';
-                    indicator.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Using demo categories';
-                    indicator.style.color = '#f39c12';
-                }
-            }
-            
-            // Function to fetch raster files for a selected category
-            async function fetchRasterFiles(category) {
-                // Show loading state
-                const rasterWrapper = document.getElementById('raster-wrapper');
-                rasterWrapper.classList.add('loading');
-                rasterDropdown.disabled = true;
-                
-                // Show loader
-                document.getElementById('loader').classList.add('active');
-                
-                // Show data tooltip
-                const dataTooltip = document.getElementById('data-tooltip');
-                dataTooltip.textContent = `Loading raster files for ${category}...`;
-                dataTooltip.classList.add('show');
-                
-                try {
-                    // API endpoint for fetching raster files
-                    const response = await fetch(`/visuall/raster_data/${category}/`);
-                    
-                    if (!response.ok) {
-                        throw new Error(`API responded with status ${response.status}`);
-                    }
-                    
-                    // Parse the response
-                    const data = await response.json();
-                    console.log("Raster files response:", data);
-                    
-                    // Enable the dropdown
-                    rasterDropdown.disabled = false;
-                    rasterWrapper.classList.remove('disabled-section');
-                    
-                    // Clear existing options
-                    rasterDropdown.innerHTML = '';
-                    
-                    // Add default option
-                    const defaultOption = document.createElement('option');
-                    defaultOption.value = '';
-                    defaultOption.textContent = 'Select a raster file';
-                    defaultOption.disabled = true;
-                    defaultOption.selected = true;
-                    rasterDropdown.appendChild(defaultOption);
-                    
-                    // Add raster files from API response
-                    data.forEach(file => {
-                        const option = document.createElement('option');
-                        option.value = file.id || file;
-                        option.textContent = file.name || file;
-                        rasterDropdown.appendChild(option);
-                    });
-                    
-                    // Update indicator
-                    const indicator = document.getElementById('raster-indicator');
-                    indicator.style.display = 'flex';
-                    document.getElementById('raster-count').textContent = data.length;
-                    
-                    // Hide loading states
-                    document.getElementById('loader').classList.remove('active');
-                    rasterWrapper.classList.remove('loading');
-                    dataTooltip.classList.remove('show');
-                    
-                    // Show success notification
-                    showNotification('Files Available', `${data.length} raster files found for ${category}`, 'success');
-                    
-                } catch (error) {
-                    console.error('Error fetching raster files:', error);
-                    
-                    // Hide loading states
-                    document.getElementById('loader').classList.remove('active');
-                    rasterWrapper.classList.remove('loading');
-                    dataTooltip.classList.remove('show');
-                    
-                    // Show error notification
-                    showNotification('Error', `Failed to load raster files: ${error.message}`, 'error');
-                    
-                    // Enable the dropdown anyway for demo
-                    rasterDropdown.disabled = false;
-                    rasterWrapper.classList.remove('disabled-section');
-                    
-                    // Clear existing options
-                    rasterDropdown.innerHTML = '';
-                    
-                    // Add default option
-                    const defaultOption = document.createElement('option');
-                    defaultOption.value = '';
-                    defaultOption.textContent = 'Select a raster file';
-                    defaultOption.disabled = true;
-                    defaultOption.selected = true;
-                    rasterDropdown.appendChild(defaultOption);
-                    
-                    // Add some dummy files for demo
-                    const dummyFiles = [
-                        `${category}_2020.tif`, 
-                        `${category}_2021.tif`, 
-                        `${category}_2022.tif`, 
-                        `${category}_2023.tif`,
-                        `${category}_annual_mean.tif`
-                    ];
-                    
-                    dummyFiles.forEach(file => {
-                        const option = document.createElement('option');
-                        option.value = file;
-                        option.textContent = file;
-                        rasterDropdown.appendChild(option);
-                    });
-                    
-                    // Update indicator
-                    const indicator = document.getElementById('raster-indicator');
-                    indicator.style.display = 'flex';
-                    indicator.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Using sample files';
-                    indicator.style.color = '#f39c12';
-                    document.getElementById('raster-count').textContent = dummyFiles.length;
-                }
-            }
-            
-            // Function to fetch and display raster data
-            async function fetchRasterData(category, filename) {
-                // Show loader
-                document.getElementById('loader').classList.add('active');
-                
-                // Show data tooltip
-                const dataTooltip = document.getElementById('data-tooltip');
-                dataTooltip.textContent = `Loading ${filename}...`;
-                dataTooltip.classList.add('show');
-                
-                // Update UI
-                document.getElementById('current-layer-display').textContent = `${category}: ${filename}`;
-                
-                // Center map on India
-                map.setView(INDIA_CENTER, INDIA_ZOOM);
-                
-                // API endpoint for fetching raster data
-                const apiUrl = `/visuall/raster_data/${category}/${filename}/`;
-                
-                try {
-                    const response = await fetch(apiUrl);
-                    
-                    if (!response.ok) {
-                        throw new Error(`API responded with status ${response.status}`);
-                    }
-                    
-                    // Parse the response
-                    const data = await response.json();
-                    console.log("Raster data response:", data);
-                    
-                    // Remove existing raster layer if any
-                    if (currentRasterLayer) {
-                        map.removeLayer(currentRasterLayer);
-                    }
-                    
-                    // Create and add the raster layer to the map
-                    currentRasterLayer = createRasterLayer(data, category);
-                    currentRasterLayer.addTo(map);
-                    
-                    // Update state variables
-                    currentCategory = category;
-                    currentRasterFile = filename;
-                    
-                    // Hide data tooltip
-                    dataTooltip.classList.remove('show');
-                    
-                    // Update legend
-                    updateLegend(category);
-                    
-                    // Clear previous grid lines
-                    if (gridToggle.checked) {
-                        addCoordinateGrid();
-                    }
-                    
-                    // Hide loader
-                    document.getElementById('loader').classList.remove('active');
-                    
-                    // Show success notification
-                    showNotification('Success', `Raster data for ${filename} loaded successfully`, 'success');
-                    
-                    // Create pulse effect
-                    createPulseEffect();
-                } catch (error) {
-                    console.error('Error fetching raster data:', error);
-                    
-                    // Hide loader
-                    document.getElementById('loader').classList.remove('active');
-                    
-                    // Hide data tooltip
-                    dataTooltip.classList.remove('show');
-                    
-                    // Show error notification
-                    showNotification('Error', `Failed to load raster data: ${error.message}`, 'error');
-                    
-                    // Fallback to demo mode
-                    simulateRasterLayer(category, filename);
-                }
-            }
-            
-            // Create a raster layer from the API response data
-            function createRasterLayer(data, category) {
-                // The implementation depends on the format of your raster data
-                // Here are several common approaches:
-                
-                // Option 1: If the API returns GeoJSON with raster values
-                if (data.type === 'FeatureCollection') {
-                    return L.geoJSON(data, {
-                        style: function(feature) {
-                            // Style based on raster value
-                            const value = feature.properties.value;
-                            return {
-                                fillColor: getColorForValue(value, category),
-                                weight: 0,
-                                opacity: 1,
-                                color: 'transparent',
-                                fillOpacity: 0.7
-                            };
-                        },
-                        onEachFeature: function(feature, layer) {
-                            // Add popup with value information
-                            layer.bindPopup(`Value: ${feature.properties.value}`);
-                        }
-                    });
-                }
-                
-                // Option 2: If the API returns a TileLayer URL
-                if (data.tileUrl) {
-                    return L.tileLayer(data.tileUrl, {
-                        opacity: 0.7,
-                        attribution: `India Raster Data - ${category}`
-                    });
-                }
-                
-                // Option 3: If the API returns an image URL (for ImageOverlay)
-                if (data.imageUrl) {
-                    // Define the image bounds (corners of the image in lat/lng)
-                    const bounds = L.latLngBounds([
-                        [data.bounds.south, data.bounds.west],
-                        [data.bounds.north, data.bounds.east]
-                    ]);
-                    
-                    return L.imageOverlay(data.imageUrl, bounds, {
-                        opacity: 0.7,
-                        attribution: `India Raster Data - ${category}`
-                    });
-                }
-                
-                // Option 4: If the API returns a WMS service URL
-                if (data.wmsUrl) {
-                    return L.tileLayer.wms(data.wmsUrl, {
-                        layers: data.layers || 'india_raster',
-                        format: 'image/png',
-                        transparent: true,
-                        version: '1.1.0',
-                        attribution: `India Raster Data - ${category}`
-                    });
-                }
-                
-                // Fallback to simulation if data format is not recognized
-                return simulateRasterLayer(category);
-            }
-            
-            // Simulate a raster layer for demo or fallback purposes
-            function simulateRasterLayer(category, filename) {
-                // Create a simple grid overlay for demonstration
-                const colorScale = getColorScaleForCategory(category);
-                const gridSize = 0.5; // Grid cell size in degrees
-                const features = [];
-                
-                // Generate a grid covering India
-                for (let lat = 6; lat <= 37; lat += gridSize) {
-                    for (let lng = 68; lng <= 97; lng += gridSize) {
-                        // Skip cells outside approximate India boundary (simplified)
-                        if (!isInIndia(lat, lng)) continue;
-                        
-                        // Generate a random value based on category
-                        let value;
-                        if (category === 'Rainfall') {
-                            value = Math.sin(lat * 0.1) * Math.cos(lng * 0.1) * 50 + 50;
-                        } else if (category === 'Temperature') {
-                            value = Math.cos(lat * 0.1) * Math.sin(lng * 0.1) * 40 + 60;
-                        } else if (category === 'Population') {
-                            value = (40 - Math.abs(lat - 23)) * (Math.random() * 0.5 + 0.75);
-                        } else if (category === 'Vegetation') {
-                            value = Math.sin(lat * 0.15) * Math.cos(lng * 0.15) * 30 + 60;
-                        } else if (category === 'Air Quality') {
-                            value = 100 - (Math.sin(lat * 0.2) * Math.cos(lng * 0.2) * 30 + 50);
-                        } else if (category === 'Water Resources') {
-                            value = Math.cos(lat * 0.12) * Math.sin(lng * 0.12) * 45 + 55;
-                        } else if (category === 'Soil Health') {
-                            value = Math.sin(lat * 0.08) * Math.cos(lng * 0.08) * 40 + 60;
-                        } else if (category === 'Land Use') {
-                            value = Math.cos(lat * 0.14) * Math.sin(lng * 0.14) * 35 + 65;
-                        } else {
-                            // Default pattern for other categories
-                            value = Math.sin(lat * 0.2) * Math.cos(lng * 0.2) * 50 + 50;
-                        }
-                        
-                        // Modify pattern based on filename to show different patterns for different files
-                        if (filename && filename.includes('2020')) {
-                            value = value * 0.8;
-                        } else if (filename && filename.includes('2021')) {
-                            value = value * 0.9;
-                        } else if (filename && filename.includes('2022')) {
-                            value = value * 1.1;
-                        } else if (filename && filename.includes('2023')) {
-                            value = value * 1.2;
-                        } else if (filename && filename.includes('mean')) {
-                            // Smoother pattern for mean data
-                            value = Math.cos(lat * 0.05) * Math.sin(lng * 0.05) * 40 + 60;
-                        }
-                        
-                        value = Math.max(0, Math.min(100, value));
-                        
-                        features.push({
-                            type: 'Feature',
-                            properties: {
-                                value: value,
-                                filename: filename || 'simulated'
-                            },
-                            geometry: {
-                                type: 'Polygon',
-                                coordinates: [
-                                    [
-                                        [lng, lat],
-                                        [lng + gridSize, lat],
-                                        [lng + gridSize, lat + gridSize],
-                                        [lng, lat + gridSize],
-                                        [lng, lat]
-                                    ]
-                                ]
-                            }
-                        });
-                    }
-                }
-                
-                // Update UI
-                document.getElementById('current-layer-display').textContent = `${category}: ${filename || 'Simulated Data'}`;
-                
-                // Update state variables
-                currentCategory = category;
-                currentRasterFile = filename || 'simulated';
-                
-                // Update legend
-                updateLegend(category);
-                
-                // Create GeoJSON layer
-                const layer = L.geoJSON({
-                    type: 'FeatureCollection',
-                    features: features
-                }, {
-                    style: function(feature) {
-                        const value = feature.properties.value;
-                        const colorIndex = Math.min(4, Math.floor(value / 25));
-                        return {
-                            fillColor: colorScale[colorIndex],
-                            weight: 0,
-                            opacity: 1,
-                            color: 'transparent',
-                            fillOpacity: 0.7
-                        };
-                    },
-                    onEachFeature: function(feature, layer) {
-                        layer.bindPopup(`${category} Value: ${feature.properties.value.toFixed(2)}<br>File: ${feature.properties.filename}`);
-                    }
-                });
-                
-                // Remove existing layer if any
-                if (currentRasterLayer) {
-                    map.removeLayer(currentRasterLayer);
-                }
-                
-                // Add new layer to map
-                currentRasterLayer = layer;
-                currentRasterLayer.addTo(map);
-                
-                return layer;
-            }
-            
-            // Helper function to check if a point is roughly within India's boundaries
-            function isInIndia(lat, lng) {
-                // This is a very rough approximation of India's shape
-                if (lat < 6 || lat > 37 || lng < 68 || lng > 97) return false;
-                
-                // Exclude obvious areas outside India (Pakistan, Bangladesh, etc.)
-                if (lat > 32 && lng < 76) return false; // Parts of Pakistan
-                if (lat < 8 && lng > 77) return false; // Parts of Indian Ocean
-                
-                return true;
-            }
-            
-            // Create pulse effect for new raster data
-            function createPulseEffect() {
-                const pulseContainer = document.createElement('div');
-                pulseContainer.className = 'pulse-container';
-                pulseContainer.style.position = 'absolute';
-                pulseContainer.style.top = '50%';
-                pulseContainer.style.left = '50%';
-                pulseContainer.style.transform = 'translate(-50%, -50%)';
-                pulseContainer.style.zIndex = '800';
-                
-                const pulse = document.createElement('div');
-                pulse.className = 'pulse';
-                pulse.style.width = '300px';
-                pulse.style.height = '300px';
-                pulse.style.borderRadius = '50%';
-                pulse.style.background = 'rgba(52, 152, 219, 0.3)';
-                pulse.style.animation = 'pulse 1.5s ease-out';
-                pulse.style.position = 'absolute';
-                pulse.style.opacity = '0';
-                
-                pulseContainer.appendChild(pulse);
-                document.querySelector('.map-container').appendChild(pulseContainer);
-                
-                // Remove after animation
-                setTimeout(() => {
-                    if (document.querySelector('.map-container').contains(pulseContainer)) {
-                        document.querySelector('.map-container').removeChild(pulseContainer);
-                    }
-                }, 1500);
-            }
-            
-            // Category dropdown change event
-            categoryDropdown.addEventListener('change', function(e) {
-                const category = e.target.value;
-                if (category) {
-                    currentCategory = category;
-                    fetchRasterFiles(category);
-                    
-                    // Reset raster dropdown
-                    rasterDropdown.innerHTML = '<option value="" disabled selected>Loading raster files...</option>';
-                    
-                    // Show notification
-                    showNotification('Category Selected', `Category changed to ${category}`, 'info');
-                }
-            });
-            
-            // Raster file dropdown change event
-            rasterDropdown.addEventListener('change', function(e) {
-                const filename = e.target.value;
-                if (filename && currentCategory) {
-                    fetchRasterData(currentCategory, filename);
-                }
-            });
-            
-            // Toggle sidebar
-            document.getElementById('toggle-sidebar').addEventListener('click', function() {
-                const sidebar = document.getElementById('sidebar');
-                const toggleBtn = document.getElementById('toggle-sidebar');
-                const toggleIcon = document.getElementById('toggle-icon');
-                
-                sidebar.classList.toggle('collapsed');
-                toggleBtn.classList.toggle('collapsed');
-                
-                if (sidebar.classList.contains('collapsed')) {
-                    toggleIcon.className = 'fas fa-chevron-right';
-                } else {
-                    toggleIcon.className = 'fas fa-chevron-left';
-                }
-            });
-            
-            // Handle modern dropdown functionality
-            document.querySelectorAll('.dropdown-header').forEach(header => {
-                header.addEventListener('click', function() {
-                    const content = this.nextElementSibling;
-                    const allContents = document.querySelectorAll('.dropdown-content');
-                    const allHeaders = document.querySelectorAll('.dropdown-header');
-                    
-                    // Close all other dropdowns
-                    allContents.forEach(item => {
-                        if (item !== content) {
-                            item.classList.remove('show');
-                        }
-                    });
-                    
-                    allHeaders.forEach(item => {
-                        if (item !== this) {
-                            item.classList.remove('active');
-                        }
-                    });
-                    
-                    // Toggle current dropdown
-                    content.classList.toggle('show');
-                    this.classList.toggle('active');
-                });
-            });
-            
-            // Handle drawing events
-            map.on(L.Draw.Event.CREATED, function(event) {
-                const layer = event.layer;
-                drawnItems.addLayer(layer);
-                
-                // If it's a polygon, calculate area
-                if (layer instanceof L.Polygon) {
-                    const latlngs = layer.getLatLngs()[0];
-                    
-                    // Calculate area (using simple formula for demo)
-                    let area = 0;
-                    for (let i = 0; i < latlngs.length; i++) {
-                        const j = (i + 1) % latlngs.length;
-                        area += latlngs[i].lng * latlngs[j].lat;
-                        area -= latlngs[j].lng * latlngs[i].lat;
-                    }
-                    area = Math.abs(area) * 0.5 * 111.32 * 111.32; // Rough conversion to square km
-                    
-                    layer.bindPopup(`<strong>Area:</strong> ${area.toFixed(2)} sq km`).openPopup();
-                }
-                
-                // If it's a polyline, calculate length
-                if (layer instanceof L.Polyline && !(layer instanceof L.Polygon)) {
-                    const latlngs = layer.getLatLngs();
-                    let length = 0;
-                    
-                    for (let i = 0; i < latlngs.length - 1; i++) {
-                        length += latlngs[i].distanceTo(latlngs[i + 1]);
-                    }
-                    
-                    layer.bindPopup(`<strong>Length:</strong> ${(length / 1000).toFixed(2)} km`).openPopup();
-                }
-                
-                // If it's a marker, show coordinates
-                if (layer instanceof L.Marker) {
-                    const latLng = layer.getLatLng();
-                    layer.bindPopup(`<strong>Coordinates:</strong><br>Lat: ${latLng.lat.toFixed(5)}<br>Lng: ${latLng.lng.toFixed(5)}`).openPopup();
-                }
-                
-                // Show success notification
-                showNotification('Drawing Complete', 'Your drawing has been added to the map', 'success');
-            });
-            
-            // Handle basemap dropdown items
-            document.querySelectorAll('#basemap-dropdown .dropdown-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    const basemapType = this.getAttribute('data-basemap');
-                    
-                    // Remove all current layers
-                    map.removeLayer(streetLayer);
-                    map.removeLayer(satelliteLayer);
-                    map.removeLayer(terrainLayer);
-                    map.removeLayer(hybridLayer);
-                    
-                    // Add selected layer
-                    switch (basemapType) {
-                        case 'streets':
-                            map.addLayer(streetLayer);
-                            break;
-                        case 'satellite':
-                            map.addLayer(satelliteLayer);
-                            break;
-                        case 'terrain':
-                            map.addLayer(terrainLayer);
-                            break;
-                        case 'hybrid':
-                            map.addLayer(hybridLayer);
-                            break;
-                    }
-                    
-                    // Show notification
-                    showNotification('Basemap Changed', `Switched to ${basemapType} basemap`, 'info');
-                    
-                    // Close dropdown
-                    document.querySelector('#basemap-dropdown .dropdown-content').classList.remove('show');
-                    document.querySelector('#basemap-dropdown .dropdown-header').classList.remove('active');
-                });
-            });
-            
-            // Handle drawing tools dropdown items
-            document.querySelectorAll('#drawing-dropdown .dropdown-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    const toolType = this.getAttribute('data-tool');
-                    
-                    switch (toolType) {
-                        case 'point':
-                            new L.Draw.Marker(map).enable();
-                            showNotification('Drawing Tool', 'Point tool activated', 'info');
-                            break;
-                        case 'line':
-                            new L.Draw.Polyline(map).enable();
-                            showNotification('Drawing Tool', 'Line tool activated', 'info');
-                            break;
-                        case 'polygon':
-                            new L.Draw.Polygon(map).enable();
-                            showNotification('Drawing Tool', 'Polygon tool activated', 'info');
-                            break;
-                        case 'measure':
-                            new L.Draw.Polyline(map, {
-                                shapeOptions: {
-                                    color: '#ff7800',
-                                    weight: 3
-                                }
-                            }).enable();
-                            showNotification('Measurement Tool', 'Draw a line to measure distance', 'info');
-                            break;
-                        case 'clear':
-                            drawnItems.clearLayers();
-                            showNotification('Cleared', 'All drawings have been cleared', 'info');
-                            break;
-                    }
-                    
-                    // Close dropdown
-                    document.querySelector('#drawing-dropdown .dropdown-content').classList.remove('show');
-                    document.querySelector('#drawing-dropdown .dropdown-header').classList.remove('active');
-                });
-            });
-            
-            // Handle analysis tools
-            document.querySelectorAll('#analysis-dropdown .dropdown-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    const analysisType = this.getAttribute('data-analysis');
-                    
-                    // Show notification for demo
-                    showNotification('Analysis Tool', `${analysisType.charAt(0).toUpperCase() + analysisType.slice(1)} analysis tool selected`, 'info');
-                    
-                    // Close dropdown
-                    document.querySelector('#analysis-dropdown .dropdown-content').classList.remove('show');
-                    document.querySelector('#analysis-dropdown .dropdown-header').classList.remove('active');
-                });
-            });
-            
-            // Map controls
-            document.getElementById('zoom-in-btn').addEventListener('click', function() {
-                map.zoomIn(1);
-                this.classList.add('active');
-                setTimeout(() => this.classList.remove('active'), 200);
-            });
-            
-            document.getElementById('zoom-out-btn').addEventListener('click', function() {
-                map.zoomOut(1);
-                this.classList.add('active');
-                setTimeout(() => this.classList.remove('active'), 200);
-            });
-            
-            document.getElementById('home-btn').addEventListener('click', function() {
-                map.setView(INDIA_CENTER, INDIA_ZOOM);
-                this.classList.add('active');
-                setTimeout(() => this.classList.remove('active'), 200);
-                
-                // Show notification
-                showNotification('Map Reset', 'Returned to default view', 'info');
-            });
-            
-            document.getElementById('locate-btn').addEventListener('click', function() {
-                // Simulate geolocation in demo
-                this.classList.add('active');
-                setTimeout(() => this.classList.remove('active'), 200);
-                
-                showNotification('Location', 'Finding your location...', 'info');
-                
-                // For demo purposes, simulate location within India
-                setTimeout(() => {
-                    const randomLat = 20.5937 + (Math.random() * 5 - 2.5);
-                    const randomLng = 78.9629 + (Math.random() * 5 - 2.5);
-                    map.setView([randomLat, randomLng], 10);
-                    
-                    // Add a marker
-                    const locationMarker = L.marker([randomLat, randomLng], {
-                        icon: L.divIcon({
-                            className: 'location-marker',
-                            html: `<div style="width: 20px; height: 20px; background: rgba(52, 152, 219, 0.8); border: 2px solid white; border-radius: 50%; box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3), 0 0 8px rgba(0,0,0,0.3);"></div>`,
-                            iconSize: [20, 20],
-                            iconAnchor: [10, 10]
-                        })
-                    }).addTo(map);
-                    
-                    // Create ripple effect
-                    const ripple = L.divIcon({
-                        className: 'location-ripple',
-                        html: `<div style="width: 50px; height: 50px; background: transparent; border: 2px solid rgba(52, 152, 219, 0.6); border-radius: 50%; animation: pulse 2s infinite;"></div>`,
-                        iconSize: [50, 50],
-                        iconAnchor: [25, 25]
-                    });
-                    
-                    L.marker([randomLat, randomLng], { icon: ripple }).addTo(map);
-                    
-                    showNotification('Location Found', 'Your current location has been found', 'success');
-                }, 1500);
-            });
-            
-            document.getElementById('fullscreen-btn').addEventListener('click', function() {
-                if (!document.fullscreenElement) {
-                    document.documentElement.requestFullscreen().catch(err => {
-                        showNotification('Error', `Fullscreen failed: ${err.message}`, 'error');
-                    });
-                    this.innerHTML = '<i class="fas fa-compress"></i>';
-                } else {
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
-                        this.innerHTML = '<i class="fas fa-expand"></i>';
-                    }
-                }
-            });
-            
-            // Mouse position tracking
-            map.on('mousemove', function(e) {
-                document.getElementById('coordinates-display').textContent = 
-                    `${e.latlng.lat.toFixed(5)}, ${e.latlng.lng.toFixed(5)}`;
-                
-                // Update coordinate tooltip (UTM conversion is simplified for demo)
-                const lat = e.latlng.lat.toFixed(5);
-                const lng = e.latlng.lng.toFixed(5);
-                const utmX = Math.floor(((parseFloat(lng) * 111320) * Math.cos(parseFloat(lat) * Math.PI / 180)));
-                const utmY = Math.floor(parseFloat(lat) * 111320);
-                
-                document.getElementById('coordinates-tooltip').innerHTML = 
-                    `Lat: ${lat}, Lng: ${lng}<br>
-                    <small>UTM: 43Q ${utmX} ${utmY}</small>`;
-            });
-            
-            // Show detailed coordinates on mouse hover
-            map.on('mouseover', function() {
-                document.getElementById('coordinates-tooltip').style.display = 'block';
-            });
-            
-            map.on('mouseout', function() {
-                document.getElementById('coordinates-tooltip').style.display = 'none';
-            });
-            
-            // Rotation control
-            document.getElementById('rotation-control').addEventListener('click', function() {
-                mapRotation = (mapRotation + 45) % 360;
-                document.querySelector('.map-container').style.transform = `rotate(${mapRotation}deg)`;
-                document.querySelector('.compass-rose').style.transform = `rotate(${-mapRotation}deg)`;
-            });
-            
-            // Download raster map functionality
-            document.getElementById('download-btn').addEventListener('click', function() {
-                if (!currentCategory || !currentRasterFile) {
-                    showNotification('Error', 'Please select a category and raster file first', 'error');
-                    return;
-                }
-                
-                // Show download in progress
-                const originalText = this.innerHTML;
-                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparing...';
-                this.disabled = true;
-                
-                // Simulate download process
-                setTimeout(() => {
-                    // Create a simulated download link
-                    const link = document.createElement('a');
-                    link.href = '#';
-                    link.download = `India_${currentCategory}_${currentRasterFile}`;
-                    link.click();
-                    
-                    // Reset button
-                    this.innerHTML = originalText;
-                    this.disabled = false;
-                    
-                    // Show success notification
-                    showNotification('Download Complete', `${currentRasterFile} downloaded successfully`, 'success');
-                    
-                }, 1500);
-            });
-            
-            // Click outside to close dropdowns
-            document.addEventListener('click', function(event) {
-                const dropdowns = document.querySelectorAll('.modern-dropdown');
-                let clickedOutside = true;
-                
-                dropdowns.forEach(dropdown => {
-                    if (dropdown.contains(event.target)) {
-                        clickedOutside = false;
-                    }
-                });
-                
-                if (clickedOutside) {
-                    document.querySelectorAll('.dropdown-content').forEach(content => {
-                        content.classList.remove('show');
-                    });
-                    
-                    document.querySelectorAll('.dropdown-header').forEach(header => {
-                        header.classList.remove('active');
-                    });
-                }
-            });
-            
-            // Initialize with coordinate grid
-            addCoordinateGrid();
-            
-            // Fetch categories when the page loads
-            fetchCategories();
-            
-            // Adjust for mobile screens on load
-            function adjustForScreenSize() {
-                if (window.innerWidth <= 768) {
-                    const sidebar = document.getElementById('sidebar');
-                    const toggleBtn = document.getElementById('toggle-sidebar');
-                    sidebar.classList.add('collapsed');
-                    toggleBtn.classList.add('collapsed');
-                    document.getElementById('toggle-icon').className = 'fas fa-chevron-right';
-                }
-            }
-            
-            // Check screen size on load
-            adjustForScreenSize();
-            
-            // Update when window is resized
-            window.addEventListener('resize', adjustForScreenSize);
+            showNotification(
+              "Category Selected",
+              `Category changed to ${category}`,
+              "info"
+            );
+          }
         });
+
+        // Raster file dropdown change event
+        rasterDropdown.addEventListener("change", function (e) {
+          const filename = e.target.value;
+          if (filename && currentCategory) {
+            fetchRasterData(currentCategory, filename);
+          }
+        });
+
+        // Toggle sidebar
+        document
+          .getElementById("toggle-sidebar")
+          .addEventListener("click", function () {
+            const sidebar = document.getElementById("sidebar");
+            const toggleBtn = document.getElementById("toggle-sidebar");
+            const toggleIcon = document.getElementById("toggle-icon");
+
+            sidebar.classList.toggle("collapsed");
+            toggleBtn.classList.toggle("collapsed");
+
+            if (sidebar.classList.contains("collapsed")) {
+              toggleIcon.className = "fas fa-chevron-right";
+            } else {
+              toggleIcon.className = "fas fa-chevron-left";
+            }
+          });
+
+        // Handle modern dropdown functionality
+        document.querySelectorAll(".dropdown-header").forEach((header) => {
+          header.addEventListener("click", function () {
+            const content = this.nextElementSibling;
+            const allContents = document.querySelectorAll(".dropdown-content");
+            const allHeaders = document.querySelectorAll(".dropdown-header");
+
+            // Close all other dropdowns
+            allContents.forEach((item) => {
+              if (item !== content) {
+                item.classList.remove("show");
+              }
+            });
+
+            allHeaders.forEach((item) => {
+              if (item !== this) {
+                item.classList.remove("active");
+              }
+            });
+
+            // Toggle current dropdown
+            content.classList.toggle("show");
+            this.classList.toggle("active");
+          });
+        });
+
+        // Handle drawing events
+        map.on(L.Draw.Event.CREATED, function (event) {
+          const layer = event.layer;
+          drawnItems.addLayer(layer);
+
+          // If it's a polygon, calculate area
+          if (layer instanceof L.Polygon) {
+            const latlngs = layer.getLatLngs()[0];
+
+            // Calculate area (using simple formula for demo)
+            let area = 0;
+            for (let i = 0; i < latlngs.length; i++) {
+              const j = (i + 1) % latlngs.length;
+              area += latlngs[i].lng * latlngs[j].lat;
+              area -= latlngs[j].lng * latlngs[i].lat;
+            }
+            area = Math.abs(area) * 0.5 * 111.32 * 111.32; // Rough conversion to square km
+
+            layer
+              .bindPopup(`<strong>Area:</strong> ${area.toFixed(2)} sq km`)
+              .openPopup();
+          }
+
+          // If it's a polyline, calculate length
+          if (layer instanceof L.Polyline && !(layer instanceof L.Polygon)) {
+            const latlngs = layer.getLatLngs();
+            let length = 0;
+
+            for (let i = 0; i < latlngs.length - 1; i++) {
+              length += latlngs[i].distanceTo(latlngs[i + 1]);
+            }
+
+            layer
+              .bindPopup(
+                `<strong>Length:</strong> ${(length / 1000).toFixed(2)} km`
+              )
+              .openPopup();
+          }
+
+          // If it's a marker, show coordinates
+          if (layer instanceof L.Marker) {
+            const latLng = layer.getLatLng();
+            layer
+              .bindPopup(
+                `<strong>Coordinates:</strong><br>Lat: ${latLng.lat.toFixed(
+                  5
+                )}<br>Lng: ${latLng.lng.toFixed(5)}`
+              )
+              .openPopup();
+          }
+
+          // Show success notification
+          showNotification(
+            "Drawing Complete",
+            "Your drawing has been added to the map",
+            "success"
+          );
+        });
+
+        // Handle basemap dropdown items
+        document
+          .querySelectorAll("#basemap-dropdown .dropdown-item")
+          .forEach((item) => {
+            item.addEventListener("click", function () {
+              const basemapType = this.getAttribute("data-basemap");
+
+              // Remove all current layers
+              map.removeLayer(streetLayer);
+              map.removeLayer(satelliteLayer);
+              map.removeLayer(terrainLayer);
+              map.removeLayer(hybridLayer);
+
+              // Add selected layer
+              switch (basemapType) {
+                case "streets":
+                  map.addLayer(streetLayer);
+                  break;
+                case "satellite":
+                  map.addLayer(satelliteLayer);
+                  break;
+                case "terrain":
+                  map.addLayer(terrainLayer);
+                  break;
+                case "hybrid":
+                  map.addLayer(hybridLayer);
+                  break;
+              }
+
+              // Show notification
+              showNotification(
+                "Basemap Changed",
+                `Switched to ${basemapType} basemap`,
+                "info"
+              );
+
+              // Close dropdown
+              document
+                .querySelector("#basemap-dropdown .dropdown-content")
+                .classList.remove("show");
+              document
+                .querySelector("#basemap-dropdown .dropdown-header")
+                .classList.remove("active");
+            });
+          });
+
+        // Handle drawing tools dropdown items
+        document
+          .querySelectorAll("#drawing-dropdown .dropdown-item")
+          .forEach((item) => {
+            item.addEventListener("click", function () {
+              const toolType = this.getAttribute("data-tool");
+
+              switch (toolType) {
+                case "point":
+                  new L.Draw.Marker(map).enable();
+                  showNotification(
+                    "Drawing Tool",
+                    "Point tool activated",
+                    "info"
+                  );
+                  break;
+                case "line":
+                  new L.Draw.Polyline(map).enable();
+                  showNotification(
+                    "Drawing Tool",
+                    "Line tool activated",
+                    "info"
+                  );
+                  break;
+                case "polygon":
+                  new L.Draw.Polygon(map).enable();
+                  showNotification(
+                    "Drawing Tool",
+                    "Polygon tool activated",
+                    "info"
+                  );
+                  break;
+                case "measure":
+                  new L.Draw.Polyline(map, {
+                    shapeOptions: {
+                      color: "#ff7800",
+                      weight: 3,
+                    },
+                  }).enable();
+                  showNotification(
+                    "Measurement Tool",
+                    "Draw a line to measure distance",
+                    "info"
+                  );
+                  break;
+                case "clear":
+                  drawnItems.clearLayers();
+                  showNotification(
+                    "Cleared",
+                    "All drawings have been cleared",
+                    "info"
+                  );
+                  break;
+              }
+
+              // Close dropdown
+              document
+                .querySelector("#drawing-dropdown .dropdown-content")
+                .classList.remove("show");
+              document
+                .querySelector("#drawing-dropdown .dropdown-header")
+                .classList.remove("active");
+            });
+          });
+
+        // Handle analysis tools
+        document
+          .querySelectorAll("#analysis-dropdown .dropdown-item")
+          .forEach((item) => {
+            item.addEventListener("click", function () {
+              const analysisType = this.getAttribute("data-analysis");
+
+              // Show notification for demo
+              showNotification(
+                "Analysis Tool",
+                `${
+                  analysisType.charAt(0).toUpperCase() + analysisType.slice(1)
+                } analysis tool selected`,
+                "info"
+              );
+
+              // Close dropdown
+              document
+                .querySelector("#analysis-dropdown .dropdown-content")
+                .classList.remove("show");
+              document
+                .querySelector("#analysis-dropdown .dropdown-header")
+                .classList.remove("active");
+            });
+          });
+
+        // Map controls
+        document
+          .getElementById("zoom-in-btn")
+          .addEventListener("click", function () {
+            map.zoomIn(1);
+            this.classList.add("active");
+            setTimeout(() => this.classList.remove("active"), 200);
+          });
+
+        document
+          .getElementById("zoom-out-btn")
+          .addEventListener("click", function () {
+            map.zoomOut(1);
+            this.classList.add("active");
+            setTimeout(() => this.classList.remove("active"), 200);
+          });
+
+        document
+          .getElementById("home-btn")
+          .addEventListener("click", function () {
+            map.setView(INDIA_CENTER, INDIA_ZOOM);
+            this.classList.add("active");
+            setTimeout(() => this.classList.remove("active"), 200);
+
+            // Show notification
+            showNotification("Map Reset", "Returned to default view", "info");
+          });
+
+        document
+          .getElementById("locate-btn")
+          .addEventListener("click", function () {
+            // Simulate geolocation in demo
+            this.classList.add("active");
+            setTimeout(() => this.classList.remove("active"), 200);
+
+            showNotification("Location", "Finding your location...", "info");
+
+            // For demo purposes, simulate location within India
+            setTimeout(() => {
+              const randomLat = 20.5937 + (Math.random() * 5 - 2.5);
+              const randomLng = 78.9629 + (Math.random() * 5 - 2.5);
+              map.setView([randomLat, randomLng], 10);
+
+              // Add a marker
+              const locationMarker = L.marker([randomLat, randomLng], {
+                icon: L.divIcon({
+                  className: "location-marker",
+                  html: `<div style="width: 20px; height: 20px; background: rgba(52, 152, 219, 0.8); border: 2px solid white; border-radius: 50%; box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3), 0 0 8px rgba(0,0,0,0.3);"></div>`,
+                  iconSize: [20, 20],
+                  iconAnchor: [10, 10],
+                }),
+              }).addTo(map);
+
+              // Create ripple effect
+              const ripple = L.divIcon({
+                className: "location-ripple",
+                html: `<div style="width: 50px; height: 50px; background: transparent; border: 2px solid rgba(52, 152, 219, 0.6); border-radius: 50%; animation: pulse 2s infinite;"></div>`,
+                iconSize: [50, 50],
+                iconAnchor: [25, 25],
+              });
+
+              L.marker([randomLat, randomLng], { icon: ripple }).addTo(map);
+
+              showNotification(
+                "Location Found",
+                "Your current location has been found",
+                "success"
+              );
+            }, 1500);
+          });
+
+        document
+          .getElementById("fullscreen-btn")
+          .addEventListener("click", function () {
+            if (!document.fullscreenElement) {
+              document.documentElement.requestFullscreen().catch((err) => {
+                showNotification(
+                  "Error",
+                  `Fullscreen failed: ${err.message}`,
+                  "error"
+                );
+              });
+              this.innerHTML = '<i class="fas fa-compress"></i>';
+            } else {
+              if (document.exitFullscreen) {
+                document.exitFullscreen();
+                this.innerHTML = '<i class="fas fa-expand"></i>';
+              }
+            }
+          });
+
+        // Mouse position tracking
+        map.on("mousemove", function (e) {
+          document.getElementById(
+            "coordinates-display"
+          ).textContent = `${e.latlng.lat.toFixed(5)}, ${e.latlng.lng.toFixed(
+            5
+          )}`;
+
+          // Update coordinate tooltip (UTM conversion is simplified for demo)
+          const lat = e.latlng.lat.toFixed(5);
+          const lng = e.latlng.lng.toFixed(5);
+          const utmX = Math.floor(
+            parseFloat(lng) *
+              111320 *
+              Math.cos((parseFloat(lat) * Math.PI) / 180)
+          );
+          const utmY = Math.floor(parseFloat(lat) * 111320);
+
+          document.getElementById(
+            "coordinates-tooltip"
+          ).innerHTML = `Lat: ${lat}, Lng: ${lng}<br>
+                    <small>UTM: 43Q ${utmX} ${utmY}</small>`;
+        });
+
+        // Show detailed coordinates on mouse hover
+        map.on("mouseover", function () {
+          document.getElementById("coordinates-tooltip").style.display =
+            "block";
+        });
+
+        map.on("mouseout", function () {
+          document.getElementById("coordinates-tooltip").style.display = "none";
+        });
+
+        // Rotation control
+        document
+          .getElementById("rotation-control")
+          .addEventListener("click", function () {
+            mapRotation = (mapRotation + 45) % 360;
+            document.querySelector(
+              ".map-container"
+            ).style.transform = `rotate(${mapRotation}deg)`;
+            document.querySelector(
+              ".compass-rose"
+            ).style.transform = `rotate(${-mapRotation}deg)`;
+          });
+
+        // Download raster map functionality
+        document
+          .getElementById("download-btn")
+          .addEventListener("click", function () {
+            if (!currentCategory || !currentRasterFile) {
+              showNotification(
+                "Error",
+                "Please select a category and raster file first",
+                "error"
+              );
+              return;
+            }
+
+            // Show download in progress
+            const originalText = this.innerHTML;
+            this.innerHTML =
+              '<i class="fas fa-spinner fa-spin"></i> Preparing...';
+            this.disabled = true;
+
+            // Simulate download process
+            setTimeout(() => {
+              // Create a simulated download link
+              const link = document.createElement("a");
+              link.href = "#";
+              link.download = `India_${currentCategory}_${currentRasterFile}`;
+              link.click();
+
+              // Reset button
+              this.innerHTML = originalText;
+              this.disabled = false;
+
+              // Show success notification
+              showNotification(
+                "Download Complete",
+                `${currentRasterFile} downloaded successfully`,
+                "success"
+              );
+            }, 1500);
+          });
+
+        // Click outside to close dropdowns
+        document.addEventListener("click", function (event) {
+          const dropdowns = document.querySelectorAll(".modern-dropdown");
+          let clickedOutside = true;
+
+          dropdowns.forEach((dropdown) => {
+            if (dropdown.contains(event.target)) {
+              clickedOutside = false;
+            }
+          });
+
+          if (clickedOutside) {
+            document
+              .querySelectorAll(".dropdown-content")
+              .forEach((content) => {
+                content.classList.remove("show");
+              });
+
+            document.querySelectorAll(".dropdown-header").forEach((header) => {
+              header.classList.remove("active");
+            });
+          }
+        });
+
+        // Initialize with coordinate grid
+        addCoordinateGrid();
+
+        // Fetch categories when the page loads
+        fetchCategories();
+
+        // Adjust for mobile screens on load
+        function adjustForScreenSize() {
+          if (window.innerWidth <= 768) {
+            const sidebar = document.getElementById("sidebar");
+            const toggleBtn = document.getElementById("toggle-sidebar");
+            sidebar.classList.add("collapsed");
+            toggleBtn.classList.add("collapsed");
+            document.getElementById("toggle-icon").className =
+              "fas fa-chevron-right";
+          }
+        }
+
+        // Check screen size on load
+        adjustForScreenSize();
+
+        // Update when window is resized
+        window.addEventListener("resize", adjustForScreenSize);
+      });
     </script>
-</body>
+  </body>
 </html>

@@ -9,8 +9,8 @@ services:
       - .env
     volumes:
       - .:/app
-      - static_volume:/app/static
-      - media_volume:/app/media
+      - static_volume:/static
+      - media_volume:/media
     ports:
       - "8000:8000"
     expose:

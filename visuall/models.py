@@ -1,19 +1,11 @@
 from django.db import models
-from django.contrib.gis.db import models as gis_models
 
-# Create your models here.
-class raster_visual(gis_models.Model):
-    name = models.TextField(max_length=50)  # groundwater
-    resolution = models.FloatField(blank=True, null=True, help_text="Spatial resolution in map units")
-    phase_year = models.CharField(max_length=20, default=None,null=True)
-    rast = gis_models.RasterField(srid=4326, spatial_index=True, null=True)
-    
-    class Meta:
-        indexes = [
-            models.Index(fields=['phase_year']),
-        ]
-        ordering = ['phase_year']
-    
+# raster module 
+class RasterVisual(models.Model):
+    organisations = models.CharField(max_length=50)
+    name = models.CharField(max_length=20,unique=True)
+    file_location = models.FileField(upload_to='rasters/')  # Stores file in `MEDIA_ROOT/rasters/`
+
     def __str__(self):
-        return f"{self.name}-{self.phase_year}"
+        return f"{self.name} - {self.organisations}"
     
