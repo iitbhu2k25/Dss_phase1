@@ -4,10 +4,12 @@ from .models import RasterVisual
 from django.conf import settings
 import os
 import rasterio
+import mimetypes
 import rasterio.features
 import rasterio.warp
-from django.http import HttpResponse, JsonResponse
+from django.http import FileResponse, HttpResponseNotFound, HttpResponseBadRequest,JsonResponse
 from django.conf import settings
+
 
 # Create your views here.
 def visual_home(request):
@@ -31,7 +33,6 @@ def get_raster_lists(request,category):
         print("list of file is",raster_data)
         return JsonResponse(raster_data,safe=False)
 
-# to get the raster file based on the file name 
 def get_raster_file(request, category, file_name):
     raster = RasterVisual.objects.filter(name=file_name, organisations=category).values('file_location').first()
     if not raster:
@@ -42,28 +43,30 @@ def get_raster_file(request, category, file_name):
     
     if not os.path.exists(file_path):
         return JsonResponse({"error": "File not found on disk"}, status=404)
+    content_type, _ = mimetypes.guess_type(file_path)
     
-    try:
-        with rasterio.open(file_path) as dataset:
-            # Get basic metadata
-            bounds = dataset.bounds
-            width = dataset.width
-            height = dataset.height
-            
-            # Convert bounds to the format Leaflet expects (if needed)
-            leaflet_bounds = [[bounds.bottom, bounds.left], [bounds.top, bounds.right]]
-            
-            # Read the actual data (for smaller rasters)
-            band_data = dataset.read(1).tolist()  # Reading first band as an example
-            
-            # Return metadata and possibly data
-            return JsonResponse({
-                "bounds": leaflet_bounds,
-                "width": width,
-                "height": height,
-                "crs": dataset.crs.to_string(),
-                "data": band_data,  # Only include for smaller rasters
-                "file_url": request.build_absolute_uri(settings.MEDIA_URL + file_location)
-            })
-    except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)
+    # Default to application/octet-stream if content type can't be determined
+    if not content_type:
+        # Check common raster formats
+        if file_name.lower().endswith('.tif') or file_name.lower().endswith('.tiff'):
+            content_type = 'image/tiff'
+        elif file_name.lower().endswith('.asc') or file_name.lower().endswith('.ascii'):
+            content_type = 'text/plain'
+        else:
+            content_type = 'application/octet-stream'
+    
+    # Open the file and create a response
+    response = FileResponse(
+        open(file_path, 'rb'),
+        content_type=content_type,
+        as_attachment=False,
+        filename=file_name
+    )
+    
+    # Add CORS headers if needed
+    response["Access-Control-Allow-Origin"] = "*"
+    
+    # Add Content-Disposition header to prevent browsers from trying to display the file
+    response["Content-Disposition"] = f"inline; filename={file_name}"
+    
+    return response

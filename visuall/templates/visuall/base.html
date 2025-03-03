@@ -1459,6 +1459,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+    <script src="https://unpkg.com/georaster"></script>
+    <script src="https://unpkg.com/georaster-layer-for-leaflet/dist/georaster-layer-for-leaflet.min.js"></script>
+
+
 
     <script>
       // Wait for DOM to be fully loaded
@@ -1996,46 +2000,94 @@
               throw new Error(`API responded with status ${response.status}`);
             }
 
-            // Parse the response
-            const data = await response.json();
-            console.log("Raster data response:", data);
+            // Get the raw raster data as an array buffer
+            const arrayBuffer = await response.arrayBuffer();
 
-            // Validate required data
-            if (!data.bounds) {
-              throw new Error("Missing bounds in raster data response");
-            }
+            // Parse the georaster from the array buffer
+            parseGeoraster(arrayBuffer).then(georaster => {
+              // Remove existing raster layer if any
+              if (currentRasterLayer) {
+                map.removeLayer(currentRasterLayer);
+              }
 
-            // Remove existing raster layer if any
-            if (currentRasterLayer) {
-              map.removeLayer(currentRasterLayer);
-            }
+              // Create a new georaster layer
+              currentRasterLayer = new GeoRasterLayer({
+                georaster: georaster,
+                opacity: 0.7,
+                resolution: 256,
+                pixelValuesToColorFn: values => {
+                  if (values[0] === georaster.noDataValue) {
+                    return null; // transparent for no data values
+                  }
+                  
+                  // Normalize and get color based on category
+                  const min = georaster.mins[0];
+                  const max = georaster.maxs[0];
+                  const range = max - min;
+                  
+                  // Normalize value to 0-100 scale
+                  const normalized = Math.min(
+                    100,
+                    Math.max(0, ((values[0] - min) / range) * 100)
+                  );
+                  
+                  // Get color for this value
+                  const colorIndex = Math.min(4, Math.floor(normalized / 25));
+                  const colors = getColorScaleForCategory(category);
+                  return colors[colorIndex];
+                }
+              });
 
-            // Create and add the raster layer to the map
-            currentRasterLayer = createRasterLayer(data, category);
-            currentRasterLayer.addTo(map);
+              // Add the layer to the map
+              currentRasterLayer.addTo(map);
 
-            // Update state variables
-            currentCategory = category;
-            currentRasterFile = filename;
+              // Update state variables
+              currentCategory = category;
+              currentRasterFile = filename;
 
-            // Update legend
-            updateLegend(category);
+              // Update legend
+              updateLegend(category);
 
-            // Hide data tooltip
-            dataTooltip.classList.remove("show");
+              // Zoom to the raster bounds if available
+              if (georaster.projection && georaster.projection.bbox) {
+                const bounds = [
+                  [georaster.projection.bbox[1], georaster.projection.bbox[0]],
+                  [georaster.projection.bbox[3], georaster.projection.bbox[2]]
+                ];
+                map.fitBounds(bounds);
+              }
 
-            // Hide loader
-            document.getElementById("loader").classList.remove("active");
+              // Hide data tooltip
+              dataTooltip.classList.remove("show");
 
-            // Show success notification
-            showNotification(
-              "Success",
-              `Raster data for ${filename} loaded successfully`,
-              "success"
-            );
+              // Hide loader
+              document.getElementById("loader").classList.remove("active");
 
-            // Create pulse effect
-            createPulseEffect();
+              // Show success notification
+              showNotification(
+                "Success",
+                `Raster data for ${filename} loaded successfully`,
+                "success"
+              );
+
+              // Create pulse effect
+              createPulseEffect();
+            }).catch(error => {
+              console.error("Error parsing georaster:", error);
+              // Fall back to simulated data
+              simulateRasterLayer(category, filename);
+              
+              // Show error notification
+              showNotification(
+                "Error",
+                `Could not parse raster data: ${error.message}. Using simulated data instead.`,
+                "error"
+              );
+              
+              // Hide loader
+              document.getElementById("loader").classList.remove("active");
+              dataTooltip.classList.remove("show");
+            });
           } catch (error) {
             console.error("Error fetching raster data:", error);
 
