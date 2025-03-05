@@ -121,6 +121,7 @@
               <div class="dropdown-item" data-analysis="buffer">
                 <i class="fas fa-expand-alt"></i> Buffer Zone
               </div>
+
               <div class="dropdown-item" data-analysis="intersect">
                 <i class="fas fa-object-group"></i> Intersection
               </div>
@@ -145,62 +146,30 @@
             <i class="fas fa-palette"></i> Style Options
           </div>
 
-          <div class="style-controls-container" style="display: flex; align-items: center; gap: 20px;">
-            <div class="style-control-item" style="display: flex; align-items: center;">
-              <label for="lineColor" class="form-label" style="margin-right: 8px;">Line Color:</label>
-              <input
-                type="color"
-                id="lineColor"
-                class="color-input"
-                value="#000000"
-              />
+          <div class="style-controls-container" style="display: flex; align-items: center; gap: 20px">
+            <div class="style-control-item" style="display: flex; align-items: center">
+              <label for="lineColor" class="form-label" style="margin-right: 8px">Line Color:</label>
+              <input type="color" id="lineColor" class="color-input" value="#000000" />
             </div>
-            
-            <div class="style-control-item" style="display: flex; align-items: center;">
-              <label for="fillColor" class="form-label" style="margin-right: 8px;">Fill Color:</label>
-              <input
-                type="color"
-                id="fillColor"
-                class="color-input"
-                value="#78b4db"
-              />
+
+            <div class="style-control-item" style="display: flex; align-items: center">
+              <label for="fillColor" class="form-label" style="margin-right: 8px">Fill Color:</label>
+              <input type="color" id="fillColor" class="color-input" value="#78b4db" />
             </div>
           </div>
           <div class="style-control-row">
-            <label for="opacity" class="form-label"
-              >Opacity: <span id="opacityValue">0.8</span></label
-            >
-            <input
-              type="range"
-              id="opacity"
-              class="style-range"
-              min="0.1"
-              max="1"
-              step="0.1"
-              value="0.8"
-            />
+            <label for="opacity" class="form-label">Opacity: <span id="opacityValue">0.8</span></label>
+            <input type="range" id="opacity" class="style-range" min="0.1" max="1" step="0.1" value="0.8" />
           </div>
 
           <div class="style-control-row">
-            <label for="weight" class="form-label"
-              >Line Weight: <span id="weightValue">2</span></label
-            >
-            <input
-              type="range"
-              id="weight"
-              class="style-range"
-              min="1"
-              max="10"
-              step="1"
-              value="2"
-            />
+            <label for="weight" class="form-label">Line Weight: <span id="weightValue">2</span></label>
+            <input type="range" id="weight" class="style-range" min="1" max="10" step="1" value="2" />
           </div>
 
           <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" id="toggleLabels" />
-            <label class="form-check-label" for="toggleLabels"
-              >Show Labels</label
-            >
+            <label class="form-check-label" for="toggleLabels">Show Labels</label>
           </div>
         </div>
 
@@ -210,39 +179,18 @@
           </div>
 
           <div class="form-check form-switch mb-2">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="grid-toggle"
-              checked
-            />
-            <label class="form-check-label" for="grid-toggle"
-              >Coordinate Grid</label
-            >
+            <input class="form-check-input" type="checkbox" id="grid-toggle" checked />
+            <label class="form-check-label" for="grid-toggle">Coordinate Grid</label>
           </div>
 
           <div class="form-check form-switch mb-2">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="info-toggle"
-              checked
-            />
-            <label class="form-check-label" for="info-toggle"
-              >Show Info Panel</label
-            >
+            <input class="form-check-input" type="checkbox" id="info-toggle" checked />
+            <label class="form-check-label" for="info-toggle">Show Info Panel</label>
           </div>
 
           <div class="form-check form-switch">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="compass-toggle"
-              checked
-            />
-            <label class="form-check-label" for="compass-toggle"
-              >Show Compass</label
-            >
+            <input class="form-check-input" type="checkbox" id="compass-toggle" checked />
+            <label class="form-check-label" for="compass-toggle">Show Compass</label>
           </div>
         </div>
 
@@ -254,27 +202,40 @@
           <div class="export-container">
             <div class="form-group mb-2">
               <label for="mapTitle" class="form-label">Map Title:</label>
-              <input
-                type="text"
-                id="mapTitle"
-                class="custom-dropdown"
-                placeholder="Enter title..."
-              />
+              <input type="text" id="mapTitle" class="custom-dropdown" placeholder="Enter title..." />
             </div>
 
             <div class="form-group mb-3">
-              <label for="exportFormat" class="form-label"
-                >Export Format:</label
-              >
+              <label for="exportFormat" class="form-label">Export Format:</label>
               <select id="exportFormat" class="custom-dropdown">
-                <option value="pdf">PDF</option>
-                <option value="svg">SVG</option>
-                <option value="jpg">JPG</option>
-                <option value="png">PNG</option>
-                <option value="tif">TIFF</option>
+                <option value="pdf">.pdf</option>
+                <option value="svg">svg</option>
+                <option value="jpg">.jpeg</option>
+                <option value="tif">.tif</option>
               </select>
             </div>
-
+            <div class="form-group">
+              <label for="exportDPI">Export Quality (DPI):</label>
+              <select id="exportDPI" class="form-control">
+                <option value="1">Low (72 DPI)</option>
+                <option value="2" selected>Medium (150 DPI)</option>
+                <option value="3">High (300 DPI)</option>
+                <option value="4">Ultra High (600 DPI)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="exportLayout">Paper Layout:</label>
+              <select id="exportLayout" class="form-control">
+                <option value="a4-landscape" selected>A4 Landscape</option>
+                <option value="a4-portrait">A4 Portrait</option>
+                <option value="a3-landscape">A3 Landscape</option>
+                <option value="a3-portrait">A3 Portrait</option>
+                <option value="letter-landscape">Letter Landscape</option>
+                <option value="letter-portrait">Letter Portrait</option>
+                <option value="legal-landscape">Legal Landscape</option>
+                <option value="legal-portrait">Legal Portrait</option>
+              </select>
+            </div>
             <button id="exportMap" class="btn-success">
               <i class="fas fa-download"></i> Export Map
             </button>
@@ -290,6 +251,9 @@
       <div class="main-display-area">
         <div class="map-container">
           <div id="map"></div>
+
+
+
 
           <!-- Compass -->
           <div class="compass-container" id="compass">
@@ -331,18 +295,10 @@
             <button class="map-control-btn" id="home-btn" title="Default View">
               <i class="fas fa-home"></i>
             </button>
-            <button
-              class="map-control-btn pulse-btn"
-              id="locate-btn"
-              title="My Location"
-            >
+            <button class="map-control-btn pulse-btn" id="locate-btn" title="My Location">
               <i class="fas fa-location-arrow"></i>
             </button>
-            <button
-              class="map-control-btn"
-              id="fullscreen-btn"
-              title="Fullscreen"
-            >
+            <button class="map-control-btn" id="fullscreen-btn" title="Fullscreen">
               <i class="fas fa-expand"></i>
             </button>
           </div>
@@ -387,1107 +343,15 @@
     </div>
   </div>
 </div>
+
 {% endblock %} {% block extra_css %}
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-/>
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
-/>
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-/>
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"
-/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
 
-<style>
-  @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+<link rel="stylesheet" href="{% static 'css/mapplot.css' %}">
 
-  :root {
-    --primary-color: #3498db;
-    --primary-dark: #2980b9;
-    --secondary-color: #2c3e50;
-    --accent-color: #f39c12;
-    --light-color: #f8f9fa;
-    --dark-color: #343a40;
-    --success-color: #2ecc71;
-    --danger-color: #e74c3c;
-    --border-radius: 10px;
-    --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    --transition-speed: 0.3s;
-  }
-
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: "Poppins", sans-serif;
-    background-color: var(--light-color);
-    color: var(--dark-color);
-  }
-
-  .app-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: #f0f2f5;
-  }
-
-  header {
-    background: linear-gradient(
-      135deg,
-      var(--secondary-color),
-      var(--primary-color)
-    );
-    color: white;
-    padding: 0.75rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-    z-index: 1010;
-    position: relative;
-  }
-
-  .logo {
-    display: flex;
-    align-items: center;
-  }
-
-  .logo i {
-    font-size: 24px;
-    margin-right: 10px;
-    animation: pulse-light 3s infinite;
-  }
-
-  .main-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0px;
-    flex: 1;
-    width: 100%;
-    max-height: 100%;
-  }
-
-  .content-wrapper {
-    display: flex;
-    width: 100%;
-    max-width: 100%;
-    background-color: white;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    overflow: hidden;
-    margin: 0 auto;
-    position: relative;
-    height: calc(100vh - 120px);
-  }
-
-  .sidebar {
-    width: 300px;
-    background: white;
-    padding: 20px;
-    overflow-y: auto;
-    transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 100;
-    border-right: 1px solid #eaeaea;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
-    flex-shrink: 0;
-  }
-
-  .sidebar.collapsed {
-    width: 0;
-    padding: 0;
-    overflow: hidden;
-  }
-
-  .sidebar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid var(--primary-color);
-  }
-
-  .sidebar-header h5 {
-    font-weight: 600;
-    color: var(--secondary-color);
-  }
-
-  .control-section {
-    background: #f8f9fa;
-    border-radius: var(--border-radius);
-    padding: 15px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  .control-section:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .section-title {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 15px;
-    color: var(--secondary-color);
-    display: flex;
-    align-items: center;
-  }
-
-  .section-title i {
-    margin-right: 8px;
-    color: var(--primary-color);
-  }
-
-  /* Main display area with map and feature info panel */
-  .main-display-area {
-    flex: 1;
-    display: flex;
-    overflow: hidden;
-  }
-
-  .map-container {
-    flex: 1;
-    position: relative;
-    height: 100%;
-    overflow: hidden;
-  }
-
-  #map {
-    height: 100%;
-    width: 100%;
-    z-index: 1;
-  }
-
-  /* Feature info panel on the right side */
-  .feature-info-panel {
-    width: 300px;
-    background: white;
-    height: 100%;
-    overflow-y: auto;
-    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.05);
-    border-left: 1px solid #eaeaea;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-  }
-
-  .feature-info-header {
-    padding: 15px;
-    background: linear-gradient(
-      135deg,
-      var(--secondary-color),
-      var(--primary-color)
-    );
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .feature-info-title {
-    display: flex;
-    align-items: center;
-  }
-
-  .feature-info-title i {
-    margin-right: 10px;
-    font-size: 18px;
-  }
-
-  .feature-info-title h5 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 500;
-  }
-
-  .feature-info-close {
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: transform 0.2s;
-  }
-
-  .feature-info-close:hover {
-    transform: scale(1.2);
-  }
-
-  #feature-content {
-    padding: 15px;
-    flex: 1;
-    overflow-y: auto;
-  }
-
-  .toggle-sidebar {
-    position: absolute;
-    left: 300px;
-    top: 20px;
-    z-index: 999;
-    background: white;
-    border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: var(--box-shadow);
-    cursor: pointer;
-    transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .toggle-sidebar:hover {
-    background: var(--primary-color);
-    color: white;
-    transform: scale(1.1);
-  }
-
-  .toggle-sidebar.collapsed {
-    left: 20px;
-  }
-
-  .download-btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: white;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 15px;
-    box-shadow: var(--box-shadow);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    font-weight: 500;
-    color: var(--secondary-color);
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-
-  .download-btn:hover {
-    background: var(--primary-color);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-  }
-
-  .download-btn:hover i {
-    color: white;
-  }
-
-  .download-btn i {
-    margin-right: 8px;
-    color: var(--primary-color);
-    transition: color 0.3s;
-  }
-
-  .custom-dropdown {
-    width: 100%;
-    padding: 12px 15px;
-    border-radius: 8px;
-    border: 1px solid #dee2e6;
-    background-color: white;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: all 0.3s;
-    color: var(--secondary-color);
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%233498db' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: calc(100% - 12px) center;
-    background-size: 12px;
-    padding-right: 30px;
-  }
-
-  .custom-dropdown:hover {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-  }
-
-  .custom-dropdown:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
-  }
-
-  /* Modern dropdowns for tools */
-  .modern-dropdown {
-    position: relative;
-    margin-bottom: 15px;
-  }
-
-  .dropdown-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 15px;
-    background: white;
-    border-radius: 8px;
-    border: 1px solid #e0e0e0;
-    cursor: pointer;
-    transition: all 0.3s;
-    font-weight: 500;
-  }
-
-  .dropdown-header:hover {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-  }
-
-  .dropdown-header.active {
-    border-color: var(--primary-color);
-    border-radius: 8px 8px 0 0;
-    background: #f8f9fa;
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-  }
-
-  .dropdown-header i:first-child {
-    color: var(--primary-color);
-    margin-right: 8px;
-  }
-
-  .dropdown-header i:last-child {
-    transition: transform 0.3s ease;
-  }
-
-  .dropdown-header.active i:last-child {
-    transform: rotate(180deg);
-  }
-
-  .dropdown-content {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: white;
-    border-radius: 0 0 8px 8px;
-    border: 1px solid var(--primary-color);
-    border-top: none;
-    z-index: 1001;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-
-  .dropdown-content.show {
-    max-height: 300px;
-    opacity: 1;
-    transform: translateY(0);
-    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease,
-      transform 0.2s ease;
-  }
-
-  .dropdown-item {
-    padding: 12px 15px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    transition: background 0.2s, transform 0.2s;
-    border-bottom: 1px solid #f1f1f1;
-  }
-
-  .dropdown-item:hover {
-    background: #f5f5f5;
-    transform: translateX(5px);
-  }
-
-  .dropdown-item:active {
-    background: #e9f7fe;
-  }
-
-  .dropdown-item i {
-    margin-right: 10px;
-    width: 20px;
-    text-align: center;
-    color: var(--primary-color);
-    font-size: 15px;
-  }
-
-  .dropdown-item:last-child {
-    border-radius: 0 0 8px 8px;
-    border-bottom: none;
-  }
-
-  .style-control-row {
-    margin-bottom: 15px;
-  }
-
-  .style-range {
-    width: 100%;
-    height: 6px;
-    background: #e9ecef;
-    border-radius: 3px;
-    outline: none;
-    -webkit-appearance: none;
-    appearance: none;
-  }
-
-  .style-range::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    background: var(--primary-color);
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .style-range::-webkit-slider-thumb:hover {
-    transform: scale(1.2);
-  }
-
-  .color-input {
-    height: 35px;
-    width: 35px;
-    padding: 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    background: transparent;
-  }
-
-  .color-input::-webkit-color-swatch {
-    border: none;
-    border-radius: 4px;
-    padding: 0;
-  }
-
-  .color-input::-webkit-color-swatch-wrapper {
-    padding: 0;
-    border-radius: 4px;
-    border: 1px solid #dee2e6;
-  }
-
-  .form-label {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 0.875rem;
-    color: var(--secondary-color);
-  }
-
-  .form-check {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-
-  .form-check-input {
-    margin-right: 8px;
-  }
-
-  .btn-primary,
-  .btn-success {
-    display: block;
-    width: 100%;
-    padding: 12px 20px;
-    margin-top: 15px;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-weight: 500;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-
-  .btn-primary {
-    background: var(--primary-color);
-  }
-
-  .btn-success {
-    background: var(--success-color);
-  }
-
-  .btn-primary:hover,
-  .btn-success:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  }
-
-  .btn-primary i,
-  .btn-success i {
-    margin-right: 8px;
-  }
-
-  /* Modern Compass Styles Begin */
-  .compass-container {
-    position: absolute;
-    top: 80px;
-    left: 20px;
-    z-index: 990;
-    width: 100px;
-    height: 100px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 50%;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-  }
-
-  .compass-rose {
-    width: 90px;
-    height: 90px;
-    position: relative;
-    animation: compass-fade-in 1s ease;
-  }
-
-  .compass-ring {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 2px solid rgba(52, 152, 219, 0.2);
-    border-radius: 50%;
-  }
-
-  .compass-face {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    right: 5px;
-    bottom: 5px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-
-  .compass-needle {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 4px;
-    height: 70%;
-    transform: translate(-50%, -50%);
-    transform-origin: center;
-  }
-
-  .needle-north {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 50%;
-    background: linear-gradient(to top, transparent 0%, #e74c3c 100%);
-    clip-path: polygon(0 0, 100% 0, 50% 100%);
-    transform-origin: bottom center;
-    box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.2);
-  }
-
-  .needle-south {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 50%;
-    background: linear-gradient(to bottom, transparent 0%, #2c3e50 100%);
-    clip-path: polygon(0 100%, 100% 100%, 50% 0);
-    transform-origin: top center;
-  }
-
-  .compass-center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 12px;
-    height: 12px;
-    background: radial-gradient(circle, #fff 0%, #ddd 70%, #bbb 100%);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    z-index: 3;
-  }
-
-  .compass-cardinal-points {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    font-family: "Poppins", sans-serif;
-    font-weight: 600;
-    font-size: 12px;
-    pointer-events: none;
-  }
-
-  .compass-n {
-    position: absolute;
-    top: 5px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #e74c3c;
-  }
-
-  .compass-ne {
-    position: absolute;
-    top: 18%;
-    right: 18%;
-    color: #555;
-    font-size: 10px;
-  }
-
-  .compass-e {
-    position: absolute;
-    top: 50%;
-    right: 5px;
-    transform: translateY(-50%);
-    color: #555;
-  }
-
-  .compass-se {
-    position: absolute;
-    bottom: 18%;
-    right: 18%;
-    color: #555;
-    font-size: 10px;
-  }
-
-  .compass-s {
-    position: absolute;
-    bottom: 5px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #555;
-  }
-
-  .compass-sw {
-    position: absolute;
-    bottom: 18%;
-    left: 18%;
-    color: #555;
-    font-size: 10px;
-  }
-
-  .compass-w {
-    position: absolute;
-    top: 50%;
-    left: 5px;
-    transform: translateY(-50%);
-    color: #555;
-  }
-
-  .compass-nw {
-    position: absolute;
-    top: 18%;
-    left: 18%;
-    color: #555;
-    font-size: 10px;
-  }
-
-  .compass-degrees {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-  }
-
-  .compass-degrees::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: conic-gradient(
-      from 0deg,
-      transparent 0deg,
-      transparent 29deg,
-      rgba(52, 152, 219, 0.15) 30deg,
-      rgba(52, 152, 219, 0.15) 59deg,
-      transparent 60deg,
-      transparent 89deg,
-      rgba(52, 152, 219, 0.15) 90deg,
-      rgba(52, 152, 219, 0.15) 119deg,
-      transparent 120deg,
-      transparent 149deg,
-      rgba(52, 152, 219, 0.15) 150deg,
-      rgba(52, 152, 219, 0.15) 179deg,
-      transparent 180deg,
-      transparent 209deg,
-      rgba(52, 152, 219, 0.15) 210deg,
-      rgba(52, 152, 219, 0.15) 239deg,
-      transparent 240deg,
-      transparent 269deg,
-      rgba(52, 152, 219, 0.15) 270deg,
-      rgba(52, 152, 219, 0.15) 299deg,
-      transparent 300deg,
-      transparent 329deg,
-      rgba(52, 152, 219, 0.15) 330deg,
-      rgba(52, 152, 219, 0.15) 359deg
-    );
-    opacity: 0.8;
-  }
-  /* Modern Compass Styles End */
-
-  .map-controls {
-    position: absolute;
-    right: 20px;
-    bottom: 30px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: var(--box-shadow);
-    z-index: 999;
-    display: flex;
-    flex-direction: column;
-    padding: 5px;
-    transition: transform 0.3s ease;
-  }
-
-  .map-controls:hover {
-    transform: translateX(-5px);
-  }
-
-  .map-control-btn {
-    width: 40px;
-    height: 40px;
-    border: none;
-    background: white;
-    border-radius: 8px;
-    margin: 3px 0;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--secondary-color);
-  }
-
-  .map-control-btn:hover {
-    background: var(--primary-color);
-    color: white;
-    transform: scale(1.1);
-  }
-
-  .loader {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, 0.95);
-    padding: 25px 30px;
-    border-radius: 15px;
-    box-shadow: var(--box-shadow);
-    z-index: 1000;
-    display: none;
-    transition: all 0.3s ease;
-  }
-
-  .loader.active {
-    display: flex;
-    animation: fade-in 0.3s ease;
-  }
-
-  .spinner-border {
-    margin-right: 15px;
-    color: var(--primary-color);
-  }
-
-  #coordinates {
-    position: absolute;
-    bottom: 2px;
-    left: 70px;
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 12px;
-    pointer-events: none;
-    z-index: 1000;
-  }
-
-  .notification {
-    position: fixed;
-    bottom: -100px;
-    right: 20px;
-    background: white;
-    border-left: 5px solid var(--primary-color);
-    padding: 15px 20px;
-    border-radius: 8px;
-    box-shadow: var(--box-shadow);
-    z-index: 9999;
-    transition: bottom 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    min-width: 300px;
-  }
-
-  .notification.active {
-    bottom: 20px;
-  }
-
-  .notification-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 5px;
-  }
-
-  .notification-icon {
-    margin-right: 10px;
-    color: var(--primary-color);
-    font-size: 20px;
-  }
-
-  .notification-title {
-    font-weight: 600;
-    color: var(--secondary-color);
-  }
-
-  .notification-body {
-    color: #666;
-    font-size: 14px;
-  }
-
-  .pulse-btn {
-    position: relative;
-  }
-
-  .pulse-btn::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: inherit;
-    background: var(--primary-color);
-    z-index: -1;
-    opacity: 0.5;
-    animation: pulse-animation 1.5s infinite;
-  }
-
-  .coordinate-label {
-    background: none !important;
-    font-size: 12px;
-    color: #333;
-    font-weight: bold;
-    text-shadow: 1px 1px 2px white;
-  }
-
-  .map-label {
-    background: rgba(255, 255, 255, 0.8);
-    padding: 3px 6px;
-    border-radius: 3px;
-    border: 1px solid #ddd;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    font-size: 11px;
-    font-weight: 600;
-    white-space: nowrap;
-    pointer-events: none;
-  }
-
-  .feature-details {
-    margin-top: 10px;
-  }
-
-  .feature-details p {
-    margin-bottom: 8px;
-    padding: 8px;
-    border-bottom: 1px solid #eee;
-    font-size: 14px;
-  }
-
-  .feature-details p strong {
-    color: var(--primary-dark);
-    font-weight: 600;
-  }
-
-  /* Animation for pulse effect */
-  @keyframes pulse-animation {
-    0% {
-      transform: scale(1);
-      opacity: 0.5;
-    }
-    50% {
-      transform: scale(1.2);
-      opacity: 0;
-    }
-    100% {
-      transform: scale(1);
-      opacity: 0;
-    }
-  }
-
-  @keyframes pulse-light {
-    0% {
-      opacity: 0.7;
-    }
-    50% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0.7;
-    }
-  }
-
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-      transform: translate(-50%, -60%);
-    }
-    to {
-      opacity: 1;
-      transform: translate(-50%, -50%);
-    }
-  }
-
-  @keyframes compass-fade-in {
-    from {
-      opacity: 0;
-      transform: scale(0.8) rotate(-20deg);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1) rotate(0);
-    }
-  }
-
-  /* Style improvements for Leaflet controls */
-  .leaflet-control-zoom {
-    border-radius: 10px !important;
-    overflow: hidden;
-    box-shadow: var(--box-shadow) !important;
-  }
-
-  .leaflet-control-zoom a {
-    background: white !important;
-    color: var(--secondary-color) !important;
-    width: 36px !important;
-    height: 36px !important;
-    line-height: 36px !important;
-    font-size: 18px !important;
-    transition: all 0.3s !important;
-  }
-
-  .leaflet-control-zoom a:hover {
-    background: var(--primary-color) !important;
-    color: white !important;
-  }
-
-  .leaflet-control-attribution {
-    background: rgba(255, 255, 255, 0.8) !important;
-    padding: 3px 8px !important;
-    border-radius: 5px !important;
-    font-size: 11px !important;
-  }
-
-  .leaflet-popup-content-wrapper {
-    border-radius: 10px !important;
-    box-shadow: var(--box-shadow) !important;
-    padding: 5px;
-  }
-
-  .leaflet-popup-content {
-    margin: 10px !important;
-    font-family: "Poppins", sans-serif !important;
-  }
-
-  .leaflet-popup-tip {
-    box-shadow: var(--box-shadow) !important;
-  }
-
-  .leaflet-popup-close-button {
-    color: var(--secondary-color) !important;
-    font-size: 18px !important;
-    padding: 5px !important;
-    transition: all 0.3s;
-  }
-
-  .leaflet-popup-close-button:hover {
-    color: var(--danger-color) !important;
-    transform: scale(1.2);
-  }
-
-  /* Responsive improvements */
-  @media (max-width: 1200px) {
-    .feature-info-panel {
-      width: 250px;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .content-wrapper {
-      flex-direction: column;
-      height: auto;
-    }
-
-    .sidebar {
-      width: 100%;
-      max-height: 300px;
-      border-right: none;
-      border-bottom: 1px solid #eaeaea;
-    }
-
-    .sidebar.collapsed {
-      max-height: 0;
-    }
-
-    .toggle-sidebar {
-      top: 300px;
-      left: 20px;
-    }
-
-    .toggle-sidebar.collapsed {
-      top: 20px;
-    }
-
-    .main-display-area {
-      flex-direction: column;
-      height: calc(100vh - 420px);
-    }
-
-    .map-container {
-      height: 60%;
-    }
-
-    .feature-info-panel {
-      width: 100%;
-      height: 40%;
-      border-left: none;
-      border-top: 1px solid #eaeaea;
-    }
-
-    .download-btn {
-      right: 20px;
-      top: 70px;
-    }
-
-    .compass-container {
-      top: 140px;
-      left: 20px;
-      width: 70px;
-      height: 70px;
-    }
-
-    .compass-rose {
-      width: 60px;
-      height: 60px;
-    }
-  }
-</style>
 {% endblock %} {% block extra_js %}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
@@ -1496,7 +360,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
-  // Global variables
+
   // Global variables
   let map;
   let currentLayer = null;
@@ -1838,8 +702,6 @@
     );
   }
 
-
-  
   // Function to add labels to features
   function addLabels() {
     if (!currentLayer || labelLayer) return;
@@ -2090,9 +952,8 @@
       subcategorySelect.innerHTML =
         '<option value="" disabled selected>Select Subcategory</option>';
       subcategories[category].forEach((sub) => {
-        subcategorySelect.innerHTML += `<option value="${sub}">${
-          sub.charAt(0).toUpperCase() + sub.slice(1)
-        }</option>`;
+        subcategorySelect.innerHTML += `<option value="${sub}">${sub.charAt(0).toUpperCase() + sub.slice(1)
+          }</option>`;
       });
       subcategorySelect.disabled = false;
     } else {
@@ -2102,8 +963,6 @@
       loadButton.disabled = true;
     }
   }
-
-  // Load shapefile data
 
   // Load shapefile data
   async function loadShapefile() {
@@ -2208,92 +1067,760 @@
         ? "N"
         : "S"
       : dms.direction >= 0
-      ? "E"
-      : "W";
+        ? "E"
+        : "W";
     return `${dms.degrees}°${dms.minutes}'${dms.seconds}"${direction}`;
   }
 
-  // Export map as PDF
-  function exportAsPDF(mapImage, mapTitle, category, subcategory, timestamp) {
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF({
-      orientation: "landscape",
-      unit: "mm",
-      format: "a4",
+  // Function to manually draw GeoJSON features onto the canvas
+  function drawFeaturesOnCanvas(ctx, bounds, canvas, features, scaleFactor) {
+    if (!features || !features.length) return;
+
+    // Calculate the pixel coordinates from geographic coordinates
+    function latLngToPixel(lat, lng) {
+      const west = bounds.getWest();
+      const east = bounds.getEast();
+      const south = bounds.getSouth();
+      const north = bounds.getNorth();
+
+      // Calculate margins (same as in addCoordinatesToCanvas)
+      const margin = {
+        top: 60 * scaleFactor,
+        bottom: 60 * scaleFactor,
+        left: 60 * scaleFactor,
+        right: 60 * scaleFactor,
+      };
+
+      // Available space for map
+      const contentWidth = canvas.width - (margin.left + margin.right);
+      const contentHeight = canvas.height - (margin.top + margin.bottom);
+
+      // Convert lat/lng to x/y
+      const x = margin.left + ((lng - west) / (east - west)) * contentWidth;
+      const y = margin.top + ((north - lat) / (north - south)) * contentHeight;
+
+      return { x, y };
+    }
+
+    // Set style for GeoJSON features
+    ctx.lineWidth = 2 * scaleFactor;
+    ctx.strokeStyle = "#000000";
+    ctx.fillStyle = "rgba(53, 128, 255, 0.3)";
+
+    // Loop through all features and draw them
+    features.forEach(feature => {
+      if (feature.geometry.type === "Polygon" || feature.geometry.type === "MultiPolygon") {
+        const coordinates = feature.geometry.type === "Polygon" ?
+          [feature.geometry.coordinates] : feature.geometry.coordinates;
+
+        coordinates.forEach(polygon => {
+          polygon.forEach(ring => {
+            ctx.beginPath();
+
+            ring.forEach((coord, i) => {
+              const pixel = latLngToPixel(coord[1], coord[0]);
+              if (i === 0) {
+                ctx.moveTo(pixel.x, pixel.y);
+              } else {
+                ctx.lineTo(pixel.x, pixel.y);
+              }
+            });
+
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+          });
+        });
+      } else if (feature.geometry.type === "LineString") {
+        ctx.beginPath();
+        feature.geometry.coordinates.forEach((coord, i) => {
+          const pixel = latLngToPixel(coord[1], coord[0]);
+          if (i === 0) {
+            ctx.moveTo(pixel.x, pixel.y);
+          } else {
+            ctx.lineTo(pixel.x, pixel.y);
+          }
+        });
+        ctx.stroke();
+      } else if (feature.geometry.type === "Point") {
+        const pixel = latLngToPixel(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
+        ctx.beginPath();
+        ctx.arc(pixel.x, pixel.y, 5 * scaleFactor, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.stroke();
+      }
     });
+  }
 
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
+  // Function to add coordinates to the canvas for image exports with DPI scaling
+  function addCoordinatesToCanvas(canvas, bounds, scaleFactor = 1) {
+    const ctx = canvas.getContext("2d");
+    const width = canvas.width;
+    const height = canvas.height;
 
-    // Margins for coordinate labels
+    // Extract bounds
+    const west = parseFloat(bounds.getWest());
+    const east = parseFloat(bounds.getEast());
+    const south = parseFloat(bounds.getSouth());
+    const north = parseFloat(bounds.getNorth());
+
+    // Set styles for coordinate labels - adjust for DPI
+    ctx.font = `${12 * scaleFactor}px Helvetica`;
+    ctx.fillStyle = "#000000";
+    ctx.textAlign = "center";
+
+    // Margins for coordinate labels - increased to prevent overlap and scaled for DPI
     const margin = {
-      top: 25,
-      bottom: 25,
-      left: 25,
-      right: 25,
+      top: 60 * scaleFactor,
+      bottom: 60 * scaleFactor,
+      left: 60 * scaleFactor,
+      right: 60 * scaleFactor,
     };
 
     // Calculate available space for map
-    const contentWidth = pageWidth - (margin.left + margin.right);
-    const contentHeight = pageHeight - (margin.top + margin.bottom);
+    const contentWidth = width - (margin.left + margin.right);
+    const contentHeight = height - (margin.top + margin.bottom);
 
-    // Add title with adjusted position
-    pdf.setFont("helvetica", "bold");
-    pdf.setFontSize(24);
-    pdf.text(mapTitle, pageWidth / 2, 15, { align: "center" });
+    // Draw coordinate scales
+    const numDivisions = 5;
 
-    const img = new Image();
-    img.src = mapImage;
-    img.onload = function () {
-      const imgWidth = img.width;
-      const imgHeight = img.height;
+    // Draw white background for coordinates
+    ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+    ctx.fillRect(0, 0, width, margin.top);
+    ctx.fillRect(0, height - margin.bottom, width, margin.bottom);
+    ctx.fillRect(0, 0, margin.left, height);
+    ctx.fillRect(width - margin.right, 0, margin.right, height);
 
-      // Calculate dimensions to fit while maintaining aspect ratio
-      let newWidth = contentWidth - 20; // Additional 20mm padding
-      let newHeight = (imgHeight * newWidth) / imgWidth;
+    ctx.fillStyle = "#000000";
 
-      // Check if height exceeds available space
-      if (newHeight > contentHeight - 20) {
-        newHeight = contentHeight - 20;
-        newWidth = (imgWidth * newHeight) / imgHeight;
+    // Draw border around map area first (so coordinates can overlay if needed)
+    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 2 * scaleFactor;
+    ctx.strokeRect(margin.left, margin.top, contentWidth, contentHeight);
+
+    // Latitude scales (left and right)
+    for (let i = 0; i <= numDivisions; i++) {
+      const lat = south + ((north - south) * i) / numDivisions;
+      const yPos =
+        margin.top + (contentHeight * (numDivisions - i)) / numDivisions;
+      const dms = decimalToDMS(lat);
+      const label = formatDMS(dms, true);
+
+      // Left side
+      ctx.save();
+      ctx.translate(margin.left - (18 * scaleFactor), yPos);
+      ctx.rotate(-Math.PI / 2);
+      ctx.fillText(label, 0, 0);
+      ctx.restore();
+
+      // Right side
+      ctx.save();
+      ctx.translate(width - margin.right + (18 * scaleFactor), yPos);
+      ctx.rotate(-Math.PI / 2);
+      ctx.fillText(label, 0, 0);
+      ctx.restore();
+
+      // Draw tick marks
+      ctx.beginPath();
+      ctx.moveTo(margin.left - (5 * scaleFactor), yPos);
+      ctx.lineTo(margin.left, yPos);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(width - margin.right, yPos);
+      ctx.lineTo(width - margin.right + (5 * scaleFactor), yPos);
+      ctx.stroke();
+    }
+
+    // Longitude scales (top and bottom)
+    for (let i = 0; i <= numDivisions; i++) {
+      const lon = west + ((east - west) * i) / numDivisions;
+      const xPos = margin.left + (contentWidth * i) / numDivisions;
+      const dms = decimalToDMS(lon);
+      const label = formatDMS(dms, false);
+
+      // Top side
+      ctx.fillText(label, xPos, margin.top - (18 * scaleFactor));
+
+      // Bottom side
+      ctx.fillText(label, xPos, height - margin.bottom + (25 * scaleFactor));
+
+      // Draw tick marks
+      ctx.beginPath();
+      ctx.moveTo(xPos, margin.top - (5 * scaleFactor));
+      ctx.lineTo(xPos, margin.top);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(xPos, height - margin.bottom);
+      ctx.lineTo(xPos, height - margin.bottom + (5 * scaleFactor));
+      ctx.stroke();
+    }
+
+    // Add compass directions
+    ctx.font = `bold ${14 * scaleFactor}px Helvetica`;
+    ctx.fillText("N", width / 2, margin.top - (35 * scaleFactor));
+    ctx.fillText("S", width / 2, height - margin.bottom + (40 * scaleFactor));
+    ctx.fillText("W", margin.left - (35 * scaleFactor), height / 2);
+    ctx.fillText("E", width - margin.right + (35 * scaleFactor), height / 2);
+
+    return canvas;
+  }
+
+  // Function to draw GeoJSON features with their original styles - improved for clarity and positioning
+  function drawFeaturesWithStyles(ctx, bounds, canvas, featuresWithStyles, scaleFactor) {
+    if (!featuresWithStyles || !featuresWithStyles.length) return;
+
+    // Calculate the pixel coordinates from geographic coordinates with high precision
+    function latLngToPixel(lat, lng) {
+      const west = bounds.getWest();
+      const east = bounds.getEast();
+      const south = bounds.getSouth();
+      const north = bounds.getNorth();
+
+      // Calculate margins (same as in addCoordinatesToCanvas)
+      const margin = {
+        top: 60 * scaleFactor,
+        bottom: 60 * scaleFactor,
+        left: 60 * scaleFactor,
+        right: 60 * scaleFactor,
+      };
+
+      // Available space for map
+      const contentWidth = canvas.width - (margin.left + margin.right);
+      const contentHeight = canvas.height - (margin.top + margin.bottom);
+
+      // We need to compensate for the different vertical scaling between Leaflet and our canvas
+      // This dynamically calculates an adjustment based on the map's actual dimensions
+      const aspectRatio = (north - south) / (east - west);
+      const canvasAspectRatio = contentHeight / contentWidth;
+
+      // Dynamically calculate adjustment instead of using a fixed factor
+      const adjustmentFactor = Math.max(0, (aspectRatio / canvasAspectRatio - 1) * 0.05);
+
+      // Precise conversion from lat/lng to x/y with a better adjustment
+      const x = margin.left + ((lng - west) / (east - west)) * contentWidth;
+      const y = margin.top + ((north - lat) / (north - south)) * contentHeight * (1 - adjustmentFactor);
+
+      return { x: Math.round(x), y: Math.round(y) };
+    }
+    // Enable crisp edges for lines
+    ctx.imageSmoothingEnabled = false;
+
+    // Loop through all features and draw them with their original styles
+    featuresWithStyles.forEach(item => {
+      const feature = item.feature;
+      const style = item.style;
+
+      // Set style based on the original layer style
+      ctx.lineWidth = Math.max(1, Math.round(style.weight * scaleFactor)); // Ensure minimum line width of 1px
+      ctx.strokeStyle = style.color;
+      ctx.fillStyle = style.fillColor;
+
+      if (feature.geometry.type === "Polygon" || feature.geometry.type === "MultiPolygon") {
+        const coordinates = feature.geometry.type === "Polygon" ?
+          [feature.geometry.coordinates] : feature.geometry.coordinates;
+
+        coordinates.forEach(polygon => {
+          polygon.forEach(ring => {
+            ctx.beginPath();
+
+            ring.forEach((coord, i) => {
+              const pixel = latLngToPixel(coord[1], coord[0]);
+              if (i === 0) {
+                ctx.moveTo(pixel.x, pixel.y);
+              } else {
+                ctx.lineTo(pixel.x, pixel.y);
+              }
+            });
+
+            ctx.closePath();
+
+            // Set fill with proper opacity
+            ctx.globalAlpha = style.fillOpacity;
+            ctx.fill();
+
+            // Set stroke with proper opacity
+            ctx.globalAlpha = style.opacity;
+            ctx.stroke();
+
+            // Reset alpha
+            ctx.globalAlpha = 1.0;
+          });
+        });
+      } else if (feature.geometry.type === "LineString" || feature.geometry.type === "MultiLineString") {
+        ctx.globalAlpha = style.opacity;
+
+        if (feature.geometry.type === "LineString") {
+          ctx.beginPath();
+          feature.geometry.coordinates.forEach((coord, i) => {
+            const pixel = latLngToPixel(coord[1], coord[0]);
+            if (i === 0) {
+              ctx.moveTo(pixel.x, pixel.y);
+            } else {
+              ctx.lineTo(pixel.x, pixel.y);
+            }
+          });
+          ctx.stroke();
+        } else {
+          // Handle MultiLineString
+          feature.geometry.coordinates.forEach(line => {
+            ctx.beginPath();
+            line.forEach((coord, i) => {
+              const pixel = latLngToPixel(coord[1], coord[0]);
+              if (i === 0) {
+                ctx.moveTo(pixel.x, pixel.y);
+              } else {
+                ctx.lineTo(pixel.x, pixel.y);
+              }
+            });
+            ctx.stroke();
+          });
+        }
+
+        // Reset alpha
+        ctx.globalAlpha = 1.0;
+      } else if (feature.geometry.type === "Point" || feature.geometry.type === "MultiPoint") {
+        const coordinates = feature.geometry.type === "Point" ?
+          [feature.geometry.coordinates] : feature.geometry.coordinates;
+
+        coordinates.forEach(coord => {
+          const pixel = latLngToPixel(coord[1], coord[0]);
+
+          // Fill
+          ctx.globalAlpha = style.fillOpacity;
+          ctx.beginPath();
+          ctx.arc(pixel.x, pixel.y, Math.max(3, style.weight * scaleFactor), 0, 2 * Math.PI);
+          ctx.fill();
+
+          // Stroke
+          ctx.globalAlpha = style.opacity;
+          ctx.stroke();
+
+          // Reset alpha
+          ctx.globalAlpha = 1.0;
+        });
       }
+    });
 
-      // Center the map in the available space
-      const xPos = margin.left + (contentWidth - newWidth) / 2;
-      const yPos = margin.top + (contentHeight - newHeight) / 2;
+    // Reset image smoothing
+    ctx.imageSmoothingEnabled = true;
+  }
 
-      // Draw border around map area
-      pdf.setDrawColor(0);
-      pdf.setLineWidth(0.5);
-      pdf.rect(xPos - 5, yPos - 5, newWidth + 10, newHeight + 10);
+  function exportAsPDF(mapImage, mapTitle, category, subcategory, timestamp, dpi, featuresWithStyles = [], bounds) {
+  // Get the selected layout
+  const layoutOption = document.getElementById("exportLayout").value;
+  
+  // Split the layout option into format and orientation
+  const [format, orientation] = layoutOption.split('-');
+  
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({
+    orientation: orientation,
+    unit: "mm",
+    format: format,
+    compress: false // Disable compression for better quality
+  });
 
-      // Add map image
-      pdf.addImage(mapImage, "PNG", xPos, yPos, newWidth, newHeight);
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const pageHeight = pdf.internal.pageSize.getHeight();
 
-      // Add coordinate scales on all four sides
-      addCoordinateScales(pdf, xPos, yPos, newWidth, newHeight);
+  // Margins for coordinate labels
+  const margin = {
+    top: 25,
+    bottom: 25,
+    left: 25,
+    right: 25,
+  };
 
-      // Add metadata to bottom with proper spacing
-      const textYPos = pageHeight - 15;
-      pdf.setFont("helvetica", "normal");
-      pdf.setFontSize(10);
-      pdf.text(`Category: ${category}`, margin.left, textYPos);
-      pdf.text(`Subcategory: ${subcategory}`, margin.left + 60, textYPos);
-      pdf.text(`Generated: ${timestamp}`, margin.left + 130, textYPos);
-      pdf.text(
-        `Source:IIT BHU DSS `,
-        margin.left + 220,
-        textYPos
+  // Calculate available space for map
+  const contentWidth = pageWidth - (margin.left + margin.right);
+  const contentHeight = pageHeight - (margin.top + margin.bottom);
+
+  // Add title with adjusted position
+  pdf.setFont("helvetica", "bold");
+  pdf.setFontSize(24);
+  pdf.text(mapTitle, pageWidth / 2, 15, { align: "center" });
+
+  const img = new Image();
+  img.src = mapImage;
+  img.onload = function () {
+    const imgWidth = img.width;
+    const imgHeight = img.height;
+
+    // Calculate dimensions to fit
+    let newWidth = contentWidth - 20;
+    let newHeight = (imgHeight * newWidth) / imgWidth;
+
+    // Check if height exceeds available space
+    if (newHeight > contentHeight - 20) {
+      newHeight = contentHeight - 20;
+      newWidth = (imgWidth * newHeight) / imgHeight;
+    }
+
+    // Center the map in the available space
+    const xPos = margin.left + (contentWidth - newWidth) / 2;
+    const yPos = margin.top + (contentHeight - newHeight) / 2;
+
+    // For sharper rendering in PDF: 
+    // Use a single high-resolution canvas for all drawing
+    const pdfCanvas = document.createElement('canvas');
+    
+    // Create a canvas with higher resolution for sharper output
+    // Scale based on the user-selected DPI, with a minimum multiplier of 3
+    const canvasScale = Math.max(3, dpi / 96);
+    pdfCanvas.width = imgWidth * canvasScale;
+    pdfCanvas.height = imgHeight * canvasScale;
+    
+    const pdfCtx = pdfCanvas.getContext('2d');
+    
+    // Apply sharp rendering settings
+    pdfCtx.imageSmoothingEnabled = false;
+    
+    // First draw the base map (scaled up for quality)
+    pdfCtx.drawImage(img, 0, 0, pdfCanvas.width, pdfCanvas.height);
+    
+    // Draw features with proper geo-positioning and original styles
+    if (featuresWithStyles && featuresWithStyles.length > 0) {
+      // Calculate the proper scale factor based on user DPI
+      const pdfScaleFactor = canvasScale;
+      
+      // Draw directly onto the high-resolution PDF canvas
+      drawFeaturesWithStyles(
+        pdfCtx, 
+        bounds, 
+        pdfCanvas, 
+        featuresWithStyles, 
+        pdfScaleFactor
       );
+    }
+    
+    // Get the high-quality image
+    const pdfMapImage = pdfCanvas.toDataURL('image/png', 1.0);
+    
+    // Draw border around map area
+    pdf.setDrawColor(0);
+    pdf.setLineWidth(0.5);
+    pdf.rect(xPos - 5, yPos - 5, newWidth + 10, newHeight + 10);
+    
+    // Add the map image with features using the FAST alias for better quality
+    pdf.addImage(pdfMapImage, "PNG", xPos, yPos, newWidth, newHeight, undefined, 'FAST');
 
-      pdf.save(`${mapTitle.replace(/\s+/g, "_")}.pdf`);
+    // Add coordinate scales on all four sides
+    addCoordinateScales(pdf, xPos, yPos, newWidth, newHeight);
 
-      showNotification(
-        "Export Complete",
-        "Map exported as PDF successfully",
-        "success"
-      );
-    };
+    // Add metadata to bottom with proper spacing
+    const textYPos = pageHeight - 15;
+    pdf.setFont("helvetica", "normal");
+    pdf.setFontSize(10);
+    
+    // Adjust metadata position based on page size
+    const metadataSpacing = pageWidth < 210 ? 40 : 60;
+    
+    pdf.text(`Category: ${category}`, margin.left, textYPos);
+    pdf.text(`Subcategory: ${subcategory}`, margin.left + metadataSpacing, textYPos);
+    pdf.text(`Generated: ${timestamp}`, margin.left + (metadataSpacing * 2), textYPos);
+    
+    // For smaller page formats, we might need to adjust or omit some metadata
+    if (pageWidth >= 210) {
+      pdf.text(`Source: IIT BHU DSS (${dpi} DPI)`, margin.left + (metadataSpacing * 3), textYPos);
+    }
+
+    // Save PDF with format in filename
+    pdf.save(`${mapTitle.replace(/\s+/g, "_")}_${format}_${orientation}.pdf`);
+
+    showNotification(
+      "Export Complete",
+      `Map exported as PDF successfully (${format.toUpperCase()} ${orientation}, ${dpi} DPI)`,
+      "success"
+    );
+  };
+}
+  function handleMapExport() {
+    const mapElement = document.getElementById("map");
+    const exportFormat = document.getElementById("exportFormat").value;
+    const exportDPI = parseInt(document.getElementById("exportDPI").value);
+    const mapTitle =
+      document.getElementById("mapTitle").value || "India GIS Vector Map";
+
+    const categorySelect = document.getElementById("categorySelect");
+    const subcategorySelect = document.getElementById("subcategorySelect");
+    const selectedCategory =
+      categorySelect.options[categorySelect.selectedIndex]?.text ||
+      "No Category Selected";
+    const selectedSubcategory =
+      subcategorySelect.options[subcategorySelect.selectedIndex]?.text ||
+      "No Subcategory Selected";
+    const timestamp = new Date().toLocaleString();
+
+    showNotification("Exporting", "Preparing map export...", "info");
+
+    // Ensure map is properly sized and fully rendered
+    map.invalidateSize(true);
+
+    // Get map dimensions
+    const mapWidth = mapElement.clientWidth;
+    const mapHeight = mapElement.clientHeight;
+
+    // Calculate base size (uncompressed) at 72 DPI
+    const basePixelCount = mapWidth * mapHeight;
+    const baseImageSize = basePixelCount * 4; // Size in bytes at 72 DPI (RGBA)
+
+    // Estimate target DPI based on selected quality level
+    const MIN_TARGET_SIZE = 500 * 1024;
+    const MAX_TARGET_SIZE = 10 * 1024 * 1024;
+    const estimatedCompressionRatio = 0.25;
+
+    // Calculate DPI values for min/max file sizes
+    const maxDPI = Math.sqrt(MAX_TARGET_SIZE / (baseImageSize * estimatedCompressionRatio)) * 72;
+    const minDPI = Math.sqrt(MIN_TARGET_SIZE / (baseImageSize * estimatedCompressionRatio)) * 72;
+
+    // Convert exportDPI value to actual DPI
+    let dpi;
+    switch (exportDPI) {
+      case 1: // Low
+        dpi = Math.max(72, Math.min(minDPI, 100));
+        break;
+      case 2: // Medium
+        dpi = Math.min(Math.max(minDPI, 150), Math.min(300, maxDPI));
+        break;
+      case 3: // High
+        dpi = Math.min(Math.max(200, minDPI), Math.min(400, maxDPI));
+        break;
+      case 4: // Ultra High
+        dpi = Math.min(Math.max(300, minDPI), maxDPI);
+        break;
+      default:
+        dpi = 150; // Medium as default
+    }
+
+    // Cap the DPI to reasonable values
+    dpi = Math.max(72, Math.min(dpi, 600));
+
+    console.log(`Map dimensions: ${mapWidth}x${mapHeight}, Calculated DPI: ${dpi.toFixed(0)}`);
+
+    // Set scale factor based on DPI
+    const scaleFactor = dpi / 96;
+
+    // Wait for map to stabilize - longer delay to ensure complete rendering
+    setTimeout(async () => {
+      try {
+        // Get the bounds before html2canvas
+        const bounds = map.getBounds();
+
+        // Log the bounds for debugging - this helps identify positioning issues
+        console.log("Export using bounds:",
+          `North: ${bounds.getNorth().toFixed(6)}`,
+          `South: ${bounds.getSouth().toFixed(6)}`,
+          `East: ${bounds.getEast().toFixed(6)}`,
+          `West: ${bounds.getWest().toFixed(6)}`
+        );
+
+        // Create a fixed bounds object to ensure consistency across all functions
+        // Create a more complete bounds object
+        const exportBounds = {
+          getNorth: () => bounds.getNorth(),
+          getSouth: () => bounds.getSouth(),
+          getEast: () => bounds.getEast(),
+          getWest: () => bounds.getWest(),
+          getNorthWest: () => L.latLng(bounds.getNorth(), bounds.getWest()),
+          getNorthEast: () => L.latLng(bounds.getNorth(), bounds.getEast()),
+          getSouthWest: () => L.latLng(bounds.getSouth(), bounds.getWest()),
+          getSouthEast: () => L.latLng(bounds.getSouth(), bounds.getEast())
+        };
+
+        // Collect all GeoJSON features with their styles
+        let featuresWithStyles = [];
+
+        // Store visibility state of layers
+        let layerVisibility = {};
+
+        if (currentLayer) {
+          currentLayer.eachLayer(layer => {
+            if (layer.feature) {
+              // Store layer visibility
+              layerVisibility[layer._leaflet_id] = map.hasLayer(layer);
+
+              // Store feature with its style
+              const style = layer.options || {};
+              featuresWithStyles.push({
+                feature: layer.feature,
+                style: {
+                  fillColor: style.fillColor || "#3388ff",
+                  color: style.color || "#3388ff",
+                  weight: style.weight || 3,
+                  opacity: style.opacity || 1.0,
+                  fillOpacity: style.fillOpacity || 0.2
+                }
+              });
+
+              // Hide the layer temporarily to avoid duplication
+              if (map.hasLayer(layer)) {
+                map.removeLayer(layer);
+              }
+            }
+          });
+        }
+
+        // Capture the map base without GeoJSON layers
+        const mapCanvas = await html2canvas(mapElement, {
+          useCORS: true,
+          allowTaint: true,
+          scale: scaleFactor * 1.5, // Higher scale factor for better quality
+          backgroundColor: "#ffffff",
+          logging: false,
+          removeContainer: false,
+          imageTimeout: 0, // No timeout for images
+          onclone: function (clonedDoc) {
+            // Use this to ensure the cloned document has fully-loaded tiles
+            const mapPane = clonedDoc.querySelector('.leaflet-map-pane');
+            if (mapPane) {
+              mapPane.style.willChange = 'transform'; // Better rendering
+            }
+          }
+        });
+
+        // Restore layer visibility
+        if (currentLayer) {
+          currentLayer.eachLayer(layer => {
+            if (layer.feature && layerVisibility[layer._leaflet_id]) {
+              map.addLayer(layer);
+            }
+          });
+        }
+
+        // Create a larger canvas for final output
+        const finalCanvas = document.createElement('canvas');
+        const padding = 120 * scaleFactor;
+        finalCanvas.width = mapCanvas.width + padding * 2;
+        finalCanvas.height = mapCanvas.height + padding * 2;
+
+        // Apply CSS for better rendering quality
+        finalCanvas.style.imageRendering = '-webkit-optimize-contrast';
+        finalCanvas.style.imageRendering = 'crisp-edges';
+
+        // Draw white background and base map
+        const ctx = finalCanvas.getContext('2d');
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+        ctx.drawImage(mapCanvas, padding, padding);
+
+        // Draw the features with proper geographic positioning and original styles
+        drawFeaturesWithStyles(ctx, exportBounds, finalCanvas, featuresWithStyles, scaleFactor);
+
+        // For image formats (PNG/JPG)
+        if (exportFormat === 'png' || exportFormat === 'jpg') {
+          // Add title to the canvas
+          ctx.font = `bold ${24 * scaleFactor}px Helvetica`;
+          ctx.fillStyle = '#000000';
+          ctx.textAlign = 'center';
+          ctx.fillText(mapTitle, finalCanvas.width / 2, padding / 2);
+
+          // Add metadata to the canvas
+          ctx.font = `${12 * scaleFactor}px Helvetica`;
+          ctx.textAlign = 'left';
+          ctx.fillText(`Category: ${selectedCategory}`, padding, finalCanvas.height - padding / 2 + (5 * scaleFactor));
+          ctx.fillText(`Subcategory: ${selectedSubcategory}`, padding + (180 * scaleFactor), finalCanvas.height - padding / 2 + (5 * scaleFactor));
+          ctx.fillText(`Generated: ${timestamp}`, padding + (360 * scaleFactor), finalCanvas.height - padding / 2 + (5 * scaleFactor));
+          ctx.textAlign = 'right';
+          ctx.fillText(`Source: IIT BHU DSS`, finalCanvas.width - padding, finalCanvas.height - padding / 2 + (5 * scaleFactor));
+
+          // Add the coordinates to the canvas
+          addCoordinatesToCanvas(finalCanvas, exportBounds, scaleFactor);
+
+          // Get the final image
+          const finalImage = finalCanvas.toDataURL(`image/${exportFormat === 'jpg' ? 'jpeg' : 'png'}`, 1.0);
+
+          // Download the image
+          const link = document.createElement("a");
+          link.download = `${mapTitle.replace(/\s+/g, "_")}.${exportFormat}`;
+          link.href = finalImage;
+          link.click();
+
+          showNotification(
+            "Export Complete",
+            `Map exported as ${exportFormat.toUpperCase()} successfully at ${dpi} DPI`,
+            "success"
+          );
+        }
+        // For PDF export
+        else if (exportFormat === 'pdf') {
+          // Get map image for PDF
+          const mapImage = mapCanvas.toDataURL("image/png", 1.0);
+
+          // Use the improved exportAsPDF function with featuresWithStyles
+          exportAsPDF(
+            mapImage,
+            mapTitle,
+            selectedCategory,
+            selectedSubcategory,
+            timestamp,
+            dpi,
+            featuresWithStyles,
+            exportBounds
+          );
+        }
+        // For SVG format
+        else if (exportFormat === 'svg') {
+          // Add title to the canvas
+          ctx.font = `bold ${24 * scaleFactor}px Helvetica`;
+          ctx.fillStyle = '#000000';
+          ctx.textAlign = 'center';
+          ctx.fillText(mapTitle, finalCanvas.width / 2, padding / 2);
+
+          // Add metadata to the canvas
+          ctx.font = `${12 * scaleFactor}px Helvetica`;
+          ctx.textAlign = 'left';
+          ctx.fillText(`Category: ${selectedCategory}`, padding, finalCanvas.height - padding / 2 + (5 * scaleFactor));
+          ctx.fillText(`Subcategory: ${selectedSubcategory}`, padding + (180 * scaleFactor), finalCanvas.height - padding / 2 + (5 * scaleFactor));
+          ctx.fillText(`Generated: ${timestamp}`, padding + (360 * scaleFactor), finalCanvas.height - padding / 2 + (5 * scaleFactor));
+          ctx.textAlign = 'right';
+          ctx.fillText(`Source: IIT BHU DSS`, finalCanvas.width - padding, finalCanvas.height - padding / 2 + (5 * scaleFactor));
+
+          // Add coordinates
+          addCoordinatesToCanvas(finalCanvas, exportBounds, scaleFactor);
+
+          // Convert to SVG
+          const svgData = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="${finalCanvas.width}" height="${finalCanvas.height}">
+          <image href="${finalCanvas.toDataURL('image/png')}" width="${finalCanvas.width}" height="${finalCanvas.height}" />
+        </svg>
+        `;
+
+          // Create SVG Blob and download
+          const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+          const svgUrl = URL.createObjectURL(svgBlob);
+
+          const link = document.createElement("a");
+          link.download = `${mapTitle.replace(/\s+/g, "_")}.svg`;
+          link.href = svgUrl;
+          link.click();
+
+          // Clean up
+          URL.revokeObjectURL(svgUrl);
+
+          showNotification(
+            "Export Complete",
+            `Map exported as SVG successfully at ${dpi} DPI`,
+            "success"
+          );
+        }
+        else if (exportFormat === 'tif') {
+          showNotification(
+            "Notice",
+            "TIFF export will be implemented in a future update",
+            "info"
+          );
+        }
+      } catch (error) {
+        console.error("Error exporting map:", error);
+        showNotification(
+          "Error",
+          "Failed to export map: " + error.message,
+          "error"
+        );
+      }
+    }, 1500); // Longer timeout for more reliable capture
   }
 
   // Add coordinate scales to PDF
@@ -2319,7 +1846,7 @@
 
       // Left side - vertical text with better alignment
       pdf.saveGraphicsState();
-      pdf.text(label, x - 2, yPos+5, {
+      pdf.text(label, x - 2, yPos + 5, {
         align: "center",
         angle: 90,
       });
@@ -2327,7 +1854,7 @@
 
       // Right side - vertical text with better alignment
       pdf.saveGraphicsState();
-      pdf.text(label, x + width + 17, yPos+5, {
+      pdf.text(label, x + width + 17, yPos + 5, {
         align: "center",
         angle: 90,
       });
@@ -2369,91 +1896,6 @@
     pdf.text("E", x + width + 15, y + height / 2, { align: "center" });
   }
 
-  // Handle map export
-  function handleMapExport() {
-    const mapElement = document.getElementById("map");
-    const exportFormat = document.getElementById("exportFormat").value;
-    const mapTitle =
-      document.getElementById("mapTitle").value || "India GIS Vector Map";
-
-    const categorySelect = document.getElementById("categorySelect");
-    const subcategorySelect = document.getElementById("subcategorySelect");
-    const selectedCategory =
-      categorySelect.options[categorySelect.selectedIndex]?.text ||
-      "No Category Selected";
-    const selectedSubcategory =
-      subcategorySelect.options[subcategorySelect.selectedIndex]?.text ||
-      "No Subcategory Selected";
-    const timestamp = new Date().toLocaleString();
-
-    showNotification("Exporting", "Preparing map export...", "info");
-
-    // Ensure map is properly sized
-    map.invalidateSize();
-
-    // Wait for map to stabilize
-    setTimeout(async () => {
-      try {
-        const mapCanvas = await html2canvas(mapElement, {
-          useCORS: true,
-          allowTaint: true,
-          scale: 2,
-          backgroundColor: "#ffffff",
-          logging: false,
-          removeContainer: false,
-        });
-
-        const mapImage = mapCanvas.toDataURL("image/png", 1.0);
-
-        switch (exportFormat) {
-          case "pdf":
-            exportAsPDF(
-              mapImage,
-              mapTitle,
-              selectedCategory,
-              selectedSubcategory,
-              timestamp
-            );
-            break;
-          case "svg":
-            // TODO: Implement SVG export if needed
-            showNotification(
-              "Notice",
-              "SVG export will be implemented in a future update",
-              "info"
-            );
-            break;
-          case "jpg":
-          case "png":
-            // Direct download as image
-            const link = document.createElement("a");
-            link.download = `${mapTitle.replace(/\s+/g, "_")}.${exportFormat}`;
-            link.href = mapImage.replace("image/png", `image/${exportFormat}`);
-            link.click();
-            showNotification(
-              "Export Complete",
-              `Map exported as ${exportFormat.toUpperCase()} successfully`,
-              "success"
-            );
-            break;
-          case "tif":
-            showNotification(
-              "Notice",
-              "TIFF export will be implemented in a future update",
-              "info"
-            );
-            break;
-        }
-      } catch (error) {
-        console.error("Error exporting map:", error);
-        showNotification(
-          "Error",
-          "Failed to export map: " + error.message,
-          "error"
-        );
-      }
-    }, 1000);
-  }
 
   // Document ready function
   document.addEventListener("DOMContentLoaded", function () {
@@ -2811,8 +2253,7 @@
           // Show notification for demo
           showNotification(
             "Analysis Tool",
-            `${
-              analysisType.charAt(0).toUpperCase() + analysisType.slice(1)
+            `${analysisType.charAt(0).toUpperCase() + analysisType.slice(1)
             } analysis tool selected`,
             "info"
           );
@@ -2826,7 +2267,472 @@
             .classList.remove("active");
         });
       });
+    //////////////////////////////////////////////////////////////////////////////////
+    // Buffer Tool Fix - Implementation to ensure toolbar appears
 
+    // Enhanced Buffer Tools Implementation
+    document.addEventListener('DOMContentLoaded', function () {
+      // Create style for buffer toolbar
+      addBufferToolbarStyles();
+
+      // Create and add the buffer toolbar to the DOM
+      createAndAddBufferToolbar();
+
+      // Modify analysis dropdown handler
+      modifyAnalysisDropdownHandler();
+
+      // Load Turf.js for buffer operations
+      ensureTurfJsLoaded();
+    });
+
+    // Function to add required styles
+    function addBufferToolbarStyles() {
+      const styleElement = document.createElement('style');
+      styleElement.id = 'buffer-tool-styles';
+      styleElement.textContent = `
+    .thin-strip-toolbar {
+      display: none; /* Initially hidden */
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 5px;
+      position: absolute;
+      top: 60px;
+      left: 10px;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .buffer-tool-btn {
+      width: 30px;
+      height: 30px;
+      margin: 0 3px;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .buffer-tool-btn:hover {
+      background-color: #f0f0f0;
+    }
+
+    .buffer-tool-btn.active {
+      background-color: #e0e0e0;
+      border-color: #999;
+    }
+
+    .buffer-tool-btn[data-tooltip]:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #333;
+      color: white;
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    
+    .buffer-button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      margin-top: 5px;
+      width: 100%;
+    }
+    
+    .buffer-button:hover {
+      background-color: #2980b9;
+    }
+    
+    .buffer-info {
+      padding: 5px;
+    }
+  `;
+
+      document.head.appendChild(styleElement);
+    }
+
+    // Create and add buffer toolbar to DOM
+    function createAndAddBufferToolbar() {
+      // Create toolbar container
+      const bufferToolbar = document.createElement('div');
+      bufferToolbar.id = 'buffer-toolbar';
+      bufferToolbar.className = 'thin-strip-toolbar';
+
+      // Create toolbar title
+      const toolbarTitle = document.createElement('div');
+      toolbarTitle.className = 'toolbar-title';
+      toolbarTitle.style.marginRight = '10px';
+      toolbarTitle.style.fontWeight = 'bold';
+      toolbarTitle.textContent = 'Buffer:';
+      bufferToolbar.appendChild(toolbarTitle);
+
+      // Add buffer drawing tools
+      const tools = [
+        { id: 'buffer-point', icon: 'fas fa-map-marker-alt', tooltip: 'Place Point' },
+        { id: 'buffer-line', icon: 'fas fa-slash', tooltip: 'Draw Line' },
+        { id: 'buffer-polygon', icon: 'fas fa-draw-polygon', tooltip: 'Draw Polygon' }
+      ];
+
+      tools.forEach(tool => {
+        const toolButton = document.createElement('button');
+        toolButton.id = tool.id;
+        toolButton.className = 'buffer-tool-btn';
+        toolButton.setAttribute('data-tooltip', tool.tooltip);
+
+        // Add icon
+        const icon = document.createElement('i');
+        icon.className = tool.icon;
+        toolButton.appendChild(icon);
+
+        // Add click event listener
+        toolButton.addEventListener('click', function () {
+          activateBufferTool(tool.id);
+        });
+
+        bufferToolbar.appendChild(toolButton);
+      });
+
+      // Add close button
+      const closeButton = document.createElement('button');
+      closeButton.className = 'buffer-tool-btn';
+      closeButton.setAttribute('data-tooltip', 'Close Buffer Tool');
+      closeButton.style.marginLeft = '10px';
+
+      const closeIcon = document.createElement('i');
+      closeIcon.className = 'fas fa-times';
+      closeButton.appendChild(closeIcon);
+
+      closeButton.addEventListener('click', function () {
+        bufferToolbar.style.display = 'none';
+      });
+
+      bufferToolbar.appendChild(closeButton);
+
+      // Add the toolbar to the map container
+      document.addEventListener('DOMContentLoaded', function () {
+        const mapContainer = document.querySelector('.map-container');
+        if (mapContainer) {
+          mapContainer.appendChild(bufferToolbar);
+        } else {
+          document.body.appendChild(bufferToolbar);
+        }
+      });
+    }
+
+    // Modify analysis dropdown handler
+    function modifyAnalysisDropdownHandler() {
+      document.addEventListener('DOMContentLoaded', function () {
+        // Wait for the page to fully load
+        setTimeout(() => {
+          // Find all analysis dropdown items
+          document.querySelectorAll("#analysis-dropdown .dropdown-item").forEach((item) => {
+            // Remove any existing click listeners (to avoid duplicates)
+            const oldItem = item.cloneNode(true);
+            item.parentNode.replaceChild(oldItem, item);
+
+            // Add our new click listener
+            oldItem.addEventListener("click", function () {
+              const analysisType = this.getAttribute("data-analysis");
+
+              // Special handling for buffer tool
+              if (analysisType === 'buffer') {
+                // Show buffer toolbar
+                const bufferToolbar = document.getElementById('buffer-toolbar');
+                if (bufferToolbar) {
+                  bufferToolbar.style.display = 'flex';
+
+                  showNotification(
+                    "Buffer Tool",
+                    "Buffer tool selected. Choose a drawing method.",
+                    "info"
+                  );
+                } else {
+                  showNotification(
+                    "Error",
+                    "Buffer toolbar not found. Please refresh the page.",
+                    "error"
+                  );
+                }
+              } else {
+                // Hide buffer toolbar for other tools
+                const bufferToolbar = document.getElementById('buffer-toolbar');
+                if (bufferToolbar) {
+                  bufferToolbar.style.display = 'none';
+                }
+
+                showNotification(
+                  "Analysis Tool",
+                  `${analysisType.charAt(0).toUpperCase() + analysisType.slice(1)} analysis tool selected`,
+                  "info"
+                );
+              }
+
+              // Close dropdown
+              document
+                .querySelector("#analysis-dropdown .dropdown-content")
+                .classList.remove("show");
+              document
+                .querySelector("#analysis-dropdown .dropdown-header")
+                .classList.remove("active");
+            });
+          });
+        }, 500); // Short delay to ensure elements are fully loaded
+      });
+    }
+
+    // Function to handle buffer tool activation
+    function activateBufferTool(toolId) {
+      // Deactivate all tools first
+      document.querySelectorAll('.buffer-tool-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+
+      // Activate the selected tool
+      document.getElementById(toolId).classList.add('active');
+
+      // Set the current active tool and apply appropriate action
+      const toolType = toolId.split('-')[1]; // Extract 'polygon', 'point', or 'line'
+
+      showNotification(
+        "Buffer Tool",
+        `${toolType.charAt(0).toUpperCase() + toolType.slice(1)} tool activated`,
+        "info"
+      );
+
+      // Setup appropriate drawing method based on the selected tool
+      switch (toolType) {
+        case 'point':
+          setupBufferPointTool();
+          break;
+        case 'line':
+          setupBufferLineTool();
+          break;
+        case 'polygon':
+          setupBufferPolygonTool();
+          break;
+      }
+    }
+
+    // Setup buffer point drawing tool
+    function setupBufferPointTool() {
+      // Use Leaflet.draw for point placement
+      new L.Draw.Marker(map, {
+        icon: new L.Icon({
+          iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+          shadowSize: [41, 41]
+        })
+      }).enable();
+
+      // If we don't already have a created event handler for buffer features
+      if (!map._hasBufferCreateHandler) {
+        map._hasBufferCreateHandler = true;
+
+        // Store the original handler if it exists
+        const originalCreatedHandler = map._events['draw:created'] ? [...map._events['draw:created']] : [];
+
+        // Add our custom handler for buffer features
+        map.on('draw:created', function (e) {
+          const type = e.layerType;
+          const layer = e.layer;
+
+          // Add the layer to the map
+          layer.addTo(map);
+
+          // Special handling for buffer features
+          if (document.getElementById('buffer-toolbar').style.display === 'flex') {
+            // It's a buffer feature - add special popup
+            if (type === 'marker') {
+              // Point buffer
+              layer.bindPopup(createBufferControlsPopup('Point')).openPopup();
+            } else if (type === 'polyline') {
+              // Line buffer
+              layer.bindPopup(createBufferControlsPopup('Line')).openPopup();
+            } else if (type === 'polygon') {
+              // Polygon buffer
+              layer.bindPopup(createBufferControlsPopup('Polygon')).openPopup();
+            }
+
+            // Setup buffer controls event handlers
+            layer.on('popupopen', setupBufferControlsHandlers);
+          } else {
+            // It's a regular feature - call original handlers
+            if (originalCreatedHandler.length > 0) {
+              originalCreatedHandler.forEach(handler => {
+                handler.fn.call(handler.ctx, e);
+              });
+            }
+          }
+        });
+      }
+    }
+
+    // Setup buffer line drawing tool
+    function setupBufferLineTool() {
+      // Use Leaflet.draw for line drawing
+      new L.Draw.Polyline(map, {
+        shapeOptions: {
+          color: document.getElementById('lineColor')?.value || 'red',
+          weight: parseInt(document.getElementById('weight')?.value || 3)
+        }
+      }).enable();
+    }
+
+    // Setup buffer polygon drawing tool
+    function setupBufferPolygonTool() {
+      // Use Leaflet.draw for polygon drawing
+      new L.Draw.Polygon(map, {
+        shapeOptions: {
+          color: document.getElementById('lineColor')?.value || '#3498db',
+          fillColor: document.getElementById('fillColor')?.value || '#3498db',
+          fillOpacity: parseFloat(document.getElementById('opacity')?.value || 0.5),
+          weight: parseInt(document.getElementById('weight')?.value || 3)
+        }
+      }).enable();
+    }
+
+    // Create popup content with buffer controls
+    function createBufferControlsPopup(featureType) {
+      return `
+    <div class="buffer-info">
+      <h4>Buffer ${featureType}</h4>
+      <p>To create a buffer zone around this ${featureType.toLowerCase()}, adjust the distance:</p>
+      <div class="buffer-controls">
+        <label>Buffer Distance (meters): <span id="buffer-distance-value">500</span></label>
+        <input type="range" id="buffer-distance" min="100" max="10000" value="500" step="100" />
+        <button id="apply-buffer" class="buffer-button">Apply Buffer</button>
+      </div>
+    </div>
+  `;
+    }
+
+    // Setup event handlers for buffer controls in popup
+    function setupBufferControlsHandlers() {
+      const slider = document.getElementById('buffer-distance');
+      const valueDisplay = document.getElementById('buffer-distance-value');
+      const applyButton = document.getElementById('apply-buffer');
+
+      if (slider && valueDisplay && applyButton) {
+        // Update display value when slider changes
+        slider.addEventListener('input', function () {
+          valueDisplay.textContent = this.value;
+        });
+
+        // Apply buffer when button is clicked
+        applyButton.addEventListener('click', () => {
+          const layer = this._source || this; // Get the layer (this context may vary)
+          const distance = parseInt(slider.value);
+
+          if (distance > 0) {
+            // Create the buffer
+            createBufferZone(layer, distance);
+
+            // Close the popup
+            layer.closePopup();
+
+            // Hide the buffer toolbar after operation is complete
+            const bufferToolbar = document.getElementById('buffer-toolbar');
+            if (bufferToolbar) {
+              bufferToolbar.style.display = 'none';
+            }
+          }
+        });
+      }
+    }
+
+    // Apply buffer to a feature
+    function createBufferZone(sourceFeature, distance) {
+      if (!map) {
+        console.error("Map not initialized");
+        return;
+      }
+
+      if (typeof turf === 'undefined') {
+        showNotification(
+          "Error",
+          "Buffer functionality requires Turf.js library which is not loaded",
+          "error"
+        );
+        ensureTurfJsLoaded();
+        return;
+      }
+
+      try {
+        // Convert Leaflet feature to GeoJSON
+        const featureGeoJSON = sourceFeature.toGeoJSON();
+
+        // Use turf.js to create buffer
+        const buffered = turf.buffer(featureGeoJSON, distance / 1000, { units: 'kilometers' });
+
+        // Add the buffer to the map
+        const bufferLayer = L.geoJSON(buffered, {
+          style: {
+            color: '#ff7800',
+            weight: 2,
+            opacity: 0.8,
+            fillColor: '#ff7800',
+            fillOpacity: 0.2
+          }
+        }).addTo(map);
+
+        // Add popup with buffer info
+        bufferLayer.bindPopup(`
+      <div class="buffer-info">
+        <h4>Buffer Zone</h4>
+        <p>Distance: ${distance} meters</p>
+        <p>Source: ${sourceFeature instanceof L.Polygon ? 'Polygon' :
+            sourceFeature instanceof L.Marker ? 'Point' :
+              'Line'}</p>
+      </div>
+    `);
+
+        showNotification(
+          "Buffer Created",
+          `${distance}m buffer zone has been applied`,
+          "success"
+        );
+
+        return bufferLayer;
+      } catch (error) {
+        console.error("Error creating buffer:", error);
+        showNotification(
+          "Error",
+          "Failed to create buffer: " + error.message,
+          "error"
+        );
+      }
+    }
+
+    // Add Turf.js script if not already loaded
+    function ensureTurfJsLoaded() {
+      if (typeof turf === 'undefined') {
+        const script = document.createElement('script');
+        script.src = 'https://unpkg.com/@turf/turf@6/turf.min.js';
+        script.onload = function () {
+          console.log("Turf.js library loaded successfully");
+        };
+        script.onerror = function () {
+          console.error("Failed to load Turf.js library");
+        };
+        document.head.appendChild(script);
+      }
+    }
+    /////////////////////////////////////////////////////////////////////////////////////
     // Toggle modern dropdowns
     document.querySelectorAll(".dropdown-header").forEach((header) => {
       header.addEventListener("click", function () {
@@ -2893,5 +2799,415 @@
     // Update when window is resized
     window.addEventListener("resize", adjustForScreenSize);
   });
+
+  //////////////////////////////
+  // Add this code at the very end of your script tag, OUTSIDE your existing DOMContentLoaded handler
+
+  // Create the buffer toolbar and functionality after the page is fully loaded
+  window.addEventListener('load', function () {
+    // Create buffer toolbar
+    const bufferToolbar = document.createElement('div');
+    bufferToolbar.id = 'buffer-toolbar';
+    bufferToolbar.className = 'thin-strip-toolbar';
+    bufferToolbar.style.cssText = `
+    display: none;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    position: absolute;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    flex-direction: row;
+    align-items: center;
+  `;
+
+    // Create the toolbar content with buffer distance slider
+    bufferToolbar.innerHTML = `
+    <div style="font-weight:bold; margin-right:10px;">Buffer Tools:</div>
+    
+    <div style="display:flex; align-items:center; margin-right:15px;">
+      <span>Buffer Distance: </span>
+      <span id="buffer-value" style="min-width:40px; text-align:center;">1</span>
+      <span> km</span>
+    </div>
+    
+    <div style="margin-right:15px; min-width:150px;">
+      <input type="range" id="buffer-distance" min="0.1" max="200" value="1" step="0.1" style="width:100%;" />
+    </div>
+    
+    <button id="buffer-point" class="map-control-btn" title="Place Point (Circle)"><i class="fas fa-circle"></i></button>
+    <button id="buffer-line" class="map-control-btn" title="Draw Line with Width"><i class="fas fa-road"></i></button>
+    <button id="buffer-polygon" class="map-control-btn" title="Draw Buffered Polygon"><i class="fas fa-draw-polygon"></i></button>
+    <button id="buffer-clear" class="map-control-btn" title="Clear All Buffers"><i class="fas fa-trash-alt"></i></button>
+    <button id="buffer-close" class="map-control-btn" title="Close"><i class="fas fa-times"></i></button>
+  `;
+
+    // Add to map container
+    document.querySelector('.map-container').appendChild(bufferToolbar);
+
+    // Load Turf.js if needed
+    if (typeof turf === 'undefined') {
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/@turf/turf@6/turf.min.js';
+      document.head.appendChild(script);
+    }
+
+    // Create a feature group to hold all buffer layers
+    const bufferLayers = new L.FeatureGroup().addTo(map);
+
+    // Update buffer distance display when slider changes
+    document.getElementById('buffer-distance').addEventListener('input', function () {
+      document.getElementById('buffer-value').textContent = this.value;
+    });
+
+    // Add event listeners to buffer tool buttons
+    document.getElementById('buffer-point').addEventListener('click', function () {
+      // For point (circle), we need to create a custom interaction
+      activatePointCircleTool();
+      showNotification("Buffer Tool", "Click on map to create a circle with specified radius", "info");
+    });
+
+    document.getElementById('buffer-line').addEventListener('click', function () {
+      // For line with width, use the Draw.Polyline but modify it after creation
+      activateWidthLineTool();
+      showNotification("Buffer Tool", "Draw a line that will have specified width", "info");
+    });
+
+    document.getElementById('buffer-polygon').addEventListener('click', function () {
+      // For polygon, use the Draw.Polygon but buffer it after creation
+      activateBufferedPolygonTool();
+      showNotification("Buffer Tool", "Draw a polygon that will be buffered outward", "info");
+    });
+
+    // Clear all buffers
+    document.getElementById('buffer-clear').addEventListener('click', function () {
+      // Remove all layers from the feature group
+      bufferLayers.eachLayer(function (layer) {
+        bufferLayers.removeLayer(layer);
+      });
+
+      // Also ensure we remove any lingering buffer elements
+      map.eachLayer(function (layer) {
+        if (layer._bufferElement && layer !== bufferLayers) {
+          map.removeLayer(layer);
+        }
+      });
+
+      showNotification("Buffer Tool", "All buffer elements cleared", "info");
+    });
+
+    // Close the buffer toolbar
+    document.getElementById('buffer-close').addEventListener('click', function () {
+      document.getElementById('buffer-toolbar').style.display = 'none';
+      deactivateAllTools();
+    });
+
+    // Update analysis dropdown handler
+    document.querySelectorAll("#analysis-dropdown .dropdown-item").forEach(item => {
+      item.addEventListener('click', function (e) {
+        const analysisType = this.getAttribute("data-analysis");
+        if (analysisType === 'buffer') {
+          document.getElementById('buffer-toolbar').style.display = 'flex';
+          showNotification("Buffer Tool", "Set buffer distance and select a drawing tool", "info");
+        } else {
+          document.getElementById('buffer-toolbar').style.display = 'none';
+          deactivateAllTools();
+        }
+      });
+    });
+
+    // Point (Circle) Tool Activation
+    function activatePointCircleTool() {
+      deactivateAllTools();
+
+      // Change cursor style
+      map._container.style.cursor = 'crosshair';
+
+      // Store the buffer click handler on the map
+      map._bufferClickHandler = function (e) {
+        const radius = parseFloat(document.getElementById('buffer-distance').value) * 1000; // Convert km to meters
+
+        // Create a circle at the clicked location
+        const circle = L.circle(e.latlng, {
+          radius: radius,
+          color: '#ff7800',
+          weight: 2,
+          opacity: 0.8,
+          fillColor: '#ff7800',
+          fillOpacity: 0.2
+        });
+
+        // Mark as buffer element for easier cleanup
+        circle._bufferElement = true;
+
+        // Add to buffer layers
+        bufferLayers.addLayer(circle);
+
+        // Add popup with information
+        circle.bindPopup(`
+        <div style="padding:5px;">
+          <h4>Circle Buffer</h4>
+          <p>Center: ${e.latlng.lat.toFixed(5)}, ${e.latlng.lng.toFixed(5)}</p>
+          <p>Radius: ${(radius / 1000).toFixed(1)} km</p>
+          <button class="buffer-delete-btn" style="background-color:#e74c3c; color:white; border:none; padding:3px 8px; border-radius:3px; cursor:pointer; margin-top:5px; width:100%;">Delete</button>
+        </div>
+      `);
+
+        // Add delete event handler to the popup
+        circle.on('popupopen', function () {
+          const deleteBtn = document.querySelector('.buffer-delete-btn');
+          if (deleteBtn) {
+            deleteBtn.addEventListener('click', function () {
+              // Direct removal from map and buffer group
+              map.removeLayer(circle);
+              bufferLayers.removeLayer(circle);
+              map.closePopup();
+              showNotification("Buffer Deleted", "Circle buffer has been removed", "info");
+            });
+          }
+        });
+
+        showNotification("Circle Created", `Circle with ${(radius / 1000).toFixed(1)}km radius created`, "success");
+      };
+
+      // Add the click handler
+      map.on('click', map._bufferClickHandler);
+    }
+
+    // Line with Width Tool Activation
+    function activateWidthLineTool() {
+      deactivateAllTools();
+
+      // Use the Leaflet.Draw line tool but modify our draw:created handler
+      map._bufferLineMode = true;
+      const drawLineControl = new L.Draw.Polyline(map);
+      drawLineControl.enable();
+      map.drawHandler = drawLineControl;
+    }
+
+    // Buffered Polygon Tool Activation
+    function activateBufferedPolygonTool() {
+      deactivateAllTools();
+
+      // Use the Leaflet.Draw polygon tool but modify our draw:created handler
+      map._bufferPolygonMode = true;
+      const drawPolygonControl = new L.Draw.Polygon(map);
+      drawPolygonControl.enable();
+      map.drawHandler = drawPolygonControl;
+    }
+
+    // Deactivate all tools
+    function deactivateAllTools() {
+      // Reset cursor
+      map._container.style.cursor = '';
+
+      // Remove point (circle) handler if active
+      if (map._bufferClickHandler) {
+        map.off('click', map._bufferClickHandler);
+        map._bufferClickHandler = null;
+      }
+
+      // Reset line and polygon modes
+      map._bufferLineMode = false;
+      map._bufferPolygonMode = false;
+
+      // Disable any active drawing
+      if (map.drawHandler && map.drawHandler.disable) {
+        map.drawHandler.disable();
+        map.drawHandler = null;
+      }
+
+      // Try to cancel any active draw tools
+      if (typeof L.Draw !== 'undefined') {
+        try {
+          // Force disable all drawing handlers
+          Object.values(L.Draw.Event).forEach(eventName => {
+            if (typeof eventName === 'string' && eventName.includes('CANCEL')) {
+              map.fire(eventName);
+            }
+          });
+        } catch (e) {
+          console.log("Failed to cancel drawing:", e);
+        }
+      }
+    }
+
+    // Override the draw created event to handle buffered features
+    map.on('draw:created', function (e) {
+      const layer = e.layer;
+
+      // Only apply special handling if buffer toolbar is visible
+      if (document.getElementById('buffer-toolbar').style.display === 'flex') {
+        // Get buffer distance in kilometers
+        const distanceKm = parseFloat(document.getElementById('buffer-distance').value);
+
+        if (map._bufferLineMode && e.layerType === 'polyline') {
+          // For line with width, create a buffered line and don't add the original
+          createBufferedLine(layer, distanceKm);
+        }
+        else if (map._bufferPolygonMode && e.layerType === 'polygon') {
+          // For polygon, create a buffered polygon and don't add the original
+          createBufferedPolygon(layer, distanceKm);
+        }
+        else {
+          // In any other case, add to the buffer layers group for proper management
+          layer._bufferElement = true;
+          bufferLayers.addLayer(layer);
+        }
+
+        // Reset buffer modes
+        map._bufferLineMode = false;
+        map._bufferPolygonMode = false;
+      }
+      else {
+        // For normal drawing, add the layer to the map as usual
+        map.addLayer(layer);
+      }
+    });
+
+    // Create buffered line (line with width)
+    function createBufferedLine(lineLayer, widthKm) {
+      try {
+        // Convert Leaflet line to GeoJSON
+        const lineGeoJSON = lineLayer.toGeoJSON();
+
+        // Use turf.js to create buffer
+        const buffered = turf.buffer(lineGeoJSON, widthKm, { units: 'kilometers' });
+
+        // Add the buffered line to the map
+        const bufferLayer = L.geoJSON(buffered, {
+          style: {
+            color: '#ff7800',
+            weight: 2,
+            opacity: 0.8,
+            fillColor: '#ff7800',
+            fillOpacity: 0.2
+          }
+        });
+
+        // Mark as buffer element for easier cleanup
+        bufferLayer._bufferElement = true;
+
+        // Add to the buffer layers group
+        bufferLayers.addLayer(bufferLayer);
+
+        // Store reference to the original line for deletion
+        bufferLayer._originalLine = lineLayer;
+
+        // Add a popup with information and delete button
+        bufferLayer.bindPopup(`
+        <div style="padding:5px;">
+          <h4>Buffered Line</h4>
+          <p>Width: ${widthKm} km</p>
+          <button class="buffer-delete-btn" style="background-color:#e74c3c; color:white; border:none; padding:3px 8px; border-radius:3px; cursor:pointer; margin-top:5px; width:100%;">Delete</button>
+        </div>
+      `);
+
+        // Add delete event handler to the popup
+        bufferLayer.on('popupopen', function () {
+          const deleteBtn = document.querySelector('.buffer-delete-btn');
+          if (deleteBtn) {
+            deleteBtn.addEventListener('click', function () {
+              // Direct removal from map and buffer group
+              map.removeLayer(bufferLayer);
+              bufferLayers.removeLayer(bufferLayer);
+
+              // Make sure original line is also removed if it exists
+              if (bufferLayer._originalLine) {
+                if (map.hasLayer(bufferLayer._originalLine)) {
+                  map.removeLayer(bufferLayer._originalLine);
+                }
+              }
+
+              map.closePopup();
+              showNotification("Buffer Deleted", "Line buffer has been removed", "info");
+            });
+          }
+        });
+
+        showNotification("Buffered Line Created", `Line with ${widthKm}km width created`, "success");
+
+        return bufferLayer;
+      } catch (error) {
+        console.error("Error creating buffered line:", error);
+        showNotification("Error", "Failed to create buffered line: " + error.message, "error");
+      }
+    }
+
+    // Create buffered polygon
+    function createBufferedPolygon(polygonLayer, bufferKm) {
+      try {
+        // Convert Leaflet polygon to GeoJSON
+        const polygonGeoJSON = polygonLayer.toGeoJSON();
+
+        // Use turf.js to create buffer
+        const buffered = turf.buffer(polygonGeoJSON, bufferKm, { units: 'kilometers' });
+
+        // Add the buffered polygon to the map
+        const bufferLayer = L.geoJSON(buffered, {
+          style: {
+            color: '#ff7800',
+            weight: 2,
+            opacity: 0.8,
+            fillColor: '#ff7800',
+            fillOpacity: 0.2
+          }
+        });
+
+        // Mark as buffer element for easier cleanup
+        bufferLayer._bufferElement = true;
+
+        // Add to the buffer layers group
+        bufferLayers.addLayer(bufferLayer);
+
+        // Store reference to the original polygon for deletion
+        bufferLayer._originalPolygon = polygonLayer;
+
+        // Add a popup with information and delete button
+        bufferLayer.bindPopup(`
+        <div style="padding:5px;">
+          <h4>Buffered Polygon</h4>
+          <p>Buffer Distance: ${bufferKm} km</p>
+          <button class="buffer-delete-btn" style="background-color:#e74c3c; color:white; border:none; padding:3px 8px; border-radius:3px; cursor:pointer; margin-top:5px; width:100%;">Delete</button>
+        </div>
+      `);
+
+        // Add delete event handler to the popup
+        bufferLayer.on('popupopen', function () {
+          const deleteBtn = document.querySelector('.buffer-delete-btn');
+          if (deleteBtn) {
+            deleteBtn.addEventListener('click', function () {
+              // Direct removal from map and buffer group
+              map.removeLayer(bufferLayer);
+              bufferLayers.removeLayer(bufferLayer);
+
+              // Make sure original polygon is also removed if it exists
+              if (bufferLayer._originalPolygon) {
+                if (map.hasLayer(bufferLayer._originalPolygon)) {
+                  map.removeLayer(bufferLayer._originalPolygon);
+                }
+              }
+
+              map.closePopup();
+              showNotification("Buffer Deleted", "Polygon buffer has been removed", "info");
+            });
+          }
+        });
+
+        showNotification("Buffered Polygon Created", `Polygon with ${bufferKm}km buffer created`, "success");
+
+        return bufferLayer;
+      } catch (error) {
+        console.error("Error creating buffered polygon:", error);
+        showNotification("Error", "Failed to create buffered polygon: " + error.message, "error");
+      }
+    }
+  });
+  ///////////////////
+
 </script>
 {% endblock %}
